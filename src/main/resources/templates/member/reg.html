@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <title>会员注册</title>
+    <script src="https://cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
+    <script src="https://cdn.bootcss.com/jquery-validate/1.16.0/jquery.validate.min.js"></script>
+    <script src="https://cdn.bootcss.com/jquery-validate/1.16.0/additional-methods.min.js"></script>
+    <script src="https://cdn.bootcss.com/jquery.form/4.2.1/jquery.form.min.js"></script>
+    <script src="https://cdn.bootcss.com/layer/3.0.1/layer.min.js"></script>
+</head>
+<body>
+    <form class="ajaxforms" method="post" action="/member/reg">
+        用户名：<input type="text" name="account" />
+        密码：<input type="password" name="password" />
+        <input type="submit" value="添加" />
+    </form>
+    <script type="text/javascript">
+        $(function () {
+            var form = $("form.ajaxforms");
+            var formloading = false;
+            form.validate({
+                showErrors : function(errorMap, errorArr) {
+                    try {
+                        $(errorArr[0].element).focus();
+                        layer.msg(errorArr[0].message);
+                    } catch (err) {
+                    }
+                },
+                rules : {
+                    'account' : {
+                        required : true
+                    },
+                    'password' : {
+                        required : true,
+                    }
+                },
+                //验证未通过提示消息
+                messages : {
+                    'account' : {
+                        required : '请输入用户名'
+                    },
+                    'password' : {
+                        required : '请输入密码'
+                    },
+                },
+                submitHandler : function(forms) {
+                    if (formloading) return;
+                    $(forms).ajaxSubmit({
+                        url : form.attr('action'),
+                        dataType : 'json',
+                        beforeSubmit : function(arr, $form, options) {
+                            formloading = true;
+                        },
+                        success : function(data, statusText, xhr, $form) {
+                            formloading = false;
+                            if (data.status == 1) {
+                                window.location.href = '/member/login';
+                            } else {
+                                layer.msg(data.msg);
+                            }
+                        }
+                    });
+                }
+            })
+        })(jQuery);
+    </script>
+</body>
+</html>

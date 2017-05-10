@@ -1,0 +1,93 @@
+<!DOCTYPE HTML>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+<head th:include="console/header">
+</head>
+<body>
+<section class="content-header">
+    <h1>资源管理</h1>
+    <small>资源列表</small>
+</section>
+<section class="content table-content">
+    <a href="/console/menu/from" class="btn btn-primary" >添加资源</a>
+    <table class="table table-bordered" id="dataGrid">
+        <tr>
+            <th>菜单名称</th>
+            <th>权限标识</th>
+            <th>菜单URL</th>
+            <th>菜单类型</th>
+            <th>排序</th>
+            <th>创建时间</th>
+            <th>更新日期</th>
+            <th>操作</th>
+        </tr>
+        <tr th:id="${menu.menuId}" th:each="menu,menuStat:${menus}" th:class="${#strings.equals(menu.parentId,'0')?'treegrid-'+menu.menuId : 'treegrid-'+menu.menuId+' treegrid-parent-'+menu.parentId} ">
+            <td th:text="${menu.menuName}"></td>
+            <td th:text="${menu.menuCode}"></td>
+            <td th:text="${menu.menuUrl}"></td>
+            <td th:text="${menu.menuType}"></td>
+            <td><input type="text" th:attr="data-id=${menu.menuId}" name="listorder" th:value="${menu.listorder}" /></td>
+            <td th:text="${menu.createdAt}"></td>
+            <td th:text="${menu.updatedAt}"></td>
+            <td>
+                <a th:href="${'/console/menu/from?parentId='+menu.menuId}" ><i class="glyphicon glyphicon-add"></i>添加子菜单</a>
+                <a th:href="${'/console/menu/from?menuId='+menu.menuId}" ><i class="glyphicon glyphicon-edit"></i>修改</a>
+                <a class="remove" th:attr="data-id=${menu.menuId}" href="javascript:void(0);"><i class="glyphicon glyphicon-remove"></i>删除</a></td>
+        </tr>
+    </table>
+</section>
+
+<div th:include="console/footer"></div>
+
+<script type="text/javascript">
+    $table = $("#dataGrid");
+    $(function () {
+        $(".table").treegrid({
+            expanderExpandedClass: 'glyphicon glyphicon-minus',
+            expanderCollapsedClass: 'glyphicon glyphicon-plus'
+        });
+        //更新排序
+        $("input[name=listorder]").on('keyup',function () {
+            var _id = $(this).data('id')
+            var _listorder = $(this).val();
+            if(!isNaN(_listorder)){
+                $.post( '/console/menu/listorder',{
+                    id: _id,
+                    listorder: _listorder
+                },function (ret) {
+                    if(ret.status==1){
+                        window.location.reload();
+                    }
+                });
+            }
+        });
+        //删除处理
+        $(".remove").on('click', function () {
+            var _this = $(this);
+            layer.confirm('确定删除吗?', function(){
+                $.getJSON('/console/menu/delete', {ids:_this.data('id')}, function(ret){
+                    if (ret.status){
+                        layer.msg(ret.msg, {icon: 1},function () {
+                            $('#'+_this.data('id')).hide();
+                        });
+                    } else {
+                        layer.msg(ret.msg, {icon: 2});
+                    }
+                });
+            });
+        })
+    });
+
+    function getState(value) {
+        if(value == "menu"){
+            return "仅菜单";
+        }else if(value == "auth"){
+            return "菜单权限"
+        }else{
+            return "按钮权限"
+        }
+    }
+</script>
+
+</body>
+</html>

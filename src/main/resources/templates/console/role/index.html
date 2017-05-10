@@ -1,0 +1,93 @@
+<!DOCTYPE HTML>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+<head th:include="/console/header">
+</head>
+<body>
+<section class="content-header">
+    <h1>角色管理</h1>
+    <small>列表管理</small>
+</section>
+<section class="content table-content">
+    <table id="dataGrid"></table>
+</section>
+<div id="toolbar">
+    <a href="/console/role/from" class="btn btn-primary" >添加角色</a>
+</div>
+<div th:include="/console/footer"></div>
+
+
+<script type="text/javascript">
+    $table = $("#dataGrid");
+    $(function () {
+        initDataGrid();
+    });
+    function initDataGrid(){
+        $table.bootstrapTable({
+            height : tableModel.getHeight(),
+            idField : "roleId",
+            columns: [[
+                {title: "角色名称", field: "roleName"},
+                {title: "角色描述", field: "roleDesc"},
+                {title: "启用状态", field: "enable", formatter : tableModel.getState},
+                {title: "创建时间", field: "createdAt", sortable: true},
+                {title: "更新日期", field: "updatedAt", sortable: true},
+                {title: "操作", field: "operate", align: 'center', events: operateEvents, formatter: operateFormatter}
+            ]],
+            url: '/console/role/list',
+            queryParams: function(params){
+                return params;
+            },
+            responseHandler : function (res) {
+                return {
+                    rows : res.result.pageInfo.list,
+                    total : res.result.pageInfo.total
+                }
+            },
+            sortName : 'createdAt',
+            sortOrder : 'asc',
+            pagination : true,
+            sidePagination : 'server',
+            pageSize: 20,
+            pageList : [20, 40, 50, 100],
+            toolbar : "#toolbar",
+            showRefresh : true,
+            showToggle : true
+        });
+    }
+
+    function operateFormatter(value, row, index) {
+        return [
+            '<a class="grant" href="javascript:void(0);" >',
+            '<i class="glyphicon glyphicon-edit"></i>授权',
+            '</a>  ',
+            '<a href="/console/role/from?roleId='+row.roleId+'" >',
+            '<i class="glyphicon glyphicon-edit"></i>修改',
+            '</a>  ',
+            '<a class="remove" href="javascript:void(0);">',
+            '<i class="glyphicon glyphicon-remove"></i>删除',
+            '</a>'
+        ].join('');
+    }
+
+    window.operateEvents = {
+        'click .remove' : function (e, value, row, index) {
+            operaModel.delRow(row.roleId, '/console/role/delete', 'roleId');
+        },
+        'click .grant' : function (e, value, row, index) {
+            layer.open({
+                type: 2,
+                title: '角色授权',
+                shadeClose: true,
+                shade: false,
+                maxmin: true, //开启最大化最小化按钮
+                area: ['500px', '600px'],
+                content: '/console/role/grant/?roleId=' + row.roleId
+            });
+        }
+    };
+
+</script>
+</body>
+</html>
+

@@ -1,0 +1,63 @@
+<!DOCTYPE HTML>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+<head th:include="/console/header">
+</head>
+<body>
+<section class="content">
+    <div class="row">
+        <div class="col-md-6 col-md-offset-3">
+            <div class="box box-primary">
+                <div class="box-header with-border">
+                    <h3 class="box-title" th:text="'资源'+${#strings.isEmpty(menu.menuId)?'添加':'修改'}"></h3>
+                </div>
+                <div class="box-body">
+                    <form class="form-horizontal js-ajax-form" action="/console/menu/save" method="post">
+                        <input type="hidden" name="menuId" id="menuId" th:value="${menu.menuId}" />
+                        <input type="hidden" name="createdAt" th:value="${menu.createdAt}" />
+                        <input type="hidden" name="updatedAt" th:value="${menu.updatedAt}" />
+                        <input type="hidden" name="listorder" th:value="${menu.listorder}" />
+                        <input type="hidden" name="parentId" th:value="${menu.parentId}" />
+                        <input type="hidden" name="childNum" th:value="${menu.childNum}" />
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">资源类型</label>
+                            <div class="col-sm-10">
+                                <select name="menuType" class="form-control">
+                                    <option value="menu" th:selected="${#strings.equals(menu.menuType,'menu')}">菜单</option>
+                                    <option value="auth" th:selected="${#strings.equals(menu.menuType,'auth')}">菜单+权限</option>
+                                    <option value="button" th:selected="${#strings.equals(menu.menuType,'button')}">按钮</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="menuName" class="col-sm-2 control-label">资源名称</label>
+                            <div class="col-sm-10">
+                                <input type="text" name="menuName" class="form-control" id="menuName" th:value="${menu.menuName}" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="menuCode" class="col-sm-2 control-label">权限标识</label>
+                            <div class="col-sm-10">
+                                <input type="text" name="menuCode" class="form-control" id="menuCode" th:value="${menu.menuCode}" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="menuUrl" class="col-sm-2 control-label">资源URL</label>
+                            <div class="col-sm-10">
+                                <input type="text" name="menuUrl" class="form-control" id="menuUrl" th:value="${menu.menuUrl}" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-offset-2 col-sm-10">
+                                <button type="submit" class="btn btn-default js-ajax-submit">提交</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<div th:include="/console/footer"></div>
+</body>
+</html>

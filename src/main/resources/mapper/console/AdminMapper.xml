@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.geekcattle.mapper.console.AdminMapper">
+  <resultMap id="BaseResultMap" type="com.geekcattle.model.console.Admin">
+      <id column="uid" jdbcType="VARCHAR" property="uid" />
+      <result column="username" jdbcType="VARCHAR" property="username" />
+      <result column="password" jdbcType="VARCHAR" property="password" />
+      <result column="salt" jdbcType="VARCHAR" property="salt" />
+      <result column="state" jdbcType="INTEGER" property="state" />
+      <result column="created_at" jdbcType="DATE" property="createdAt" />
+      <result column="updated_at" jdbcType="DATE" property="updatedAt" />
+      <!-- 关联查询角色信息 -->
+      <!--<collection property="roleList" resultMap="com.geekcattle.mapper.console.Role">
+          <id column="roleid" jdbcType="VARCHAR" property="id" />
+          <result column="role_name" jdbcType="VARCHAR" property="roleName" />
+          <result column="enable" jdbcType="INTEGER" property="enable" />
+      </collection>-->
+  </resultMap>
+
+  <!--根据用户名获取用户信息-->
+  <select id="selectByUsername" parameterType="String" resultMap="BaseResultMap">
+    select *  from admin where username = #{uername};
+  </select>
+
+
+  <!--删除用户和用户关联表-->
+  <delete id="deleteById" parameterType="String">
+    delete from admin_role where adminid = #{id};
+    delete from admin where uid = #{id};
+  </delete>
+
+</mapper>

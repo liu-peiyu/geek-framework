@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.geekcattle.mapper.console.RoleMapper" >
+    <resultMap id="BaseResultMap" type="com.geekcattle.model.console.Role">
+        <id column="role_id" jdbcType="VARCHAR" property="roleId" />
+        <result column="role_name" jdbcType="VARCHAR" property="roleName" />
+        <result column="role_desc" jdbcType="VARCHAR" property="roleDesc" />
+        <result column="enable" jdbcType="INTEGER" property="enable" />
+        <result column="created_at" jdbcType="DATE" property="createdAt" />
+        <result column="updated_at" jdbcType="DATE" property="updatedAt" />
+    </resultMap>
+
+    <!--根据用户ID获取用户角色名称-->
+    <select id="findRoleByUserId" parameterType="String" resultType="java.lang.String">
+        select r.role_name from role r,admin_role ar where r.role_id = ar.role_id and ar.admin_id = #{id}
+    </select>
+
+    <resultMap id="queryResulpMap" type="com.geekcattle.model.console.Role">
+        <id column="role_id" jdbcType="VARCHAR" property="roleId" />
+        <result column="role_name" jdbcType="VARCHAR" property="roleName" />
+        <result column="enable" jdbcType="INTEGER" property="enable" />
+        <collection property="adminList" javaType="java.util.List" ofType="com.geekcattle.model.console.Admin">
+            <id column="adminid" jdbcType="VARCHAR" property="uid" />
+            <result column="username" jdbcType="VARCHAR" property="username" />
+            <result column="state" jdbcType="INTEGER" property="state" />
+        </collection>
+    </resultMap>
+
+    <select id="selectRoleListByAdminId"  parameterType="String" resultMap="BaseResultMap">
+        select r.role_id ,r.role_name,r.enable,a.uid as adminid,a.username,a.state from role r
+        inner join admin_role ar on r.role_id = ar.role_id left join admin a on a.uid = ar.admin_id
+        where a.uid = #{id,jdbcType=VARCHAR} and r.enable = 1
+    </select>
+
+</mapper>

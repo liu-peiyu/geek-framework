@@ -1,0 +1,11 @@
+.fixed .content-wrapper{
+    background-color: white;
+    padding-bottom: 40px;
+}
+.main-footer{
+    padding: 8px 15px;
+}
+.table-content{
+    padding-top: 0px;
+    padding-bottom: 0px;
+}

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.geekcattle.mapper.console.RoleMenuMapper" >
+  <resultMap id="BaseResultMap" type="com.geekcattle.model.console.RoleMenu" >
+    <id column="role_id" property="roleId" jdbcType="VARCHAR" />
+    <id column="menu_id" property="menuId" jdbcType="VARCHAR" />
+  </resultMap>
+</mapper>

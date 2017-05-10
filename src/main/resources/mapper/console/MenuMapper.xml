@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.geekcattle.mapper.console.MenuMapper">
+    <resultMap id="BaseResultMap" type="com.geekcattle.model.console.Menu">
+        <id column="menu_id" property="menuId" jdbcType="VARCHAR"/>
+        <result column="menu_name" property="menuName" jdbcType="VARCHAR"/>
+        <result column="menu_type" property="menuType" jdbcType="VARCHAR"/>
+        <result column="menu_url" property="menuUrl" jdbcType="VARCHAR"/>
+        <result column="menu_code" property="menuCode" jdbcType="VARCHAR"/>
+        <result column="parent_id" property="parentId" jdbcType="VARCHAR"/>
+        <result column="parent_ids" property="parentIds" jdbcType="VARCHAR"/>
+        <result column="child_num" property="childNum" jdbcType="INTEGER"/>
+        <result column="listorder" property="listorder" jdbcType="INTEGER"/>
+        <result column="created_at" jdbcType="DATE" property="createdAt" />
+        <result column="updated_at" jdbcType="DATE" property="updatedAt" />
+    </resultMap>
+
+    <!-- 根据用ID查询权限code -->
+    <select id="findMenuByUserId" parameterType="String" resultType="java.lang.String">
+      select m.menu_code from menu m , role_menu rm, admin_role ar where ar.admin_id =#{id} and m.menu_id = rm.menu_id and rm.role_id = ar.role_id
+    </select>
+
+    <resultMap id="queryResulpMap" type="com.geekcattle.model.console.Menu">
+        <id column="menu_id" property="menuId" jdbcType="VARCHAR"/>
+        <result column="menu_name" property="menuName" jdbcType="VARCHAR"/>
+        <result column="menu_type" property="menuType" jdbcType="VARCHAR"/>
+        <result column="menu_url" property="menuUrl" jdbcType="VARCHAR"/>
+        <result column="menu_code" property="menuCode" jdbcType="VARCHAR"/>
+        <result column="parent_id" property="parentId" jdbcType="VARCHAR"/>
+        <result column="child_num" property="childNum" jdbcType="INTEGER"/>
+        <collection property="adminList" javaType="java.util.List" ofType="com.geekcattle.model.console.Admin">
+            <id column="adminid" jdbcType="VARCHAR" property="uid" />
+            <result column="username" jdbcType="VARCHAR" property="username" />
+            <result column="state" jdbcType="INTEGER" property="state" />
+        </collection>
+        <collection property="roleList" javaType="java.util.List" ofType="com.geekcattle.model.console.Role">
+            <id column="role_id" jdbcType="VARCHAR" property="roleId" />
+            <result column="role_name" jdbcType="VARCHAR" property="roleName" />
+            <result column="enable" jdbcType="INTEGER" property="enable" />
+        </collection>
+    </resultMap>
+
+    <sql id="menuField">
+        select m.menu_id, m.menu_name, m.menu_type, m.menu_url, m.menu_code, m.parent_id, r.role_id as roleid ,r.role_name,r.enable,a.uid as adminid,a.username,a.state
+    </sql>
+
+    <select id="selectMenuByAdminId"  parameterType="String" resultMap="queryResulpMap">
+        <include refid="menuField" />
+        from menu m
+        left join role_menu rm on m.menu_id = rm.menu_id
+        left join role r on r.role_id = rm.role_id
+        left join admin_role ar on r.role_id = ar.role_id
+        left join admin a on a.uid = ar.admin_id
+        where a.uid = #{id, jdbcType=VARCHAR} and r.enable = 1 and m.menu_type &lt;&gt; 'button'
+        order by m.listorder asc,m.created_at asc
+    </select>
+    
+    <select id="selectMenuByRoleId" parameterType="String" resultMap="BaseResultMap">
+        select m.* from role_menu rm  left join menu m on rm.menu_id = m.menu_id where rm.role_id=#{id, jdbcType=VARCHAR}
+    </select>
+
+
+</mapper>

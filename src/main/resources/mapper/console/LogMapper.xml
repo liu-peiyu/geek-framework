@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.geekcattle.mapper.console.LogMapper">
+  <resultMap id="BaseResultMap" type="com.geekcattle.model.console.Log">
+      <id column="log_id" jdbcType="VARCHAR" property="logId" />
+      <result column="log_user" jdbcType="VARCHAR" property="logUser" />
+      <result column="log_time" jdbcType="DATE" property="logTime" />
+      <result column="log_ip" jdbcType="VARCHAR" property="logIp" />
+      <result column="log_action" jdbcType="VARCHAR" property="logAction" />
+  </resultMap>
+</mapper>

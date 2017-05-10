@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.geekcattle.mapper.member.MemberMapper">
+  <resultMap id="BaseResultMap" type="com.geekcattle.model.member.Member">
+      <id column="uid" jdbcType="VARCHAR" property="uid" />
+      <result column="account" jdbcType="VARCHAR" property="account" />
+      <result column="password" jdbcType="VARCHAR" property="password" />
+      <result column="salt" jdbcType="VARCHAR" property="salt" />
+      <result column="state" jdbcType="INTEGER" property="state" />
+      <result column="created_at" jdbcType="DATE" property="createdAt" />
+      <result column="updated_at" jdbcType="DATE" property="updatedAt" />
+  </resultMap>
+
+  <!--根据用户名获取用户信息-->
+  <select id="selectByUsername" parameterType="String" resultMap="BaseResultMap">
+    select *  from member where account = #{uername};
+  </select>
+
+</mapper>

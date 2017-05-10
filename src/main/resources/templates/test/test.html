@@ -1,0 +1,13 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>单元测试</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+<form method="post" action="/testPost" name="testForm">
+    <input type="text" name="rq" th:value="${rq}"/>
+    <input type="submit" name="doSubmit" value="提交"/>
+</form>
+</body>
+</html>

@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+<head th:include="/console/header">
+</head>
+<body>
+    <section class="content-header">
+        <h1>后台总览</h1>
+    </section>
+    <section class="content">
+        <div class="row">
+            <div class="col-md-3 col-sm-6 col-xs-12">
+                <div class="info-box">
+                    <span class="info-box-icon bg-aqua"><i class="ion ion-ios-gear-outline"></i></span>
+                    <div class="info-box-content">
+                        <span class="info-box-text">用户总数</span>
+                    <span class="info-box-number">
+                        <span th:text="${admin}">0</span>
+                        <small>个</small>
+                    </span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-3 col-sm-6 col-xs-12">
+                <div class="info-box">
+                    <span class="info-box-icon bg-red"><i class="fa fa-google-plus"></i></span>
+                    <div class="info-box-content">
+                        <span class="info-box-text">角色总数</span>
+                    <span class="info-box-number">
+                        <span th:text="${role}">0</span>
+                        <small>个</small>
+                    </span>
+                    </div>
+                </div>
+            </div>
+
+
+
+            <div class="col-md-3 col-sm-6 col-xs-12">
+                <div class="info-box">
+                    <span class="info-box-icon bg-green"><i class="ion ion-ios-cart-outline"></i></span>
+                    <div class="info-box-content">
+                        <span class="info-box-text">资源总数</span>
+                    <span class="info-box-number">
+                        <span th:text="${menu}">0</span>
+                        <small>个</small>
+                    </span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-3 col-sm-6 col-xs-12">
+                <div class="info-box">
+                    <span class="info-box-icon bg-green"><i class="ion ion-ios-cart-outline"></i></span>
+                    <div class="info-box-content">
+                        <span class="info-box-text">资源总数</span>
+                    <span class="info-box-number">
+                        <span th:text="${menu}">0</span>
+                        <small>个</small>
+                    </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <div th:replace="/console/footer"></div>
+</body>
+</html>

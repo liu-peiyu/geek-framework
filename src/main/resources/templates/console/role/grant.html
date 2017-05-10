@@ -1,0 +1,60 @@
+<!DOCTYPE HTML>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+<head th:include="/console/header">
+</head>
+<body>
+<section class="content">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="box box-primary">
+                <div class="box-header with-border">
+                    <button type="button" th:attr="data-id=${roleId}" class="btn btn-primary">保存</button>
+                </div>
+                <div class="box-body">
+                    <div id="menuTree"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<div th:include="/console/footer"></div>
+<script type="text/javascript" src="/static/js/treeview.js"></script>
+<script type="text/javascript">
+(function () {
+    getMenuTree();
+    $("button.btn-primary").on('click', function () {
+        var _roleId = $(this).data('id');
+        var checkNodes = $('ul.list-group>li.node-checked').map(function () {
+            return $('#menuTree').treeview('getNode',[$(this).data('nodeid')]).id;
+        }).get().join(",");
+        $.post('/console/role/grant',{roleId: _roleId , menuIds: checkNodes},function (data) {
+            if(data.status == 1){
+                layer.msg(data.msg, {icon: 1}, function () {
+                    layerModel.closeParent();
+                });
+            }else{
+                layer.msg(data.msg);
+            }
+        })
+    });
+
+})();
+function getMenuTree() {
+    var _roleId = $("button.btn-primary").data('id');
+    $.getJSON('/console/role/menutree', {id:_roleId}, function (data) {
+        if(data.status == 1){
+            $('#menuTree').treeview({
+                data : data.result,
+                showIcon: false,
+                highlightSelected:false,
+                showCheckbox: true,
+                onNodeChecked : nodeChecked ,
+                onNodeUnchecked : nodeUnchecked
+            });
+        }
+    })
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,51 @@
+server:
+    port: 8000
+    context-path: /
+
+logging:
+    level:
+        tk.mybatis: DEBUG
+
+spring:
+    datasource:
+#        url: jdbc:sqlserver://192.168.16.200:1433;DatabaseName=test
+#        username: sa
+#        password: 123456
+#        # 使用druid数据源
+#        type: com.alibaba.druid.pool.DruidDataSource
+#        driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
+        name: geekcattle
+        url: jdbc:mysql://localhost:3306/geekcattle
+        username: root
+        password: root
+        # 使用druid数据源
+        type: com.alibaba.druid.pool.DruidDataSource
+        driver-class-name: com.mysql.jdbc.Driver
+        filters: stat
+        maxActive: 20
+        initialSize: 1
+        maxWait: 60000
+        minIdle: 1
+        timeBetweenEvictionRunsMillis: 60000
+        minEvictableIdleTimeMillis: 300000
+        validationQuery: select 'x'
+        testWhileIdle: true
+        testOnBorrow: false
+        testOnReturn: false
+        poolPreparedStatements: true
+        maxOpenPreparedStatements: 20
+    mvc:
+        view:
+            prefix: classpath:/templates/
+            suffix: .html
+#    freemarker:
+#        cache: false
+#        request-context-attribute: request
+    thymeleaf:
+      mode: HTML5
+      encoding: UTF-8
+      content-type: text/html
+      cache: false
+    mapper:
+      plugin: tk.mybatis.mapper.generator.MapperPlugin
+      Mapper: com.geekcattle.util.CustomerMapperpper
