@@ -1,0 +1,53 @@
+<!DOCTYPE HTML>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+<head th:include="/console/header">
+</head>
+<body>
+<section class="content-header">
+    <h1>日志管理</h1>
+</section>
+<section class="content table-content">
+    <table id="dataGrid"></table>
+</section>
+<div th:include="/console/footer"></div>
+</body>
+<script type="text/javascript">
+    $table = $("#dataGrid");
+    $(function () {
+        initDataGrid();
+    });
+    function initDataGrid(){
+        $table.bootstrapTable({
+            height : tableModel.getHeight(),
+            idField : "logId",
+            columns : [[
+                {title: "操作用户", field: "logUser" },
+                {title: "操作时间", field: "logTime", sortable: true},
+                {title: "操作IP", field: "logIp"},
+                {title: "操作地址", field: "logAction"}
+            ]],
+            url : '/console/log/list',
+            queryParams: function(params){
+                return params;
+            },
+            responseHandler : function (res) {
+                return {
+                    rows : res.result.pageInfo.list,
+                    total : res.result.pageInfo.total
+                }
+            },
+            search : true,
+            searchOnEnterKey : true,
+            sortName : 'logTime',
+            sortOrder : 'asc',
+            pagination : true,
+            sidePagination : 'server',
+            pageSize: 50,
+            pageList : [50, 100],
+            showRefresh : true,
+            showToggle : true
+        });
+    }
+</script>
+</html>
