@@ -209,7 +209,7 @@
         </dependency>
     </dependencies>
     <build>
-        <finalName>spring-boot-web</finalName>
+        <finalName>spring-boot-admin</finalName>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
