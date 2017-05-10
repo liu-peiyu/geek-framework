@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <html lang="en"
       xmlns:th="http://www.thymeleaf.org">
-<head th:include="/console/header">
+<head th:include="console/header">
 </head>
 <body>
 <section class="content-header">
@@ -10,7 +10,7 @@
 <section class="content table-content">
     <table id="dataGrid"></table>
 </section>
-<div th:include="/console/footer"></div>
+<div th:include="console/footer"></div>
 </body>
 <script type="text/javascript">
     $table = $("#dataGrid");
