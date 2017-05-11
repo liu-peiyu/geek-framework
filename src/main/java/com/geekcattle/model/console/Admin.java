@@ -23,6 +23,8 @@ public class Admin extends BaseEntity {
 
     private Integer state;
 
+    private Integer isSystem;
+
     private String createdAt;
 
     private String updatedAt;
@@ -79,6 +81,14 @@ public class Admin extends BaseEntity {
 
     public void setState(Integer state) {
         this.state = state;
+    }
+
+    public Integer getIsSystem() {
+        return isSystem;
+    }
+
+    public void setIsSystem(Integer isSystem) {
+        this.isSystem = isSystem;
     }
 
     public String  getCreatedAt() {

@@ -109,35 +109,13 @@ public class AdminShiroRealm extends AuthorizingRealm {
 
         SimpleAuthorizationInfo authorizationInfo = new SimpleAuthorizationInfo();
         Admin userInfo  = (Admin)principals.getPrimaryPrincipal();
-
-
-
-        //批量添加角色
-        /*Set<String> roles = roleService.findRoleByUserId(userInfo.getUid());
-        authorizationInfo.addRoles(roles);*/
-
-        Set<String> menus = menuService.findRoleByUserId(userInfo.getUid());
+        Set<String> menus = null;
+        if(userInfo.getIsSystem() == 1) {
+            menus = menuService.getAllMenuCode();
+        }else{
+            menus = menuService.findMenuCodeByUserId(userInfo.getUid());
+        }
         authorizationInfo.addStringPermissions(menus);
-
-        //权限单个添加;
-        // 或者按下面这样添加
-        //添加一个角色,不是配置意义上的添加,而是证明该用户拥有admin角色
-        //authorizationInfo.addRole("admin");
-        //添加权限
-        //authorizationInfo.addStringPermission("userInfo:query");
-
-
-
-        ///在认证成功之后返回.
-        //设置角色信息.
-        //支持 Set集合,
-        //用户的角色对应的所有权限，如果只使用角色定义访问权限，下面的四行可以不要
-        /*for(Role role : userInfo.getRoleList()){
-            authorizationInfo.addRole(role.getRoleName());
-            for(Menu menu: role.getMenuList()){
-                authorizationInfo.addStringPermission(menu.getMenuCode());
-            }
-        }*/
         return authorizationInfo;
     }
 

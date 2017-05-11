@@ -11,28 +11,10 @@ import javax.persistence.*;
 public class BaseEntity {
 
     @Transient
-    private Integer page = 1;
-
-    @Transient
-    private Integer rows = 10;
-
-    @Transient
     private Integer offset = 0;
 
     @Transient
     private Integer limit = 10;
-
-    public Integer getPage() {
-        return page;
-    }
-
-    public Integer getRows() {
-        return rows;
-    }
-
-    public void setRows(Integer rows) {
-        this.rows = rows;
-    }
 
     public Integer getOffset() {
         return offset;

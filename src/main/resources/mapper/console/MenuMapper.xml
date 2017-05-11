@@ -15,9 +15,14 @@
         <result column="updated_at" jdbcType="DATE" property="updatedAt" />
     </resultMap>
 
-    <!-- 根据用ID查询权限code -->
-    <select id="findMenuByUserId" parameterType="String" resultType="java.lang.String">
+    <!-- 根据用用户ID查询权限code -->
+    <select id="findMenuCodeByUserId" parameterType="String" resultType="java.lang.String">
       select m.menu_code from menu m , role_menu rm, admin_role ar where ar.admin_id =#{id} and m.menu_id = rm.menu_id and rm.role_id = ar.role_id
+    </select>
+
+    <!-- 根据所有权限code -->
+    <select id="getALLMenuCode" parameterType="String" resultType="java.lang.String">
+        select menu_code from menu
     </select>
 
     <resultMap id="queryResulpMap" type="com.geekcattle.model.console.Menu">
@@ -52,6 +57,17 @@
         left join admin_role ar on r.role_id = ar.role_id
         left join admin a on a.uid = ar.admin_id
         where a.uid = #{id, jdbcType=VARCHAR} and r.enable = 1 and m.menu_type &lt;&gt; 'button'
+        order by m.listorder asc,m.created_at asc
+    </select>
+
+    <select id="selectAllMenu"  parameterType="String" resultMap="queryResulpMap">
+        <include refid="menuField" />
+        from menu m
+        left join role_menu rm on m.menu_id = rm.menu_id
+        left join role r on r.role_id = rm.role_id
+        left join admin_role ar on r.role_id = ar.role_id
+        left join admin a on a.uid = ar.admin_id
+        where m.menu_type &lt;&gt; 'button'
         order by m.listorder asc,m.created_at asc
     </select>
     

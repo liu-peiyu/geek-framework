@@ -22,9 +22,7 @@ public class AdminService {
     private AdminMapper adminMapper;
 
     public List<Admin> getPageList(Admin admin) {
-        if (admin.getPage() != null && admin.getRows() != null) {
-            PageHelper.startPage(admin.getPage(), admin.getRows(), CamelCaseUtil.toUnderlineName(admin.getSort())+" "+admin.getOrder());
-        }
+        PageHelper.offsetPage(admin.getOffset(), admin.getLimit(), CamelCaseUtil.toUnderlineName(admin.getSort())+" "+admin.getOrder());
         return adminMapper.selectAll();
     }
 

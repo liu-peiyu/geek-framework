@@ -23,9 +23,7 @@ public class RoleService {
     private RoleMapper roleMapper;
 
     public List<Role> getPageList(Role role) {
-        if (role.getPage() != null && role.getRows() != null) {
-            PageHelper.startPage(role.getPage(), role.getRows(), CamelCaseUtil.toUnderlineName(role.getSort())+" "+role.getOrder());
-        }
+        PageHelper.offsetPage(role.getOffset(), role.getLimit(), CamelCaseUtil.toUnderlineName(role.getSort())+" "+role.getOrder());
         return roleMapper.selectAll();
     }
 

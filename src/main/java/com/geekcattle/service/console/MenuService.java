@@ -25,9 +25,7 @@ public class MenuService {
     private MenuMapper menuMapper;
 
     public List<Menu> getPageList(Menu menu) {
-        if (menu.getPage() != null && menu.getRows() != null) {
-            PageHelper.startPage(menu.getPage(), menu.getRows(), "listorder asc, created_at desc");
-        }
+        PageHelper.offsetPage(menu.getOffset(), menu.getLimit(), "listorder asc, created_at desc");
         return menuMapper.selectAll();
     }
 
@@ -73,8 +71,12 @@ public class MenuService {
         }
     }
 
-    public Set<String> findRoleByUserId(String userId) {
-        return menuMapper.findMenuByUserId(userId);
+    public Set<String> findMenuCodeByUserId(String userId) {
+        return menuMapper.findMenuCodeByUserId(userId);
+    }
+
+    public Set<String> getAllMenuCode() {
+        return menuMapper.getALLMenuCode();
     }
 
     public List<Menu> getComboTree(Menu menu) {
@@ -83,6 +85,10 @@ public class MenuService {
 
     public List<Menu> selectMenuByAdminId(String userId){
         return menuMapper.selectMenuByAdminId(userId);
+    }
+
+    public List<Menu> selectAllMenu(){
+        return menuMapper.selectAllMenu();
     }
 
     public List<Menu> selectMenuByRoleId(String roleId){

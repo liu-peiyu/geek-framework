@@ -23,9 +23,7 @@ public class LogService {
     private LogMapper logMapper;
 
     public List<Log> getPageList(Log log) {
-        if (log.getPage() != null && log.getRows() != null) {
-            PageHelper.startPage(log.getPage(), log.getRows(), CamelCaseUtil.toUnderlineName(log.getSort())+" "+log.getOrder());
-        }
+        PageHelper.offsetPage(log.getOffset(), log.getLimit(), CamelCaseUtil.toUnderlineName(log.getSort())+" "+log.getOrder());
         return logMapper.selectAll();
     }
 

@@ -21,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -95,6 +96,10 @@ public class MenuController {
     @ResponseBody
     public ModelMap save(@Valid Menu menu, BindingResult result) {
         try {
+            if (result.hasErrors()) {
+                for (ObjectError er : result.getAllErrors())
+                    return ReturnUtil.Error(er.getDefaultMessage(), null, null);
+            }
             if (StringUtils.isEmpty(menu.getMenuId())) {
                 String Id = UuidUtil.getUUID();
                 menu.setMenuId(Id);

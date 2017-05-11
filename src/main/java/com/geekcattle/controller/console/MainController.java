@@ -60,7 +60,12 @@ public class MainController {
     }
 
     private List<Menu> getMenu(Admin admin) {
-        List<Menu> menuLists = menuService.selectMenuByAdminId(admin.getUid());
+        List<Menu> menuLists = null;
+        if(admin.getIsSystem() == 1){
+            menuLists = menuService.selectAllMenu();
+        }else{
+            menuLists = menuService.selectMenuByAdminId(admin.getUid());
+        }
         MenuTreeUtil menuTreeUtil = new MenuTreeUtil(menuLists,null);
         return menuTreeUtil.buildTreeGrid();
     }

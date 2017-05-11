@@ -65,6 +65,8 @@ public class AdminController {
                 }
                 checkRoleId = String.join(",", checkRoleIds);
             }
+        }else {
+            admin.setIsSystem(0);
         }
         model.addAttribute("checkRoleId", checkRoleId);
         model.addAttribute("roleLists", this.getRoleList());
@@ -120,6 +122,7 @@ public class AdminController {
                 admin.setSalt(salt);
                 String password = PasswordUtil.createAdminPwd(admin.getPassword(), admin.getCredentialsSalt());
                 admin.setPassword(password);
+                admin.setIsSystem(0);
                 admin.setCreatedAt(DateUtil.getCurrentTime());
                 admin.setUpdatedAt(DateUtil.getCurrentTime());
                 adminService.insert(admin);
