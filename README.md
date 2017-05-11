@@ -65,9 +65,9 @@ SpringBootAdmin主要定位于微应用的开发，已内置后台系统的基�
 
 ## 演示地址
 
-* <http://demo.geekcattle.cc/>  &nbsp; 用户名：admin &nbsp; 密码：admin
+* <http://demo.geekcattle.cc/>  &nbsp; 用户名：admin &nbsp; 密码：admin 
 
-PS：为了方便大家查看DEMO和功能使用并没有对admin账户做特殊限制，为了方便其他人查看DEMO，请大家不要随意更改admin的授权，可以针对普通和理员的账号更改不同的角色来测试,测试数据库会不定期恢复。
+PS：测试数据库会不定期恢复。
 
 ## 快速体验
 
