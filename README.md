@@ -84,7 +84,6 @@ PS：测试数据库会不定期恢复。
 * E-mail：l_iupeiyu@qq.com
 * GitHub：<https://github.com/liu-peiyu/SpringBootAdmin>
 * 开源中国：<http://git.oschina.net/liupeiyu/springbootadmin>
-* 支持项目发展：（加我好友）支付宝：l_iupeiyu@qq.com &nbsp; 微信：l_iupeiyu
 
 一个人的个人能力再强，也无法战胜一个团队，希望兄弟姐妹的支持，能够贡献出自己的部分代码，参与进来共同完善它(^_^)。
 
