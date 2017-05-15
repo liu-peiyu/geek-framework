@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2017 <l_iupeiyu@qq.com> All rights reserved.
+ */
+
 package com.geekcattle.util;
 
 import com.alibaba.fastjson.JSON;
@@ -5,9 +9,6 @@ import com.alibaba.fastjson.JSON;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Created by Administrator on 2016/11/18.
- */
 public class JsonUtil {
     public JsonUtil() {
     }

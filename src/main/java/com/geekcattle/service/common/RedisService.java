@@ -1,15 +1,11 @@
+/*
+ * Copyright (c) 2017 <l_iupeiyu@qq.com> All rights reserved.
+ */
+
 package com.geekcattle.service.common;
 
-import org.apache.log4j.Logger;
-import org.apache.shiro.codec.Base64;
-import org.apache.shiro.session.Session;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import redis.clients.jedis.Jedis;
-import redis.clients.jedis.JedisPool;
-import redis.clients.jedis.JedisPoolConfig;
-
-import java.io.*;
 
 /**
  * author geekcattle

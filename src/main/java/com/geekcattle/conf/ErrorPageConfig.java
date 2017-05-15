@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2017 <l_iupeiyu@qq.com> All rights reserved.
+ */
+
 package com.geekcattle.conf;
 
 import org.springframework.boot.context.embedded.ConfigurableEmbeddedServletContainer;
@@ -7,9 +11,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
 
-/**
- * Created by Administrator on 2016/11/16.
- */
+
 @Configuration
 public class ErrorPageConfig {
 

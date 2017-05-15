@@ -1,12 +1,13 @@
+/*
+ * Copyright (c) 2017 <l_iupeiyu@qq.com> All rights reserved.
+ */
+
 package com.geekcattle.controller;
 
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-/**
- * Created by Administrator on 2016/10/21 0021.
- */
 @RestController
 @RequestMapping("/api")
 public class ApiController {

@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2017 <l_iupeiyu@qq.com> All rights reserved.
+ */
+
 package com.geekcattle.conf.shiro;
 
 import org.apache.shiro.session.mgt.eis.EnterpriseCacheSessionDAO;

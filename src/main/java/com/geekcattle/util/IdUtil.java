@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2017 <l_iupeiyu@qq.com> All rights reserved.
+ */
+
 package com.geekcattle.util;
 
 import org.apache.commons.codec.binary.Base64;

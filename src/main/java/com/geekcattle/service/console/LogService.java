@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2017 <l_iupeiyu@qq.com> All rights reserved.
+ */
+
 package com.geekcattle.service.console;
 
 import com.geekcattle.mapper.console.LogMapper;
