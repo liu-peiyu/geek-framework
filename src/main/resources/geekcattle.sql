@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50635
 File Encoding         : 65001
 
-Date: 2017-05-10 17:09:16
+Date: 2017-05-24 15:18:32
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -36,7 +36,7 @@ CREATE TABLE `admin` (
 -- Records of admin
 -- ----------------------------
 INSERT INTO `admin` VALUES ('1e67f167d99c43f897ec6566043ad6ec', 'flyshy', 'eb3a90502fbe02c2d8de91e0aa307268', '1', '5016b9942433201bf3fe61992eacba71', '0', '2016-12-07 13:24:17', '2017-05-09 16:05:34');
-INSERT INTO `admin` VALUES ('ad313d38fe9447ce863fe8584743a010', 'admin', 'c5941c5f3bc693a75e6e863bd2c55ce3', '1', '1ab6d62faa91ae7deec76d6f13ef1600', '0', '2016-12-06 11:16:51', '2017-05-10 17:01:32');
+INSERT INTO `admin` VALUES ('ad313d38fe9447ce863fe8584743a010', 'admin', 'c5941c5f3bc693a75e6e863bd2c55ce3', '1', '1ab6d62faa91ae7deec76d6f13ef1600', '1', '2016-12-06 11:16:51', '2017-05-11 13:59:25');
 
 -- ----------------------------
 -- Table structure for admin_role
@@ -54,9 +54,7 @@ CREATE TABLE `admin_role` (
 -- ----------------------------
 -- Records of admin_role
 -- ----------------------------
-INSERT INTO `admin_role` VALUES ('ad313d38fe9447ce863fe8584743a010', '36f1dd1296674fc08484c5abf6a5806b');
 INSERT INTO `admin_role` VALUES ('1e67f167d99c43f897ec6566043ad6ec', 'cbe8356d64a8433cb5dad5c7fccf8dce');
-INSERT INTO `admin_role` VALUES ('ad313d38fe9447ce863fe8584743a010', 'cbe8356d64a8433cb5dad5c7fccf8dce');
 
 -- ----------------------------
 -- Table structure for log
@@ -80,6 +78,8 @@ INSERT INTO `log` VALUES ('0912fa1c7f87460b9ff9fed5c515e29b', 'admin', '2017-05-
 INSERT INTO `log` VALUES ('09d3ea3e99574840a285fcf15642bdee', 'admin', '2017-05-09 16:31:40', '127.0.0.1', '');
 INSERT INTO `log` VALUES ('0b6a08723fae4ae2921886ec0a9c4dbc', 'admin', '2017-05-09 11:52:13', '127.0.0.1', '');
 INSERT INTO `log` VALUES ('0bc44c925bd0468c8fd7781d07e90b1d', 'admin', '2017-03-28 13:38:27', '127.0.0.1', '');
+INSERT INTO `log` VALUES ('0dc10963972d408dad7ee5dd94ad9f07', 'admin', '2017-05-24 14:55:17', '127.0.0.1', '');
+INSERT INTO `log` VALUES ('1154167ecd174fc990c283c25d66000b', 'admin', '2017-05-11 15:28:38', '127.0.0.1', '');
 INSERT INTO `log` VALUES ('1a727876dd324234b6f8eed3d1f5f524', 'admin', '2017-03-27 10:28:57', '127.0.0.1', '');
 INSERT INTO `log` VALUES ('1a839324ce544c219f017d41e98eb3e3', 'admin', '2017-03-30 17:09:16', '127.0.0.1', '');
 INSERT INTO `log` VALUES ('1b01125e81014f7889352e26add996c1', 'admin', '2017-03-28 10:59:16', '127.0.0.1', '');
@@ -92,11 +92,14 @@ INSERT INTO `log` VALUES ('26494d3db75f4e7c987b59548931ea20', 'admin', '2017-03-
 INSERT INTO `log` VALUES ('2817a8eb85054b0ea0ca1a7330eb6e10', 'admin', '2017-05-09 15:37:16', '127.0.0.1', '');
 INSERT INTO `log` VALUES ('2a8f34328e2348548f7e7d4930a47ecb', 'admin', '2017-04-10 16:58:39', '127.0.0.1', '');
 INSERT INTO `log` VALUES ('2b2cf9707d65452596726d974713795a', 'admin', '2017-03-27 11:37:16', '127.0.0.1', '');
+INSERT INTO `log` VALUES ('2db3d8ee79a244f6a4bbdc62b6744028', 'admin', '2017-05-11 13:40:32', '127.0.0.1', '');
 INSERT INTO `log` VALUES ('2dbaaa37e7374d26b5ea6d25f108054a', 'admin', '2017-01-13 14:01:32', '127.0.0.1', '');
 INSERT INTO `log` VALUES ('2dc44a559a774c599911c7ce51c3e029', 'admin', '2017-03-09 17:15:01', '127.0.0.1', '');
 INSERT INTO `log` VALUES ('33a12be5c426432f9bd5160c525c22ed', 'admin', '2017-03-30 13:57:53', '127.0.0.1', '');
+INSERT INTO `log` VALUES ('37a3da21295f44d0ac1b0c83cd1a6326', 'admin', '2017-05-11 13:44:31', '127.0.0.1', '');
 INSERT INTO `log` VALUES ('399612844a16435396eea2632ef369c7', 'admin', '2017-05-09 16:16:03', '127.0.0.1', '');
 INSERT INTO `log` VALUES ('3ab07587597947a8a13ea562babd46f4', 'admin', '2017-01-13 16:01:49', '127.0.0.1', '');
+INSERT INTO `log` VALUES ('3c78741ae469440484a17d4c99d064b8', 'admin', '2017-05-11 13:58:05', '127.0.0.1', '');
 INSERT INTO `log` VALUES ('3f64ffa47aa04fc683da13135804bed1', 'admin', '2017-01-06 17:25:43', '127.0.0.1', '');
 INSERT INTO `log` VALUES ('4091749e32ac4fcc9f367de19afd5ee5', 'admin', '2017-03-27 11:47:21', '127.0.0.1', '');
 INSERT INTO `log` VALUES ('42717dfbc40a415d8e9760735e71ac24', 'admin', '2017-01-13 14:24:25', '127.0.0.1', '');
@@ -116,13 +119,18 @@ INSERT INTO `log` VALUES ('69244b03162d4496a52fd70dd95f230b', 'admin', '2017-03-
 INSERT INTO `log` VALUES ('69630868cc784b599d9da9aef94b1ccb', 'admin', '2017-03-27 11:43:01', '127.0.0.1', '');
 INSERT INTO `log` VALUES ('6b65f3bb7f6a49a1892261f9164dfc5e', 'admin', '2017-03-27 13:02:27', '127.0.0.1', '');
 INSERT INTO `log` VALUES ('6e7477b6c4d8413cac2d32d0684c3272', 'admin', '2017-03-27 11:13:02', '127.0.0.1', '');
+INSERT INTO `log` VALUES ('702233f7d0644272a4bc1d26c6d14e4f', 'admin', '2017-05-11 11:44:16', '127.0.0.1', '');
 INSERT INTO `log` VALUES ('726dec658b0943c49300138b1fafded4', 'admin', '2017-05-09 15:10:20', '127.0.0.1', '');
 INSERT INTO `log` VALUES ('72a43c18f93e4022a60492bd37499e5a', 'admin', '2017-03-28 09:43:02', '127.0.0.1', '');
+INSERT INTO `log` VALUES ('731ae7b55afd4e72863823d63117cf9c', 'flyshy', '2017-05-11 14:18:08', '127.0.0.1', '');
 INSERT INTO `log` VALUES ('74f4c2157ae4419a98d466a92daf1f03', 'admin', '2017-05-10 16:31:57', '127.0.0.1', '');
 INSERT INTO `log` VALUES ('79050be5a1704dcbb54125dfef3bcdb7', 'admin', '2017-03-02 14:08:10', '127.0.0.1', '');
 INSERT INTO `log` VALUES ('7bf258e0203b477a8f5b887bc4ae06d3', 'admin', '2017-05-02 17:31:54', '127.0.0.1', '');
+INSERT INTO `log` VALUES ('7d7a76f3ea1a419cbef0b3d8ad7a6d6d', 'admin', '2017-05-11 11:11:14', '127.0.0.1', '');
 INSERT INTO `log` VALUES ('7e748e08ee3f419bbb858949110c39ee', 'admin', '2017-03-28 10:50:00', '127.0.0.1', '');
+INSERT INTO `log` VALUES ('7fc3c53f455e4d1fb79243944febea21', 'flyshy', '2017-05-11 14:04:28', '127.0.0.1', '');
 INSERT INTO `log` VALUES ('7fdb1d9ae8af4fdba39d4ae4f12e1890', 'admin', '2017-05-08 11:39:31', '127.0.0.1', '');
+INSERT INTO `log` VALUES ('8236e0c445d541bc999a3331b613fce3', 'admin', '2017-05-11 11:28:12', '127.0.0.1', '');
 INSERT INTO `log` VALUES ('84224102927f47f4ad38a702543612da', 'admin', '2017-03-30 13:31:00', '127.0.0.1', '');
 INSERT INTO `log` VALUES ('84d6f36763324c0cb17cbba37485fb6f', 'admin', '2017-05-04 14:29:08', '127.0.0.1', '');
 INSERT INTO `log` VALUES ('84f3485a06ce43ea85b86a3b12bfee36', 'admin', '2017-01-06 14:12:27', '127.0.0.1', '');
@@ -133,12 +141,14 @@ INSERT INTO `log` VALUES ('8df9d5a62ebc439aa7f3c04e69b07326', 'admin', '2017-05-
 INSERT INTO `log` VALUES ('98e9769eaebc46ab8968d7ecabc7f884', 'admin', '2017-05-08 16:51:45', '127.0.0.1', '');
 INSERT INTO `log` VALUES ('9cd0265d636c44aea5dc2ef462826553', 'admin', '2017-01-13 11:26:45', '127.0.0.1', '');
 INSERT INTO `log` VALUES ('9dc4fd4a0bda4e2aa68c2d4768ea723b', 'admin', '2017-05-08 11:29:40', '127.0.0.1', '');
+INSERT INTO `log` VALUES ('9dcf631dcd6f4065ab3dd264f8452dc8', 'admin', '2017-05-10 17:39:45', '127.0.0.1', '');
 INSERT INTO `log` VALUES ('9f760ed834744a9793c87575cdb749b5', 'flyshy', '2017-05-10 17:02:59', '127.0.0.1', '');
 INSERT INTO `log` VALUES ('a09269ea2819422cafaeb1dff052b4b0', 'admin', '2017-03-09 15:40:47', '127.0.0.1', '');
 INSERT INTO `log` VALUES ('a3d113bc6d8449a98b9297b9be2dcb94', 'admin', '2017-05-10 16:37:20', '127.0.0.1', '');
 INSERT INTO `log` VALUES ('a8be96493a1c4d2192c6addee2e34d67', 'admin', '2017-03-22 14:12:32', '127.0.0.1', '');
 INSERT INTO `log` VALUES ('aa4eae8491f24e74b288169ec3f7a041', 'admin', '2017-03-09 15:43:33', '127.0.0.1', '');
 INSERT INTO `log` VALUES ('aa9ef3b1ee3d45b4ae35ad9c2878f62a', 'admin', '2017-03-27 11:32:30', '127.0.0.1', '');
+INSERT INTO `log` VALUES ('aae3edd3bf3a43aba61be99633377043', 'admin', '2017-05-11 13:53:14', '127.0.0.1', '');
 INSERT INTO `log` VALUES ('b4399fc7cd1f4f0da2c7976e8b92acb5', 'admin', '2017-05-05 15:26:29', '127.0.0.1', '');
 INSERT INTO `log` VALUES ('b8f044f62d844a5e9ba70604c88cfdc2', 'admin', '2017-03-09 15:36:33', '127.0.0.1', '');
 INSERT INTO `log` VALUES ('b928cb7db9a345dc9246cc51e342f7cc', 'admin', '2017-03-27 12:52:44', '127.0.0.1', '');
@@ -152,6 +162,7 @@ INSERT INTO `log` VALUES ('c880c55225ac468f9a524c807eff9c85', 'admin', '2017-03-
 INSERT INTO `log` VALUES ('c9d4581a85194f51ac70a4a260f52649', 'admin', '2017-01-06 16:45:41', '127.0.0.1', '');
 INSERT INTO `log` VALUES ('cb746a7b4c614dcab2aa436383923541', 'flyshy', '2017-05-09 16:05:43', '127.0.0.1', '');
 INSERT INTO `log` VALUES ('cbd0f1b689434170abf3a029cc0adfa2', 'admin', '2017-03-30 14:10:39', '127.0.0.1', '');
+INSERT INTO `log` VALUES ('cccc2e3b2e1b4b92b57bcd2b9a0895fc', 'admin', '2017-05-11 14:17:49', '127.0.0.1', '');
 INSERT INTO `log` VALUES ('cd8e06c8ab774613930741d1758bd80a', 'admin', '2017-05-05 12:57:52', '127.0.0.1', '');
 INSERT INTO `log` VALUES ('cf1b0feabf5f4ec9b9fdf5a744f399e2', 'admin', '2017-05-09 16:20:23', '127.0.0.1', '');
 INSERT INTO `log` VALUES ('d35d4eb26d0645cd9682d78feb23ec9f', 'admin', '2017-03-30 13:20:08', '127.0.0.1', '');
@@ -169,6 +180,7 @@ INSERT INTO `log` VALUES ('ef6f15960b3b4005888e32fae06c7196', 'admin', '2017-01-
 INSERT INTO `log` VALUES ('f0f96e8dd3f34f0e91278f241a4cb41e', 'admin', '2017-05-08 16:48:36', '127.0.0.1', '');
 INSERT INTO `log` VALUES ('f235144fdd6e479a8c9981eadcbd38c5', 'admin', '2017-03-09 17:10:21', '127.0.0.1', '');
 INSERT INTO `log` VALUES ('f2c68bad14484810bdea767127691d2d', 'admin', '2017-03-30 11:30:56', '127.0.0.1', '');
+INSERT INTO `log` VALUES ('f5c035b9b4dc440cbf6a80c97a67cdde', 'flyshy', '2017-05-11 13:46:49', '127.0.0.1', '');
 INSERT INTO `log` VALUES ('f64ce62722dd46d59194df0bf01d30d5', 'admin', '2017-01-13 10:09:36', '127.0.0.1', '');
 INSERT INTO `log` VALUES ('f832a07adfa74612947a592177ff2dd9', 'admin', '2017-03-22 11:30:15', '127.0.0.1', '');
 INSERT INTO `log` VALUES ('f8387964c5904d86a2d4effbefabbe97', 'admin', '2017-03-30 10:01:40', '127.0.0.1', '');
@@ -254,7 +266,7 @@ CREATE TABLE `role` (
 -- ----------------------------
 -- Records of role
 -- ----------------------------
-INSERT INTO `role` VALUES ('36f1dd1296674fc08484c5abf6a5806b', '超级管理员', '超级管理员', '1', '2016-12-07 08:53:57', '2016-12-07 11:49:16');
+INSERT INTO `role` VALUES ('36f1dd1296674fc08484c5abf6a5806b', '系统管理员', '系统管理员', '1', '2016-12-07 08:53:57', '2017-05-11 13:59:03');
 INSERT INTO `role` VALUES ('cbe8356d64a8433cb5dad5c7fccf8dce', '普通管理员', '普通管理员', '1', '2016-12-07 13:21:21', '2017-05-05 12:58:38');
 
 -- ----------------------------
@@ -274,22 +286,6 @@ CREATE TABLE `role_menu` (
 -- Records of role_menu
 -- ----------------------------
 INSERT INTO `role_menu` VALUES ('cbe8356d64a8433cb5dad5c7fccf8dce', '00dc5c51e4824f49a30013385f680b0c');
-INSERT INTO `role_menu` VALUES ('36f1dd1296674fc08484c5abf6a5806b', '1cc3d9ad04e4424db1bb086d1678925e');
-INSERT INTO `role_menu` VALUES ('36f1dd1296674fc08484c5abf6a5806b', '2191c9efc2fa431bb427b81ad938e8aa');
-INSERT INTO `role_menu` VALUES ('36f1dd1296674fc08484c5abf6a5806b', '362923d31e064f84adb8c23ba91e54d8');
-INSERT INTO `role_menu` VALUES ('36f1dd1296674fc08484c5abf6a5806b', '3ac96215e82f40b5bfe442e6828641df');
-INSERT INTO `role_menu` VALUES ('36f1dd1296674fc08484c5abf6a5806b', '6580896645d046a0acf3c1194d7bbf8e');
-INSERT INTO `role_menu` VALUES ('36f1dd1296674fc08484c5abf6a5806b', '6cda978dc9404ba2bf5854b74735b0bc');
-INSERT INTO `role_menu` VALUES ('36f1dd1296674fc08484c5abf6a5806b', '736bdf0b9aec4c59928a530e34bd9aad');
-INSERT INTO `role_menu` VALUES ('36f1dd1296674fc08484c5abf6a5806b', '85dad2bd9023451fab632dcfc4357d3b');
-INSERT INTO `role_menu` VALUES ('36f1dd1296674fc08484c5abf6a5806b', '8a653e3fb15642d9be6aad13b02009fb');
-INSERT INTO `role_menu` VALUES ('36f1dd1296674fc08484c5abf6a5806b', '984909260a06410d9be37c300e3df09d');
 INSERT INTO `role_menu` VALUES ('cbe8356d64a8433cb5dad5c7fccf8dce', '984909260a06410d9be37c300e3df09d');
-INSERT INTO `role_menu` VALUES ('36f1dd1296674fc08484c5abf6a5806b', '9f41af1454d046b596023a2822c5078c');
-INSERT INTO `role_menu` VALUES ('36f1dd1296674fc08484c5abf6a5806b', 'aab7966c97db4643a36cb5afa24be38b');
-INSERT INTO `role_menu` VALUES ('36f1dd1296674fc08484c5abf6a5806b', 'c5cca135ee534bfeb482fb04b9311982');
-INSERT INTO `role_menu` VALUES ('36f1dd1296674fc08484c5abf6a5806b', 'e0dde3b9227c471eb3bd2ba0a7fab131');
-INSERT INTO `role_menu` VALUES ('36f1dd1296674fc08484c5abf6a5806b', 'e5f52fe2115e46229c60803e478d2e9a');
 INSERT INTO `role_menu` VALUES ('cbe8356d64a8433cb5dad5c7fccf8dce', 'e5f52fe2115e46229c60803e478d2e9a');
 INSERT INTO `role_menu` VALUES ('cbe8356d64a8433cb5dad5c7fccf8dce', 'e85b2fb3e6ee4d0a9711c577bc842821');
-INSERT INTO `role_menu` VALUES ('36f1dd1296674fc08484c5abf6a5806b', 'f4237d06c0c94906bdc04f5ed19cbaeb');
