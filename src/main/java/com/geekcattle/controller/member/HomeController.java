@@ -5,6 +5,7 @@
 package com.geekcattle.controller.member;
 
 import com.geekcattle.model.member.Member;
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.session.Session;
 import org.springframework.stereotype.Controller;
@@ -35,8 +36,8 @@ public class HomeController {
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public String login(){
         try {
-            Member member = (Member) SecurityUtils.getSubject().getPrincipals().getPrimaryPrincipal();
-            if(!"null".equals(member)){
+            Boolean isAuth = SecurityUtils.getSubject().isAuthenticated();
+            if(isAuth){
                 return "redirect:/member/index";
             }
         }catch (Exception e){

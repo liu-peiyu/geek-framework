@@ -175,7 +175,7 @@ public class RoleController {
     @RequestMapping(value = "/grant", method = {RequestMethod.GET})
     public String grantForm(String roleId, Model model) {
         model.addAttribute("roleId", roleId);
-        return "/console/role/grant";
+        return "console/role/grant";
     }
 
     @RequestMapping(value = "/menulist", method = {RequestMethod.GET})

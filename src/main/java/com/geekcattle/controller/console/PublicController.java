@@ -36,6 +36,14 @@ public class PublicController {
 
     @RequestMapping(value="/login", method=RequestMethod.GET)
     public String loginForm(){
+        try {
+            Boolean isAuth = SecurityUtils.getSubject().isAuthenticated();
+            if(isAuth){
+                return "redirect:/console/index";
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
         return "console/login";
     }
 
