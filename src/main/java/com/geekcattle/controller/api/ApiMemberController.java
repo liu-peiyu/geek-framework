@@ -1,8 +1,4 @@
-/*
- * Copyright (c) 2017 <l_iupeiyu@qq.com> All rights reserved.
- */
-
-package com.geekcattle.controller.member;
+package com.geekcattle.controller.api;
 
 import com.geekcattle.conf.LoginEnum;
 import com.geekcattle.conf.shiro.CustomerAuthenticationToken;
@@ -16,7 +12,6 @@ import com.geekcattle.util.UuidUtil;
 import com.geekcattle.util.jwt.AccessToken;
 import com.geekcattle.util.jwt.JwtConfig;
 import com.geekcattle.util.jwt.JwtUtil;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.crypto.SecureRandomNumberGenerator;
@@ -30,20 +25,18 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import tk.mybatis.mapper.entity.Example;
 
 import javax.validation.Valid;
+import java.nio.channels.FileChannel;
+import java.util.HashMap;
+import java.util.Map;
 
-/**
- * author geekcattle
- * date 2017/3/9 0009 下午 14:28
- */
 @RestController
-@RequestMapping("/member")
-public class MemberController {
+@RequestMapping("/api/member")
+public class ApiMemberController {
 
-    private static final Logger logger = LoggerFactory.getLogger(MemberController.class);
+    private static final Logger logger = LoggerFactory.getLogger(com.geekcattle.controller.member.MemberController.class);
 
     @Autowired
     private MemberService memberService;
@@ -54,18 +47,28 @@ public class MemberController {
     @Autowired
     private JwtUtil jwtUtil;
 
-    /**
-     * 处理注册操作
-     *
-     * @param validMember
-     * @param bindingResult
-     * @param redirectAttributes
-     * @return string
-     */
     @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public ModelMap doLogin(@Valid ValidMember validMember, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
+    public ModelMap doLogin(@Valid ValidMember validMember, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return ReturnUtil.Error("用户名或密码为空", null, null);
+        }
+        Example example = new Example(Member.class);
+        example.createCriteria()
+                .andEqualTo("account", validMember.getAccount());
+        Integer userCount = memberService.getCount(example);
+        if (userCount == 0) {
+            Member member = new Member();
+            String Id = UuidUtil.getUUID();
+            member.setUid(Id);
+            member.setAccount(validMember.getAccount());
+            String salt = new SecureRandomNumberGenerator().nextBytes().toHex();
+            member.setSalt(salt);
+            String password = PasswordUtil.createCustomPwd(validMember.getPassword(), member.getSalt());
+            member.setPassword(password);
+            member.setState(1);
+            member.setCreatedAt(DateUtil.getCurrentTime());
+            member.setUpdatedAt(DateUtil.getCurrentTime());
+            memberService.insert(member);
         }
         String username = validMember.getAccount();
         CustomerAuthenticationToken token = new CustomerAuthenticationToken(validMember.getAccount(), validMember.getPassword(), false);
@@ -78,26 +81,20 @@ public class MemberController {
             logger.info("对用户[" + username + "]进行登录验证..验证通过");
         } catch (UnknownAccountException uae) {
             logger.info("对用户[" + username + "]进行登录验证..验证未通过,未知账户");
-            redirectAttributes.addFlashAttribute("message", "未知账户");
         } catch (IncorrectCredentialsException ice) {
             logger.info("对用户[" + username + "]进行登录验证..验证未通过,错误的凭证");
-            redirectAttributes.addFlashAttribute("message", "密码不正确");
         } catch (LockedAccountException lae) {
             logger.info("对用户[" + username + "]进行登录验证..验证未通过,账户已锁定");
-            redirectAttributes.addFlashAttribute("message", "账户已锁定");
         } catch (ExcessiveAttemptsException eae) {
             logger.info("对用户[" + username + "]进行登录验证..验证未通过,错误次数过多");
-            redirectAttributes.addFlashAttribute("message", "用户名或密码错误次数过多");
         } catch (AuthenticationException ae) {
             logger.info("对用户[" + username + "]进行登录验证..验证未通过,堆栈轨迹如下");
             ae.printStackTrace();
-            redirectAttributes.addFlashAttribute("message", "用户名或密码不正确");
         }
         //验证是否登录成功
         if (currentUser.isAuthenticated()) {
             Session session = SecurityUtils.getSubject().getSession();
             session.setAttribute("loginType", LoginEnum.CUSTOMER.toString());
-
 
             Member member = (Member) SecurityUtils.getSubject().getPrincipals().getPrimaryPrincipal();
             String accessToken = jwtUtil.createJWT(member, jwtConfig.getSecret());
@@ -112,64 +109,25 @@ public class MemberController {
             return ReturnUtil.Success("登录成功", accessTokenEntity);
         } else {
             token.clear();
-            return ReturnUtil.Error("登录失败", null, null);
+            return ReturnUtil.Error("登录失败");
         }
     }
 
-    /**
-     * 处理登录操作
-     *
-     * @param member
-     * @param bindingResult
-     * @return
-     */
-    @RequestMapping(value = "/reg", method = RequestMethod.POST)
-    public ModelMap doReg(@Valid Member member, BindingResult bindingResult) {
-        if (bindingResult.hasErrors()) {
-            return ReturnUtil.Error("用户名或密码为空", null, null);
-        }
-        try {
-            Example example = new Example(Member.class);
-            example.createCriteria().andCondition("account = ", member.getAccount());
-            Integer userCount = memberService.getCount(example);
-            if (userCount > 0) {
-                return ReturnUtil.Error("用户名已存在", null, null);
-            }
-            if (StringUtils.isEmpty(member.getPassword())) {
-                return ReturnUtil.Error("密码不能为空", null, null);
-            }
-            String Id = UuidUtil.getUUID();
-            member.setUid(Id);
-            String salt = new SecureRandomNumberGenerator().nextBytes().toHex();
-            member.setSalt(salt);
-            String password = PasswordUtil.createCustomPwd(member.getPassword(), member.getSalt());
-            member.setPassword(password);
-            member.setState(1);
-            member.setCreatedAt(DateUtil.getCurrentTime());
-            member.setUpdatedAt(DateUtil.getCurrentTime());
-            memberService.insert(member);
-            return ReturnUtil.Success("操作成功", null, null);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ReturnUtil.Error("操作失败", null, null);
-        }
+    @RequestMapping(value = "/index", method = RequestMethod.GET)
+    public ModelMap index(){
+       Boolean isAuth = SecurityUtils.getSubject().isAuthenticated();
+       if(isAuth){
+           Member member = (Member) SecurityUtils.getSubject().getPrincipals().getPrimaryPrincipal();
+           return ReturnUtil.Success("登录成功", member);
+       }else {
+           return ReturnUtil.Error("未登录2");
+       }
     }
 
-    /**
-     * 退出
-     * @return
-     */
-    @RequestMapping(value = "/logout", method = RequestMethod.GET)
-    public String logout() {
-        try {
-            System.out.println("MemberController.logout()");
-            SecurityUtils.getSubject().logout();
-            System.out.println("您已安全退出");
-        }catch (Exception e){
-            System.out.println(e);
-        }
-        return "redirect:/member/login";
+    @RequestMapping(value = "/test", method = RequestMethod.GET)
+    public ModelMap test(){
 
+        return ReturnUtil.Success("Success");
     }
 
 }

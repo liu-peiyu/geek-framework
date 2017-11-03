@@ -53,7 +53,7 @@ public class PublicController {
             return "redirect:/console/login";
         }
         String username = validAdmin.getUsername();
-        CustomerAuthenticationToken token = new CustomerAuthenticationToken(validAdmin.getUsername(), validAdmin.getPassword(), false , "", "");
+        CustomerAuthenticationToken token = new CustomerAuthenticationToken(validAdmin.getUsername(), validAdmin.getPassword(), false);
         token.setLoginType(LoginEnum.ADMIN.toString());
         //获取当前的Subject
         Subject currentUser = SecurityUtils.getSubject();

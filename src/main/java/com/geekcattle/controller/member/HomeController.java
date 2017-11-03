@@ -52,10 +52,9 @@ public class HomeController {
      */
     @RequestMapping(value = "/reg", method = RequestMethod.GET)
     public String reg(){
-
         try {
-            Member member = (Member) SecurityUtils.getSubject().getPrincipals().getPrimaryPrincipal();
-            if(!"null".equals(member)){
+            Boolean isAuth = SecurityUtils.getSubject().isAuthenticated();
+            if(isAuth){
                 return "redirect:/member/index";
             }
         }catch (Exception e){

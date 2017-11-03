@@ -17,10 +17,13 @@ public class CustomerAuthenticationToken extends UsernamePasswordToken {
      * 用来区分前后台登录的标记
      */
     private String loginType;
+    /**
+     * 用来区分登录用户的渠道
+     */
+    private String loginForm;
 
-    public CustomerAuthenticationToken(String username, String password, boolean rememberMe, String host, String captcha) {
-        super(username, password, rememberMe, host);
-        this.captcha = captcha;
+    public CustomerAuthenticationToken(String username, String password, boolean rememberMe) {
+        super(username, password, rememberMe);
     }
 
     public String getCaptcha() {
@@ -37,5 +40,13 @@ public class CustomerAuthenticationToken extends UsernamePasswordToken {
 
     public void setLoginType(String loginType) {
         this.loginType = loginType;
+    }
+
+    public String getLoginForm() {
+        return loginForm;
+    }
+
+    public void setLoginForm(String loginForm) {
+        this.loginForm = loginForm;
     }
 }
