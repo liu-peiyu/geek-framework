@@ -5,9 +5,9 @@
 package com.geekcattle.controller.member;
 
 import com.geekcattle.model.member.Member;
-import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.session.Session;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @Controller
 @RequestMapping("/member")
 public class HomeController {
+    protected Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @RequestMapping("/index")
     public String index(Model model){

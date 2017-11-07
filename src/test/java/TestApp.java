@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
+import redis.clients.jedis.Jedis;
+import redis.clients.jedis.JedisPool;
 
 /**
  * author geekcattle
@@ -20,11 +22,22 @@ public class TestApp extends TestCase {
     @Autowired
     private LogService logService;
 
+    @Autowired
+    JedisPool jedisPool;
+
     @Test
     public void insertLog() {
         for(int i=1; i<=10000; i++){
-            logService.insertLoginLog("flyshy", "127.0.0.1" ,"/junit/test"+i);
+            System.out.println(i);
+            //logService.insertLoginLog("flyshy", "127.0.0.1" ,"/junit/test"+i);
         }
+    }
+
+    @Test
+    public void testRedis(){
+        Jedis jedis = jedisPool.getResource();
+        jedis.setex("liu", 1000, "peiyu");
+
     }
 
 

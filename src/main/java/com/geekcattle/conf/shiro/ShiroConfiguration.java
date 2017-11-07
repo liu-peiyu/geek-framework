@@ -4,6 +4,8 @@
 
 package com.geekcattle.conf.shiro;
 
+//import com.geekcattle.conf.redis.RedisCacheManager;
+//import com.geekcattle.conf.redis.RedisSessionDAO;
 import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
 import org.apache.shiro.authc.pam.AuthenticationStrategy;
 import org.apache.shiro.authc.pam.FirstSuccessfulStrategy;
@@ -24,6 +26,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.DependsOn;
 
+import javax.annotation.Resource;
 import javax.servlet.Filter;
 import java.util.*;
 
@@ -36,6 +39,10 @@ import java.util.*;
  */
 @Configuration
 public class ShiroConfiguration {
+
+    //@Resource
+    //private RedisSessionDAO sessionDAO;
+
     /**
      * 前台身份认证realm;
      * @return
@@ -75,20 +82,10 @@ public class ShiroConfiguration {
         return cacheManager;
     }
 
-
-    /**
-     * Shiro默认提供了三种 AuthenticationStrategy 实现：
-     * AtLeastOneSuccessfulStrategy ：其中一个通过则成功。
-     * FirstSuccessfulStrategy ：其中一个通过则成功，但只返回第一个通过的Realm提供的验证信息。
-     * AllSuccessfulStrategy ：凡是配置到应用中的Realm都必须全部通过。
-     * authenticationStrategy
-     * @return
-     */
-    @Bean(name="authenticationStrategy")
-    public AuthenticationStrategy authenticationStrategy() {
-        System.out.println("ShiroConfiguration.authenticationStrategy()");
-        return new FirstSuccessfulStrategy();
-    }
+    /*@Bean(name = "redisCacheManager")
+    public RedisCacheManager redisCacheManager() {
+        return new RedisCacheManager();
+    }*/
 
     /**
      * @see DefaultWebSessionManager
@@ -98,7 +95,7 @@ public class ShiroConfiguration {
     public DefaultWebSessionManager defaultWebSessionManager() {
         System.out.println("ShiroConfiguration.defaultWebSessionManager()");
         DefaultWebSessionManager sessionManager = new DefaultWebSessionManager();
-        //sessionManager.setSessionDAO(new CustomSessionDAO());
+        //sessionManager.setSessionDAO(sessionDAO);
         sessionManager.setCacheManager(ehCacheManager());
         //单位为毫秒（1秒=1000毫秒） 3600000毫秒为1个小时
         sessionManager.setSessionValidationInterval(3600000*12);
@@ -137,9 +134,6 @@ public class ShiroConfiguration {
         ModularRealmAuthorizer customModularRealmAuthorizer = new ModularRealmAuthorizer();
         customModularRealmAuthorizer.setRealms(shiroAuthorizerRealms);
         securityManager.setAuthorizer(customModularRealmAuthorizer);
-        //设置realm.
-        //securityManager.setRealm(adminShiroRealm());
-        //securityManager.setRealm(customShiroRealm());
         //注入缓存管理器;
         securityManager.setCacheManager(ehCacheManager());//这个如果执行多次，也是同样的一个对象;
         securityManager.setSessionManager(defaultWebSessionManager());
@@ -218,6 +212,20 @@ public class ShiroConfiguration {
     }
 
     /**
+     * Shiro默认提供了三种 AuthenticationStrategy 实现：
+     * AtLeastOneSuccessfulStrategy ：其中一个通过则成功。
+     * FirstSuccessfulStrategy ：其中一个通过则成功，但只返回第一个通过的Realm提供的验证信息。
+     * AllSuccessfulStrategy ：凡是配置到应用中的Realm都必须全部通过。
+     * authenticationStrategy
+     * @return
+     */
+    @Bean(name="authenticationStrategy")
+    public AuthenticationStrategy authenticationStrategy() {
+        System.out.println("ShiroConfiguration.authenticationStrategy()");
+        return new FirstSuccessfulStrategy();
+    }
+
+    /**
      * 凭证匹配器
      * （由于我们的密码校验交给Shiro的SimpleAuthenticationInfo进行处理了
      *  所以我们需要修改下doGetAuthenticationInfo中的代码;
@@ -238,7 +246,7 @@ public class ShiroConfiguration {
         System.out.println("ShiroConfiguration.adminHashedCredentialsMatcher()");
         HashedCredentialsMatcher hashedCredentialsMatcher = new HashedCredentialsMatcher();
         hashedCredentialsMatcher.setHashAlgorithmName("md5");//散列算法:这里使用MD5算法;
-        hashedCredentialsMatcher.setHashIterations(1);//散列的次数，当于 m比如散列两次，相d5(md5(""));
+        hashedCredentialsMatcher.setHashIterations(1);//散列的次数，当于 m比如散列两次，相d5("");
         return hashedCredentialsMatcher;
     }
 

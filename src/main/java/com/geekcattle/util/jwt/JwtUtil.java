@@ -7,7 +7,6 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 
 
 import javax.crypto.spec.SecretKeySpec;
@@ -44,12 +43,13 @@ public class JwtUtil {
         Key signingKey = new SecretKeySpec(apiKeySecretBytes, signatureAlgorithm.getJcaName());
         //添加构成JWT的参数
         JwtBuilder builder = Jwts.builder()
-                .claim("userName", member.getAccount())
-                .claim("userId", member.getUid())
+                .setId(member.getUid())
+                .setSubject(member.getAccount())
                 //.setIssuer(issuer)
                 //.setAudience(audience)
                 .signWith(signatureAlgorithm, signingKey)
-                .setExpiration(new Date(System.currentTimeMillis() + jwtConfig.getExpiration())).setNotBefore(new Date(System.currentTimeMillis()));
+                .setExpiration(new Date(System.currentTimeMillis() + jwtConfig.getExpiration()))
+                .setNotBefore(new Date(System.currentTimeMillis()));
         //生成JWT
         return builder.compact();
     }

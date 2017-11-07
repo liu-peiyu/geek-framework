@@ -34,6 +34,10 @@ public class MemberService {
         return memberMapper.selectCountByExample(example);
     }
 
+    public Member getMember(Member member){
+        return memberMapper.selectOne(member);
+    }
+
     public Member findByUsername(String username) {
         return memberMapper.selectByUsername(username);
     }

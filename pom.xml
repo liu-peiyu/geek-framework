@@ -61,6 +61,21 @@
             <artifactId>spring-boot-starter-test</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-redis</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.session</groupId>
+            <artifactId>spring-session-data-redis</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context-support</artifactId>
+        </dependency>
+
         <!--在用maven 编译，打包过程中回出现javax.servlet找不到的情况，所以需要在这里配置-->
         <!--<dependency>
             <groupId>javax.servlet</groupId>
@@ -94,11 +109,6 @@
             <version>1.10</version>
         </dependency>
 
-        <!--<dependency>
-            <groupId>org.apache.shiro</groupId>
-            <artifactId>shiro-cas</artifactId>
-            <version>1.2.4</version>
-        </dependency>-->
         <!--
            包含支持UI模版（Velocity，FreeMarker，JasperReports），
            邮件服务，
@@ -106,10 +116,7 @@
            缓存Cache（EHCache），
            任务计划Scheduling（uartz）。
         -->
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-context-support</artifactId>
-        </dependency>
+
 
         <dependency>
             <groupId>mysql</groupId>
@@ -148,8 +155,6 @@
             <artifactId>fastjson</artifactId>
             <version>1.2.21</version>
         </dependency>
-
-
 
         <dependency>
             <groupId>io.jsonwebtoken</groupId>
@@ -202,11 +207,6 @@
             <version>2.7</version>
         </dependency>
         <!--redis依赖-->
-        <dependency>
-            <groupId>redis.clients</groupId>
-            <artifactId>jedis</artifactId>
-            <version>2.8.2</version>
-        </dependency>
 
         <!-- https://mvnrepository.com/artifact/junit/junit -->
         <dependency>

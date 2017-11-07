@@ -2,23 +2,29 @@
  * Copyright (c) 2017 <l_iupeiyu@qq.com> All rights reserved.
  */
 
-package com.geekcattle.conf.shiro;
+package com.geekcattle.conf.redis;
 
 import org.apache.shiro.session.Session;
 import org.apache.shiro.session.mgt.eis.EnterpriseCacheSessionDAO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
 import java.io.Serializable;
 import java.util.concurrent.TimeUnit;
 
 /**
+ * redis实现共享session
  * author geekcattle
- * date 2017/3/22 0022 下午 15:28
+ * date 2017/3/22 0022 下午 15:32
  */
-public class CustomSessionDAO extends EnterpriseCacheSessionDAO {
+/**
+ *
+ */
+//@Component
+public class RedisSessionDAO extends EnterpriseCacheSessionDAO {
 
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 

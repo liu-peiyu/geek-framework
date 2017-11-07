@@ -70,8 +70,6 @@ public class CustomShiroRealm extends AuthorizingRealm {
         return authenticationInfo;
     }
 
-
-
     /**
      * 此方法调用  hasRole,hasPermission的时候才会进行回调.
      *
