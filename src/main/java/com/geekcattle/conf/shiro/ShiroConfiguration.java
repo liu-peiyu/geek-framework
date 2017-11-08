@@ -4,8 +4,8 @@
 
 package com.geekcattle.conf.shiro;
 
-//import com.geekcattle.conf.redis.RedisCacheManager;
-//import com.geekcattle.conf.redis.RedisSessionDAO;
+import com.geekcattle.conf.redis.RedisCacheManager;
+import com.geekcattle.conf.redis.RedisSessionDAO;
 import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
 import org.apache.shiro.authc.pam.AuthenticationStrategy;
 import org.apache.shiro.authc.pam.FirstSuccessfulStrategy;
@@ -26,7 +26,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.DependsOn;
 
-import javax.annotation.Resource;
 import javax.servlet.Filter;
 import java.util.*;
 
@@ -39,9 +38,6 @@ import java.util.*;
  */
 @Configuration
 public class ShiroConfiguration {
-
-    //@Resource
-    //private RedisSessionDAO sessionDAO;
 
     /**
      * 前台身份认证realm;
@@ -82,10 +78,15 @@ public class ShiroConfiguration {
         return cacheManager;
     }
 
-    /*@Bean(name = "redisCacheManager")
+    @Bean(name = "redisCacheManager")
     public RedisCacheManager redisCacheManager() {
         return new RedisCacheManager();
-    }*/
+    }
+
+    @Bean(name = "redisSessionDAO")
+    public RedisSessionDAO sessionDAO(){
+        return new RedisSessionDAO();
+    }
 
     /**
      * @see DefaultWebSessionManager
@@ -95,7 +96,7 @@ public class ShiroConfiguration {
     public DefaultWebSessionManager defaultWebSessionManager() {
         System.out.println("ShiroConfiguration.defaultWebSessionManager()");
         DefaultWebSessionManager sessionManager = new DefaultWebSessionManager();
-        //sessionManager.setSessionDAO(sessionDAO);
+        sessionManager.setSessionDAO(sessionDAO());//如不想使用REDIS可注释此行
         sessionManager.setCacheManager(ehCacheManager());
         //单位为毫秒（1秒=1000毫秒） 3600000毫秒为1个小时
         sessionManager.setSessionValidationInterval(3600000*12);
@@ -135,7 +136,7 @@ public class ShiroConfiguration {
         customModularRealmAuthorizer.setRealms(shiroAuthorizerRealms);
         securityManager.setAuthorizer(customModularRealmAuthorizer);
         //注入缓存管理器;
-        securityManager.setCacheManager(ehCacheManager());//这个如果执行多次，也是同样的一个对象;
+        securityManager.setCacheManager(ehCacheManager());
         securityManager.setSessionManager(defaultWebSessionManager());
         return securityManager;
     }

@@ -1,4 +1,4 @@
-package com.geekcattle.util.jwt;
+package com.geekcattle.conf.jwt;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;

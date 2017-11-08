@@ -1,3 +1,14 @@
+##更新记录
+更新日期2017-11-07
+
+1、项目整合redis存储，shiro可使用redisSession可使用于集群访问
+
+2、项目增加restful模式token模式
+
+3、增加默认启动模式为开发模式
+
+4、优化已知BUG
+
 # SpringBootAdmin 微服务快速开发脚手架
 
 ## 平台简介
@@ -35,6 +46,7 @@ SpringBootAdmin主要定位于微应用的开发，已内置后台系统的基�
 * 数据库连接池：Alibaba Druid 1.0
 * 缓存框架：Ehcache 2.6、Redis
 * 日志管理：SLF4J 1.7、Log4j
+* TOKEN模式： jsonwebtoken 0.6
 * 工具类：Apache Commons、Jackson 2.8.5、Junit 4.12
 
 2、前端
@@ -74,7 +86,7 @@ PS：测试数据库会不定期恢复。
 1. 具备运行环境：JDK1.7+、Maven3.0+、MySql5+。
 2. 修改src\main\resources\application.properties、application-dev.properties、application-pro.properties文件中的数据库设置参数(application-dev.properties为开发环境的相应参数，application-pro.properties为部署环境的相应参数)。
 3. 根据修改参数创建对应MySql数据库用户和参数。
-4. 运行mvn package脚本，即可创建项目jar文件，同时也可以通过java -jar *.jar --spring.profiles.active=dev 即可本地预览
+4. 运行mvn package脚本，即可创建项目jar文件，同时也可以通过java -jar *.jar 即可本地预览
 5. 将src\main\resources\geekcattle.sql导入本地数据库即可
 6. 最高管理员账号，用户名：admin 密码：admin
 7. 由于项目只是基础功能实现，可能还有一些没有优化到的时候，后续会持续优化和改进
@@ -84,10 +96,6 @@ PS：测试数据库会不定期恢复。
 * E-mail：l_iupeiyu@qq.com
 * GitHub：<https://github.com/liu-peiyu/SpringBootAdmin>
 * 开源中国：<http://git.oschina.net/liupeiyu/springbootadmin>
-
-一个人的个人能力再强，也无法战胜一个团队，希望兄弟姐妹的支持，能够贡献出自己的部分代码，参与进来共同完善它(^_^)。
-
-怎么共享我的代码：[手把手教你如何加入到github的开源世界！](http://www.cnblogs.com/wenber/p/3630921.html)
 
 ## 版权声明
 
@@ -112,4 +120,4 @@ PS：测试数据库会不定期恢复。
 
 ## 个人技能
 
-JAVA、PHP、HTML、CSS、JQ、BootStrap、Vue、Mysql、Oracle、Redis、SVN、GIT、Apache、Nginx、Tomcat、Weblogic、Jboss、WindowServer、Ubuntu
+JAVA、PHP、HTML、CSS、JQ、BootStrap、Vue、Mysql、Redis、SVN、GIT、Apache、Nginx、Tomcat、WindowServer、Ubuntu

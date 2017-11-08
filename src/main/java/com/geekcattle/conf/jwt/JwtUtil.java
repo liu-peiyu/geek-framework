@@ -1,4 +1,4 @@
-package com.geekcattle.util.jwt;
+package com.geekcattle.conf.jwt;
 
 import com.geekcattle.model.member.Member;
 import io.jsonwebtoken.Claims;

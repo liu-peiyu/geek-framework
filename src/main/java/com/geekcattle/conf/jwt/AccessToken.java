@@ -1,4 +1,4 @@
-package com.geekcattle.util.jwt;
+package com.geekcattle.conf.jwt;
 
 public class AccessToken {
 

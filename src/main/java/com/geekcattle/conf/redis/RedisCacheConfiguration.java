@@ -6,26 +6,16 @@ package com.geekcattle.conf.redis;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import java.lang.reflect.Method;
 
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.CachingConfigurerSupport;
 import org.springframework.cache.annotation.EnableCaching;
-import org.springframework.cache.interceptor.KeyGenerator;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.cache.RedisCacheManager;
-import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
 import org.springframework.data.redis.core.*;
-import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
-
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.fasterxml.jackson.annotation.PropertyAccessor;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.data.redis.serializer.JdkSerializationRedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 import redis.clients.jedis.JedisPool;
@@ -37,7 +27,7 @@ import redis.clients.jedis.JedisPoolConfig;
  */
 @Configuration
 @EnableCaching
-public class RedisCacheConfiguration extends CachingConfigurerSupport {
+public class RedisCacheConfiguration  extends CachingConfigurerSupport{
     private Logger logger = LoggerFactory.getLogger(RedisCacheConfiguration.class);
 
     @Value("${spring.redis.host}")
@@ -61,31 +51,33 @@ public class RedisCacheConfiguration extends CachingConfigurerSupport {
     @Bean
     public JedisPool redisPoolFactory() {
         logger.info("JedisPool注入成功！！");
-        logger.info("redis地址：" + host + ":" + port);
-        JedisPoolConfig jedisPoolConfig = new JedisPoolConfig();
-        jedisPoolConfig.setMaxIdle(maxIdle);
-        jedisPoolConfig.setMaxWaitMillis(maxWaitMillis);
-        JedisPool jedisPool = new JedisPool(jedisPoolConfig, host, port, timeout, password);
+        JedisPool jedisPool = new JedisPool(getJedisPoolConfig(), host, port, timeout, password);
         return jedisPool;
     }
 
     @Bean
-    public JedisConnectionFactory jedisConnectionFactory(){
+    public JedisPoolConfig getJedisPoolConfig(){
         JedisPoolConfig jedisPoolConfig = new JedisPoolConfig();
         jedisPoolConfig.setMaxIdle(maxIdle);
         jedisPoolConfig.setMaxWaitMillis(maxWaitMillis);
+        return jedisPoolConfig;
+    }
+
+    @Bean
+    public JedisConnectionFactory jedisConnectionFactory(){
         JedisConnectionFactory jedisConnectionFactory = new JedisConnectionFactory();
         jedisConnectionFactory.setHostName(host);
         jedisConnectionFactory.setPort(port);
         jedisConnectionFactory.setPassword(password);
         jedisConnectionFactory.setTimeout(timeout);
-        jedisConnectionFactory.setPoolConfig(jedisPoolConfig);
+        jedisConnectionFactory.setPoolConfig(getJedisPoolConfig());
         jedisConnectionFactory.setUsePool(true);
         logger.info("JedisConnectionFactory注入成功！！");
         return jedisConnectionFactory;
     }
 
-    @SuppressWarnings("rawtypes")
+
+
     @Bean
     public CacheManager cacheManager(RedisTemplate redisTemplate) {
         logger.info("cacheManager注入成功！！");
@@ -95,8 +87,8 @@ public class RedisCacheConfiguration extends CachingConfigurerSupport {
         return redisCacheManager;
     }
 
-    @Bean(name = "redisTemplate")
-    public RedisTemplate<String, Object> redisTemplate() {
+    @Bean
+    public RedisTemplate<String, Object> getRedisTemplate() {
         logger.info("redisTemplatet注入成功！！");
         RedisTemplate<String, Object> redisTemplate = new RedisTemplate<>();
         redisTemplate.setKeySerializer(new StringRedisSerializer());

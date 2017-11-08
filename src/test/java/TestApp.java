@@ -5,6 +5,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import redis.clients.jedis.Jedis;
@@ -20,24 +21,17 @@ import redis.clients.jedis.JedisPool;
 public class TestApp extends TestCase {
 
     @Autowired
-    private LogService logService;
-
-    @Autowired
     JedisPool jedisPool;
 
-    @Test
-    public void insertLog() {
-        for(int i=1; i<=10000; i++){
-            System.out.println(i);
-            //logService.insertLoginLog("flyshy", "127.0.0.1" ,"/junit/test"+i);
-        }
-    }
+    @Autowired
+    RedisTemplate<String, String> redisTemplate;
 
     @Test
     public void testRedis(){
+        redisTemplate.opsForValue().set("geekcattle","df1111111111111");
         Jedis jedis = jedisPool.getResource();
-        jedis.setex("liu", 1000, "peiyu");
-
+        jedis.setex("geek", 1000, "cattle");
+        System.out.println(redisTemplate.opsForValue().get("geekcattle"));
     }
 
 

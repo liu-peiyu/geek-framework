@@ -1,15 +1,10 @@
 package com.geekcattle.filter;
 
-import com.geekcattle.conf.shiro.CustomerAuthenticationToken;
 import com.geekcattle.util.JsonUtil;
 import com.geekcattle.util.ReturnUtil;
-import com.geekcattle.util.jwt.JwtConfig;
-import com.geekcattle.util.jwt.JwtUtil;
+import com.geekcattle.conf.jwt.JwtConfig;
+import com.geekcattle.conf.jwt.JwtUtil;
 import io.jsonwebtoken.Claims;
-import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.session.Session;
-import org.apache.shiro.subject.Subject;
-import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.servlet.ServletComponentScan;
 import org.springframework.stereotype.Component;

@@ -13,9 +13,6 @@ import com.geekcattle.util.DateUtil;
 import com.geekcattle.util.PasswordUtil;
 import com.geekcattle.util.ReturnUtil;
 import com.geekcattle.util.UuidUtil;
-import com.geekcattle.util.jwt.AccessToken;
-import com.geekcattle.util.jwt.JwtConfig;
-import com.geekcattle.util.jwt.JwtUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.*;
@@ -47,12 +44,6 @@ public class MemberController {
 
     @Autowired
     private MemberService memberService;
-
-    @Autowired
-    private JwtConfig jwtConfig;
-
-    @Autowired
-    private JwtUtil jwtUtil;
 
     /**
      * 处理注册操作
@@ -95,7 +86,7 @@ public class MemberController {
         }
         //验证是否登录成功
         if (currentUser.isAuthenticated()) {
-            Session session = SecurityUtils.getSubject().getSession();
+            Session session = currentUser.getSession();
             session.setAttribute("loginType", LoginEnum.CUSTOMER.toString());
             logger.info("前台用户[" + username + "]登录认证通过");
             return ReturnUtil.Success("登录成功");

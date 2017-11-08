@@ -12,6 +12,8 @@ import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.util.ByteSource;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
@@ -20,6 +22,8 @@ import org.springframework.beans.factory.annotation.Autowired;
  * date 2016/11/22 0022 下午 15:27
  */
 public class CustomShiroRealm extends AuthorizingRealm {
+
+    private Logger logger = LoggerFactory.getLogger(CustomShiroRealm.class);
 
     @Autowired
     private MemberService memberService;
@@ -35,7 +39,7 @@ public class CustomShiroRealm extends AuthorizingRealm {
      */
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
-        System.out.println("前台登录认证：CustomShiroRealm.doGetAuthenticationInfo()");
+        logger.info("前台登录认证：CustomShiroRealm.doGetAuthenticationInfo()");
         //获取用户的输入的账号.
         String username = (String)token.getPrincipal();
 
