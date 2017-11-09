@@ -3,7 +3,7 @@
 
 1、项目整合redis存储，shiro可使用redisSession可使用于集群访问
 
-2、项目增加restful模式token模式
+2、项目增加jwt模式
 
 3、增加默认启动模式为开发模式
 
