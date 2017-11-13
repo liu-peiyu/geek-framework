@@ -20,17 +20,7 @@ public class AdminFormAuthenticationFilter extends FormAuthenticationFilter {
 
     @Override
     protected boolean isAccessAllowed(ServletRequest request, ServletResponse response, Object mappedValue) {
-        Subject subject = getSubject(request, response);
-        if(subject.getPrincipal() != null){
-            Session session = subject.getSession();
-            if(session.getAttribute("loginType").equals(LoginEnum.ADMIN.toString())){
-                return super.isAccessAllowed(request, response, mappedValue);
-            }else{
-                return false;
-            }
-        }else{
-            return super.isAccessAllowed(request, response, mappedValue);
-        }
+        return super.isAccessAllowed(request, response, mappedValue);
     }
 
     @Override

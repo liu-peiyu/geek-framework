@@ -84,7 +84,7 @@ public class ShiroConfiguration {
     }
 
     @Bean(name = "redisSessionDAO")
-    public RedisSessionDAO sessionDAO(){
+    public RedisSessionDAO redisSessionDAO(){
         return new RedisSessionDAO();
     }
 
@@ -96,14 +96,16 @@ public class ShiroConfiguration {
     public DefaultWebSessionManager defaultWebSessionManager() {
         System.out.println("ShiroConfiguration.defaultWebSessionManager()");
         DefaultWebSessionManager sessionManager = new DefaultWebSessionManager();
-        sessionManager.setSessionDAO(sessionDAO());//如不想使用REDIS可注释此行
-        sessionManager.setCacheManager(ehCacheManager());
+        sessionManager.setSessionDAO(redisSessionDAO());//如不想使用REDIS可注释此行
         //单位为毫秒（1秒=1000毫秒） 3600000毫秒为1个小时
         sessionManager.setSessionValidationInterval(3600000*12);
         //3600000 milliseconds = 1 hour
         sessionManager.setGlobalSessionTimeout(3600000*12);
+        //是否删除无效的，默认也是开启
         sessionManager.setDeleteInvalidSessions(true);
+        //是否开启 检测，默认开启
         sessionManager.setSessionValidationSchedulerEnabled(true);
+        //创建会话Cookie
         Cookie cookie = new SimpleCookie(ShiroHttpSession.DEFAULT_SESSION_ID_NAME);
         cookie.setName("WEBID");
         cookie.setHttpOnly(true);

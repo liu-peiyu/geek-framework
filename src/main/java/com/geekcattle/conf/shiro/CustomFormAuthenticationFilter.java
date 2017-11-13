@@ -11,7 +11,6 @@ import org.apache.shiro.web.filter.authc.FormAuthenticationFilter;
 
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
-import javax.servlet.http.HttpServletRequest;
 
 /**
  * author geekcattle
@@ -21,17 +20,7 @@ public class CustomFormAuthenticationFilter extends FormAuthenticationFilter {
 
     @Override
     protected boolean isAccessAllowed(ServletRequest request, ServletResponse response, Object mappedValue) {
-        Subject subject = getSubject(request, response);
-        if(subject.getPrincipal() != null){
-            Session session = subject.getSession();
-            if(session.getAttribute("loginType").equals(LoginEnum.CUSTOMER.toString())){
-                return super.isAccessAllowed(request, response, mappedValue);
-            }else{
-                return false;
-            }
-        }else{
-            return super.isAccessAllowed(request, response, mappedValue);
-        }
+        return super.isAccessAllowed(request, response, mappedValue);
     }
 
     @Override
