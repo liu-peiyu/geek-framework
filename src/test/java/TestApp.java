@@ -1,8 +1,9 @@
 import com.geekcattle.Application;
-import com.geekcattle.service.console.LogService;
 import junit.framework.TestCase;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -20,6 +21,8 @@ import redis.clients.jedis.JedisPool;
 @WebAppConfiguration // 由于是Web项目，Junit需要模拟ServletContext，因此我们需要给我们的测试类加上@WebAppConfiguration。
 public class TestApp extends TestCase {
 
+    private static Logger logger = LoggerFactory.getLogger(TestApp.class);
+
     @Autowired
     JedisPool jedisPool;
 
@@ -32,6 +35,14 @@ public class TestApp extends TestCase {
         Jedis jedis = jedisPool.getResource();
         jedis.setex("geek", 1000, "cattle");
         System.out.println(redisTemplate.opsForValue().get("geekcattle"));
+    }
+
+    @Test
+    public static void main(String[] args) {
+        logger.debug("debug");
+        logger.info("info");
+        logger.warn("warn");
+        logger.error("error");
     }
 
 

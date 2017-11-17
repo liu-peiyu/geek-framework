@@ -4,7 +4,8 @@
 
 package com.geekcattle.service.common;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
@@ -15,7 +16,7 @@ import redis.clients.jedis.JedisPool;
  */
 public class RedisServiceImpl implements RedisService {
 
-    private static Logger logger = Logger.getLogger(RedisServiceImpl.class);
+    private static Logger logger = LoggerFactory.getLogger(RedisServiceImpl.class);
 
     @Autowired
     private JedisPool jedisPool;

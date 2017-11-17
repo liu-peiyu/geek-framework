@@ -8,6 +8,8 @@ import io.jsonwebtoken.Claims;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.servlet.ServletComponentScan;
 import org.springframework.stereotype.Component;
+import org.springframework.web.filter.OncePerRequestFilter;
+import sun.security.util.SecurityConstants;
 
 import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
@@ -18,7 +20,7 @@ import java.io.IOException;
 @Component
 @ServletComponentScan
 @WebFilter(filterName = "apiFilter", urlPatterns = "/api/member/*")
-public class ApiFilter implements Filter {
+public class ApiFilter extends OncePerRequestFilter {
 
     @Autowired
     private JwtConfig jwtConfig;
@@ -27,14 +29,7 @@ public class ApiFilter implements Filter {
     private JwtUtil jwtUtil;
 
     @Override
-    public void init(FilterConfig filterConfig) throws ServletException {
-
-    }
-
-    @Override
-    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-        HttpServletRequest httpRequest = (HttpServletRequest) request;
-        HttpServletResponse httpResponse = (HttpServletResponse) response;
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws ServletException, IOException {
 
         /*
         Enumeration headNames = httpRequest.getHeaderNames();
@@ -45,7 +40,7 @@ public class ApiFilter implements Filter {
             System.out.println(headerValue);
         }*/
 
-        String auth = httpRequest.getHeader(jwtConfig.getJwtHeader());
+        String auth = request.getHeader(jwtConfig.getJwtHeader());
         if ((auth != null) && (auth.length() > 7)) {
             String headStr = auth.substring(0, 6);
             if (headStr.compareTo(jwtConfig.getTokenHead()) == 0) {
@@ -54,23 +49,20 @@ public class ApiFilter implements Filter {
                 if (claims != null) {
                     String userId = claims.getId();
                     String userName =claims.getSubject();
-                    httpRequest.setAttribute("userId",userId);
-                    httpRequest.setAttribute("userName",userName);
-                    chain.doFilter(httpRequest, response);
+                    String sessionId = claims.getAudience();
+                    request.setAttribute("userId", userId);
+                    request.setAttribute("userName", userName);
+                    CustomHttpServletRequest customHttpServletRequest = new CustomHttpServletRequest(request);
+                    customHttpServletRequest.putHeader("Cookie", "WEBID="+ sessionId);
+                    chain.doFilter(customHttpServletRequest, response);
                     return;
                 }
             }
         }
-
-        httpResponse.setCharacterEncoding("UTF-8");
-        httpResponse.setContentType("application/json; charset=utf-8");
-        httpResponse.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-        httpResponse.getWriter().write(JsonUtil.toJson(ReturnUtil.Error("TOKEN验证失败")));
+        response.setCharacterEncoding("UTF-8");
+        response.setContentType("application/json; charset=utf-8");
+        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+        response.getWriter().write(JsonUtil.toJson(ReturnUtil.Error("TOKEN验证失败")));
         return;
-    }
-
-    @Override
-    public void destroy() {
-
     }
 }

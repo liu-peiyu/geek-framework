@@ -25,7 +25,7 @@ public class JwtConfig {
     }
 
     public Long getExpiration() {
-        return expiration;
+        return expiration * 1000;
     }
 
     public void setExpiration(Long expiration) {

@@ -92,8 +92,9 @@ public class ApiPublicController {
         if (currentUser.isAuthenticated()) {
             Session session = SecurityUtils.getSubject().getSession();
             session.setAttribute("loginType", LoginEnum.CUSTOMER.toString());
+            String sessionId = session.getId().toString();
             Member member = (Member) SecurityUtils.getSubject().getPrincipals().getPrimaryPrincipal();
-            String accessToken = jwtUtil.createJWT(member, jwtConfig.getSecret());
+            String accessToken = jwtUtil.createJWT(member, sessionId, jwtConfig.getSecret());
 
             //返回accessToken
             AccessToken accessTokenEntity = new AccessToken();
@@ -108,23 +109,5 @@ public class ApiPublicController {
             return ReturnUtil.Error("登录失败");
         }
     }
-
-
-    /**
-     * 退出
-     * @return
-     */
-    @RequestMapping(value = "/logout", method = RequestMethod.GET)
-    public ModelMap logout() {
-        try {
-            SecurityUtils.getSubject().logout();
-            return ReturnUtil.Success("退出成功");
-        }catch (Exception e){
-            System.out.println(e);
-        }
-        return ReturnUtil.Success("退出异常");
-    }
-
-
 
 }

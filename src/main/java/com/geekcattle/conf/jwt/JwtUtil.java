@@ -34,7 +34,7 @@ public class JwtUtil {
         return null;
     }
 
-    public String createJWT(Member member, String base64Security)
+    public String createJWT(Member member, String sessionId, String base64Security)
     {
         SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm.HS256;
 
@@ -46,7 +46,7 @@ public class JwtUtil {
                 .setId(member.getUid())
                 .setSubject(member.getAccount())
                 //.setIssuer(issuer)
-                //.setAudience(audience)
+                .setAudience(sessionId)
                 .signWith(signatureAlgorithm, signingKey)
                 .setExpiration(new Date(System.currentTimeMillis() + jwtConfig.getExpiration()))
                 .setNotBefore(new Date(System.currentTimeMillis()));

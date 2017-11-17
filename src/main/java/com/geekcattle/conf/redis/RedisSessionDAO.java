@@ -10,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.stereotype.Repository;
 
 
 import java.io.Serializable;
@@ -22,6 +23,7 @@ import java.util.concurrent.TimeUnit;
  * author geekcattle
  * date 2017/3/22 0022 下午 15:32
  */
+@Repository("redisSessionDAO")
 public class RedisSessionDAO extends EnterpriseCacheSessionDAO {
 
     private Logger logger = LoggerFactory.getLogger(RedisSessionDAO.class);
@@ -42,7 +44,7 @@ public class RedisSessionDAO extends EnterpriseCacheSessionDAO {
     @Override
     protected Serializable doCreate(Session session) {
         Serializable sessionId = super.doCreate(session);
-        logger.trace("createSession:{}", session.getId().toString());
+        logger.debug("createSession:{}", session.getId().toString());
         redisTemplate.opsForValue().set(getKey(session.getId().toString()), session,expireTime,TimeUnit.SECONDS);
         return sessionId;
     }
@@ -50,7 +52,7 @@ public class RedisSessionDAO extends EnterpriseCacheSessionDAO {
     // 获取session
     @Override
     protected Session doReadSession(Serializable sessionId) {
-        logger.trace("readSession:{}", sessionId.toString());
+        logger.debug("readSession:{}", sessionId.toString());
         // 先从缓存中获取session，如果没有再去数据库中获取
         Session session = super.doReadSession(sessionId);
         if(session == null){
@@ -62,7 +64,7 @@ public class RedisSessionDAO extends EnterpriseCacheSessionDAO {
     // 更新session的最后一次访问时间
     @Override
     public void update(Session session) {
-        logger.trace("updateSession:{}", session.getId().toString());
+        logger.debug("updateSession:{}", session.getId().toString());
         super.doUpdate(session);
         String key = getKey(session.getId().toString());
         if (!redisTemplate.hasKey(key)) {
@@ -74,14 +76,14 @@ public class RedisSessionDAO extends EnterpriseCacheSessionDAO {
     // 删除session
     @Override
     public void delete(Session session) {
-        logger.trace("delSession:{}", session.getId());
+        logger.debug("delSession:{}", session.getId());
         redisTemplate.delete(getKey(session.getId().toString()));
         super.doDelete(session);
     }
 
     @Override
     public Collection<Session> getActiveSessions() {
-        logger.trace("activeSession");
+        logger.debug("activeSession");
         return Collections.emptySet();
     }
 }

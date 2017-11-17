@@ -15,10 +15,12 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.core.io.support.ResourcePatternResolver;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.transaction.annotation.TransactionManagementConfigurer;
 
+import javax.annotation.Resource;
 import javax.sql.DataSource;
 import java.util.Properties;
 
@@ -29,8 +31,8 @@ import java.util.Properties;
 @EnableTransactionManagement
 public class MyBatisConfig implements TransactionManagementConfigurer {
 
-    @Autowired
-    DataSource dataSource;
+    @Resource
+    public DataSource dataSource;
 
     @Bean(name="sqlSessionFactory")
     public SqlSessionFactory sqlSessionFactoryBean() {

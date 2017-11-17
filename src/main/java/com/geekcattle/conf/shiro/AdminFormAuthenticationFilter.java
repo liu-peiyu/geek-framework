@@ -19,11 +19,6 @@ import javax.servlet.ServletResponse;
 public class AdminFormAuthenticationFilter extends FormAuthenticationFilter {
 
     @Override
-    protected boolean isAccessAllowed(ServletRequest request, ServletResponse response, Object mappedValue) {
-        return super.isAccessAllowed(request, response, mappedValue);
-    }
-
-    @Override
     public void setLoginUrl(String loginUrl) {
         super.setLoginUrl("/console/login");
     }

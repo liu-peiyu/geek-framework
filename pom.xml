@@ -60,7 +60,7 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
         </dependency>
-
+        <!--redis依赖-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-redis</artifactId>
@@ -189,19 +189,6 @@
             <artifactId>mapper</artifactId>
             <version>${mapper.version}</version>
         </dependency>
-        <!--log4j-->
-        <dependency>
-            <groupId>org.apache.logging.log4j</groupId>
-            <artifactId>log4j-api</artifactId>
-            <version>2.7</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.apache.logging.log4j</groupId>
-            <artifactId>log4j-core</artifactId>
-            <version>2.7</version>
-        </dependency>
-        <!--redis依赖-->
 
         <!-- https://mvnrepository.com/artifact/junit/junit -->
         <dependency>

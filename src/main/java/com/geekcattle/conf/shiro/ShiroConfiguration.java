@@ -6,12 +6,14 @@ package com.geekcattle.conf.shiro;
 
 import com.geekcattle.conf.redis.RedisCacheManager;
 import com.geekcattle.conf.redis.RedisSessionDAO;
+import com.geekcattle.service.common.RedisServiceImpl;
 import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
 import org.apache.shiro.authc.pam.AuthenticationStrategy;
 import org.apache.shiro.authc.pam.FirstSuccessfulStrategy;
 import org.apache.shiro.authz.ModularRealmAuthorizer;
 import org.apache.shiro.cache.ehcache.EhCacheManager;
 import org.apache.shiro.realm.Realm;
+import org.apache.shiro.session.mgt.ExecutorServiceSessionValidationScheduler;
 import org.apache.shiro.spring.LifecycleBeanPostProcessor;
 import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
@@ -20,6 +22,8 @@ import org.apache.shiro.web.servlet.Cookie;
 import org.apache.shiro.web.servlet.ShiroHttpSession;
 import org.apache.shiro.web.servlet.SimpleCookie;
 import org.apache.shiro.web.session.mgt.DefaultWebSessionManager;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
@@ -39,13 +43,15 @@ import java.util.*;
 @Configuration
 public class ShiroConfiguration {
 
+    private static Logger logger = LoggerFactory.getLogger(ShiroConfiguration.class);
+
     /**
      * 前台身份认证realm;
      * @return
      */
     @Bean(name="customShiroRealm")
     public CustomShiroRealm customShiroRealm(){
-        System.out.println("ShiroConfiguration.customShiroRealm()");
+        logger.debug("ShiroConfiguration.customShiroRealm()");
         CustomShiroRealm customShiroRealm = new CustomShiroRealm();
         customShiroRealm.setCredentialsMatcher(customHashedCredentialsMatcher());
         return customShiroRealm;
@@ -57,7 +63,7 @@ public class ShiroConfiguration {
      */
     @Bean(name="adminShiroRealm")
     public AdminShiroRealm adminShiroRealm(){
-        System.out.println("ShiroConfiguration.adminShiroRealm()");
+        logger.debug("ShiroConfiguration.adminShiroRealm()");
         AdminShiroRealm adminShiroRealm = new AdminShiroRealm();
         adminShiroRealm.setCredentialsMatcher(adminHashedCredentialsMatcher());
         return adminShiroRealm;
@@ -72,7 +78,7 @@ public class ShiroConfiguration {
      */
     @Bean(name="ehCacheManager")
     public EhCacheManager ehCacheManager(){
-        System.out.println("ShiroConfiguration.ehCacheManager()");
+        logger.debug("ShiroConfiguration.ehCacheManager()");
         EhCacheManager cacheManager = new EhCacheManager();
         cacheManager.setCacheManagerConfigFile("classpath:ehcache-shiro.xml");
         return cacheManager;
@@ -80,11 +86,13 @@ public class ShiroConfiguration {
 
     @Bean(name = "redisCacheManager")
     public RedisCacheManager redisCacheManager() {
+        logger.debug("ShiroConfiguration.redisCacheManager()");
         return new RedisCacheManager();
     }
 
     @Bean(name = "redisSessionDAO")
     public RedisSessionDAO redisSessionDAO(){
+        logger.debug("ShiroConfiguration.redisSessionDAO()");
         return new RedisSessionDAO();
     }
 
@@ -94,7 +102,7 @@ public class ShiroConfiguration {
      */
     @Bean(name="sessionManager")
     public DefaultWebSessionManager defaultWebSessionManager() {
-        System.out.println("ShiroConfiguration.defaultWebSessionManager()");
+        logger.debug("ShiroConfiguration.defaultWebSessionManager()");
         DefaultWebSessionManager sessionManager = new DefaultWebSessionManager();
         sessionManager.setSessionDAO(redisSessionDAO());//如不想使用REDIS可注释此行
         //单位为毫秒（1秒=1000毫秒） 3600000毫秒为1个小时
@@ -119,7 +127,7 @@ public class ShiroConfiguration {
      */
     @Bean(name="securityManager")
     public DefaultWebSecurityManager getDefaultWebSecurityManage(){
-        System.out.println("ShiroConfiguration.getDefaultWebSecurityManage()");
+        logger.debug("ShiroConfiguration.getDefaultWebSecurityManage()");
         DefaultWebSecurityManager securityManager =  new DefaultWebSecurityManager();
 
         Map<String, Object> shiroAuthenticatorRealms = new HashMap<>();
@@ -151,7 +159,7 @@ public class ShiroConfiguration {
      */
     @Bean(name="authorizationAttributeSourceAdvisor")
     public AuthorizationAttributeSourceAdvisor authorizationAttributeSourceAdvisor(DefaultWebSecurityManager securityManager){
-        System.out.println("ShiroConfiguration.authorizationAttributeSourceAdvisor()");
+        logger.debug("ShiroConfiguration.authorizationAttributeSourceAdvisor()");
         AuthorizationAttributeSourceAdvisor authorizationAttributeSourceAdvisor = new AuthorizationAttributeSourceAdvisor();
         authorizationAttributeSourceAdvisor.setSecurityManager(securityManager);
         return authorizationAttributeSourceAdvisor;
@@ -168,7 +176,7 @@ public class ShiroConfiguration {
      */
     @Bean(name = "shirFilter")
     public ShiroFilterFactoryBean shirFilter(DefaultWebSecurityManager securityManager){
-        System.out.println("ShiroConfiguration.shirFilter()");
+        logger.debug("ShiroConfiguration.shirFilter()");
         ShiroFilterFactoryBean shiroFilterFactoryBean  = new ShiroFilterFactoryBean();
         // 必须设置 SecurityManager
         shiroFilterFactoryBean.setSecurityManager(securityManager);
@@ -224,7 +232,7 @@ public class ShiroConfiguration {
      */
     @Bean(name="authenticationStrategy")
     public AuthenticationStrategy authenticationStrategy() {
-        System.out.println("ShiroConfiguration.authenticationStrategy()");
+        logger.debug("ShiroConfiguration.authenticationStrategy()");
         return new FirstSuccessfulStrategy();
     }
 
@@ -237,7 +245,7 @@ public class ShiroConfiguration {
      */
     @Bean(name = "adminHashedCredentialsMatcher")
     public HashedCredentialsMatcher adminHashedCredentialsMatcher(){
-        System.out.println("ShiroConfiguration.adminHashedCredentialsMatcher()");
+        logger.debug("ShiroConfiguration.adminHashedCredentialsMatcher()");
         HashedCredentialsMatcher hashedCredentialsMatcher = new HashedCredentialsMatcher();
         hashedCredentialsMatcher.setHashAlgorithmName("md5");//散列算法:这里使用MD5算法;
         hashedCredentialsMatcher.setHashIterations(2);//散列的次数，当于 m比如散列两次，相d5(md5(""));
@@ -246,7 +254,7 @@ public class ShiroConfiguration {
 
     @Bean(name = "customHashedCredentialsMatcher")
     public HashedCredentialsMatcher customHashedCredentialsMatcher(){
-        System.out.println("ShiroConfiguration.adminHashedCredentialsMatcher()");
+        logger.debug("ShiroConfiguration.adminHashedCredentialsMatcher()");
         HashedCredentialsMatcher hashedCredentialsMatcher = new HashedCredentialsMatcher();
         hashedCredentialsMatcher.setHashAlgorithmName("md5");//散列算法:这里使用MD5算法;
         hashedCredentialsMatcher.setHashIterations(1);//散列的次数，当于 m比如散列两次，相d5("");
@@ -259,7 +267,7 @@ public class ShiroConfiguration {
      */
     @Bean(name = "lifecycleBeanPostProcessor")
     public LifecycleBeanPostProcessor lifecycleBeanPostProcessor() {
-        System.out.println("ShiroConfiguration.lifecycleBeanPostProcessor()");
+        logger.debug("ShiroConfiguration.lifecycleBeanPostProcessor()");
         return new LifecycleBeanPostProcessor();
     }
 
@@ -267,7 +275,7 @@ public class ShiroConfiguration {
     @Bean(name = "defaultAdvisorAutoProxyCreator")
     @DependsOn("lifecycleBeanPostProcessor")
     public DefaultAdvisorAutoProxyCreator getDefaultAdvisorAutoProxyCreator() {
-        System.out.println("ShiroConfiguration.getDefaultAdvisorAutoProxyCreator()");
+        logger.debug("ShiroConfiguration.getDefaultAdvisorAutoProxyCreator()");
         DefaultAdvisorAutoProxyCreator daap = new DefaultAdvisorAutoProxyCreator();
         daap.setProxyTargetClass(true);
         return daap;
