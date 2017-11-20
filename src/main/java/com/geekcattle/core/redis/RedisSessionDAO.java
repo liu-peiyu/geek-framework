@@ -2,7 +2,7 @@
  * Copyright (c) 2017 <l_iupeiyu@qq.com> All rights reserved.
  */
 
-package com.geekcattle.conf.redis;
+package com.geekcattle.core.redis;
 
 import org.apache.shiro.session.Session;
 import org.apache.shiro.session.mgt.eis.EnterpriseCacheSessionDAO;
@@ -13,6 +13,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Repository;
 
 
+import javax.annotation.Resource;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.Collections;
@@ -26,18 +27,16 @@ import java.util.concurrent.TimeUnit;
 @Repository("redisSessionDAO")
 public class RedisSessionDAO extends EnterpriseCacheSessionDAO {
 
-    private Logger logger = LoggerFactory.getLogger(RedisSessionDAO.class);
+    private Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    // session 在redis过期时间是30分钟30*60
-    private static int expireTime = 1800;
-
-    private static String redisPrefix = "shiro-redis-session:";
+    @Resource
+    private RedisConfiguration redisConfiguration;
 
     @Autowired
     private RedisTemplate<String, Object> redisTemplate;
 
     private String getKey(String originalKey) {
-        return redisPrefix + originalKey;
+        return redisConfiguration.getSessionPrefix() + originalKey;
     }
 
     // 创建session，保存到数据库
@@ -45,7 +44,7 @@ public class RedisSessionDAO extends EnterpriseCacheSessionDAO {
     protected Serializable doCreate(Session session) {
         Serializable sessionId = super.doCreate(session);
         logger.debug("createSession:{}", session.getId().toString());
-        redisTemplate.opsForValue().set(getKey(session.getId().toString()), session,expireTime,TimeUnit.SECONDS);
+        redisTemplate.opsForValue().set(getKey(session.getId().toString()), session,redisConfiguration.getSessionTime(),TimeUnit.MINUTES);
         return sessionId;
     }
 
@@ -67,10 +66,7 @@ public class RedisSessionDAO extends EnterpriseCacheSessionDAO {
         logger.debug("updateSession:{}", session.getId().toString());
         super.doUpdate(session);
         String key = getKey(session.getId().toString());
-        if (!redisTemplate.hasKey(key)) {
-            redisTemplate.opsForValue().set(key, session);
-        }
-        redisTemplate.expire(key, expireTime, TimeUnit.SECONDS);
+        redisTemplate.opsForValue().set(key, session,redisConfiguration.getSessionTime(), TimeUnit.MINUTES);
     }
 
     // 删除session

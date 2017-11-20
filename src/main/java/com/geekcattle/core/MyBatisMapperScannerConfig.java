@@ -2,8 +2,10 @@
  * Copyright (c) 2017 <l_iupeiyu@qq.com> All rights reserved.
  */
 
-package com.geekcattle.conf;
+package com.geekcattle.core;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -18,6 +20,9 @@ import java.util.Properties;
 //TODO 注意，由于MapperScannerConfigurer执行的比较早，所以必须有下面的注解
 @AutoConfigureAfter(MyBatisConfig.class)
 public class MyBatisMapperScannerConfig {
+
+    private Logger logger = LoggerFactory.getLogger(this.getClass());
+
     @Bean
     public MapperScannerConfigurer mapperScannerConfigurer() {
         MapperScannerConfigurer mapperScannerConfigurer = new MapperScannerConfigurer();

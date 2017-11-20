@@ -4,8 +4,8 @@
 
 package com.geekcattle.controller.member;
 
-import com.geekcattle.conf.LoginEnum;
-import com.geekcattle.conf.shiro.CustomerAuthenticationToken;
+import com.geekcattle.core.LoginEnum;
+import com.geekcattle.core.shiro.CustomerAuthenticationToken;
 import com.geekcattle.model.member.Member;
 import com.geekcattle.model.valid.ValidMember;
 import com.geekcattle.service.member.MemberService;

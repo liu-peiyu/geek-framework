@@ -2,18 +2,17 @@
  * Copyright (c) 2017 <l_iupeiyu@qq.com> All rights reserved.
  */
 
-package com.geekcattle.conf.shiro;
+package com.geekcattle.core.shiro;
 
-import com.geekcattle.conf.redis.RedisCacheManager;
-import com.geekcattle.conf.redis.RedisSessionDAO;
-import com.geekcattle.service.common.RedisServiceImpl;
+import com.geekcattle.core.redis.RedisCacheManager;
+import com.geekcattle.core.redis.RedisSessionDAO;
 import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
 import org.apache.shiro.authc.pam.AuthenticationStrategy;
 import org.apache.shiro.authc.pam.FirstSuccessfulStrategy;
 import org.apache.shiro.authz.ModularRealmAuthorizer;
 import org.apache.shiro.cache.ehcache.EhCacheManager;
 import org.apache.shiro.realm.Realm;
-import org.apache.shiro.session.mgt.ExecutorServiceSessionValidationScheduler;
+import org.apache.shiro.session.SessionListener;
 import org.apache.shiro.spring.LifecycleBeanPostProcessor;
 import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
@@ -43,7 +42,7 @@ import java.util.*;
 @Configuration
 public class ShiroConfiguration {
 
-    private static Logger logger = LoggerFactory.getLogger(ShiroConfiguration.class);
+    private Logger logger = LoggerFactory.getLogger(this.getClass());
 
     /**
      * 前台身份认证realm;
@@ -89,12 +88,18 @@ public class ShiroConfiguration {
         logger.debug("ShiroConfiguration.redisCacheManager()");
         return new RedisCacheManager();
     }
-
     @Bean(name = "redisSessionDAO")
     public RedisSessionDAO redisSessionDAO(){
         logger.debug("ShiroConfiguration.redisSessionDAO()");
         return new RedisSessionDAO();
     }
+
+    @Bean(name = "customSessionListener")
+    public CustomSessionListener customSessionListener(){
+        logger.debug("ShiroConfiguration.customSessionListener()");
+        return new CustomSessionListener();
+    }
+
 
     /**
      * @see DefaultWebSessionManager
@@ -104,7 +109,11 @@ public class ShiroConfiguration {
     public DefaultWebSessionManager defaultWebSessionManager() {
         logger.debug("ShiroConfiguration.defaultWebSessionManager()");
         DefaultWebSessionManager sessionManager = new DefaultWebSessionManager();
+        //用户信息必须是序列化格式，要不创建用户信息创建不过去，此坑很大，
         sessionManager.setSessionDAO(redisSessionDAO());//如不想使用REDIS可注释此行
+        Collection<SessionListener> sessionListeners = new ArrayList<>();
+        sessionListeners.add(customSessionListener());
+        sessionManager.setSessionListeners(sessionListeners);
         //单位为毫秒（1秒=1000毫秒） 3600000毫秒为1个小时
         sessionManager.setSessionValidationInterval(3600000*12);
         //3600000 milliseconds = 1 hour
@@ -146,7 +155,7 @@ public class ShiroConfiguration {
         customModularRealmAuthorizer.setRealms(shiroAuthorizerRealms);
         securityManager.setAuthorizer(customModularRealmAuthorizer);
         //注入缓存管理器;
-        securityManager.setCacheManager(ehCacheManager());
+        //securityManager.setCacheManager(redisCacheManager());
         securityManager.setSessionManager(defaultWebSessionManager());
         return securityManager;
     }

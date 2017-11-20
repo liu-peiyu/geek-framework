@@ -2,7 +2,7 @@
  * Copyright (c) 2017 <l_iupeiyu@qq.com> All rights reserved.
  */
 
-package com.geekcattle.conf.shiro;
+package com.geekcattle.core.shiro;
 
 import org.apache.shiro.ShiroException;
 import org.apache.shiro.authc.AuthenticationException;
@@ -11,6 +11,8 @@ import org.apache.shiro.authc.AuthenticationToken;
 import org.apache.shiro.authc.pam.ModularRealmAuthenticator;
 import org.apache.shiro.realm.Realm;
 import org.apache.shiro.util.CollectionUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Collection;
 import java.util.Map;
@@ -20,6 +22,8 @@ import java.util.Map;
  * date 2017/3/13 0013 下午 16:55
  */
 public class CustomModularRealmAuthenticator extends ModularRealmAuthenticator {
+
+    private Logger logger = LoggerFactory.getLogger(this.getClass());
 
     private Map<String, Object> definedRealms;
 

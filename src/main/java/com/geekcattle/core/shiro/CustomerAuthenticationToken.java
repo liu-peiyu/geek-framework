@@ -2,15 +2,19 @@
  * Copyright (c) 2017 <l_iupeiyu@qq.com> All rights reserved.
  */
 
-package com.geekcattle.conf.shiro;
+package com.geekcattle.core.shiro;
 
 import org.apache.shiro.authc.UsernamePasswordToken;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * author geekcattle
  * date 2017/3/9 0009 下午 16:05
  */
 public class CustomerAuthenticationToken extends UsernamePasswordToken {
+
+    private Logger logger = LoggerFactory.getLogger(this.getClass());
 
     private String captcha;
     /**

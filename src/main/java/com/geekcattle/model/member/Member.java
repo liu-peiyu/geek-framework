@@ -11,12 +11,13 @@ import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Transient;
+import java.io.Serializable;
 
 /**
  * author geekcattle
  * date 2016/10/21 0021 下午 15:11
  */
-public class Member extends BaseEntity {
+public class Member extends BaseEntity implements Serializable {
     @Id
     @Column(name = "uid")
     @GeneratedValue(generator = "UUID")

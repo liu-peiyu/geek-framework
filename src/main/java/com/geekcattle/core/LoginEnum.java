@@ -2,7 +2,7 @@
  * Copyright (c) 2017 <l_iupeiyu@qq.com> All rights reserved.
  */
 
-package com.geekcattle.conf;
+package com.geekcattle.core;
 
 /**
  * author geekcattle

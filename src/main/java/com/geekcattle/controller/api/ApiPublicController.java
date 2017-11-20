@@ -1,7 +1,7 @@
 package com.geekcattle.controller.api;
 
-import com.geekcattle.conf.LoginEnum;
-import com.geekcattle.conf.shiro.CustomerAuthenticationToken;
+import com.geekcattle.core.LoginEnum;
+import com.geekcattle.core.shiro.CustomerAuthenticationToken;
 import com.geekcattle.model.member.Member;
 import com.geekcattle.model.valid.ValidMember;
 import com.geekcattle.service.member.MemberService;
@@ -9,9 +9,9 @@ import com.geekcattle.util.DateUtil;
 import com.geekcattle.util.PasswordUtil;
 import com.geekcattle.util.ReturnUtil;
 import com.geekcattle.util.UuidUtil;
-import com.geekcattle.conf.jwt.AccessToken;
-import com.geekcattle.conf.jwt.JwtConfig;
-import com.geekcattle.conf.jwt.JwtUtil;
+import com.geekcattle.core.jwt.AccessToken;
+import com.geekcattle.core.jwt.JwtConfig;
+import com.geekcattle.core.jwt.JwtUtil;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.crypto.SecureRandomNumberGenerator;

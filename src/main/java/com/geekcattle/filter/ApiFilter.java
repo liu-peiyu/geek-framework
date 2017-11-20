@@ -2,14 +2,15 @@ package com.geekcattle.filter;
 
 import com.geekcattle.util.JsonUtil;
 import com.geekcattle.util.ReturnUtil;
-import com.geekcattle.conf.jwt.JwtConfig;
-import com.geekcattle.conf.jwt.JwtUtil;
+import com.geekcattle.core.jwt.JwtConfig;
+import com.geekcattle.core.jwt.JwtUtil;
 import io.jsonwebtoken.Claims;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.servlet.ServletComponentScan;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
-import sun.security.util.SecurityConstants;
 
 import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
@@ -21,6 +22,8 @@ import java.io.IOException;
 @ServletComponentScan
 @WebFilter(filterName = "apiFilter", urlPatterns = "/api/member/*")
 public class ApiFilter extends OncePerRequestFilter {
+
+    private Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
     private JwtConfig jwtConfig;

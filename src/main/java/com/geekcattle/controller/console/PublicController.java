@@ -4,8 +4,8 @@
 
 package com.geekcattle.controller.console;
 
-import com.geekcattle.conf.LoginEnum;
-import com.geekcattle.conf.shiro.CustomerAuthenticationToken;
+import com.geekcattle.core.LoginEnum;
+import com.geekcattle.core.shiro.CustomerAuthenticationToken;
 import com.geekcattle.model.valid.ValidAdmin;
 import com.geekcattle.service.console.LogService;
 import com.geekcattle.util.IpUtil;
@@ -29,7 +29,7 @@ import javax.validation.Valid;
 @RequestMapping(value = "/console")
 public class PublicController {
 
-    private static final Logger logger = LoggerFactory.getLogger(PublicController.class);
+    private Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
     private LogService logService;

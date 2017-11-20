@@ -4,15 +4,13 @@
 
 package com.geekcattle.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.apache.commons.lang3.StringUtils;
-
 import javax.persistence.*;
+import java.io.Serializable;
 
 /**
  * 基础信息
  */
-public class BaseEntity {
+public class BaseEntity  {
 
     @Transient
     private Integer offset = 0;

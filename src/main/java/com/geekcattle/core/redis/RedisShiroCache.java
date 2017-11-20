@@ -1,4 +1,4 @@
-package com.geekcattle.conf.redis;
+package com.geekcattle.core.redis;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -8,25 +8,30 @@ import java.util.concurrent.TimeUnit;
 
 import org.apache.shiro.cache.Cache;
 import org.apache.shiro.cache.CacheException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 
 @SuppressWarnings("unchecked")
-public class ShiroCache<K, V> implements Cache<K, V> {
+public class RedisShiroCache<K, V> implements Cache<K, V> {
 
-    private static final String REDIS_SHIRO_CACHE = "shiro-cache:";
+    private Logger logger = LoggerFactory.getLogger(this.getClass());
+
+    private RedisConfiguration redisConfiguration;
+
     private String cacheKey;
     private RedisTemplate<K, V> redisTemplate;
-    private long globExpire = 30;
 
     @SuppressWarnings("rawtypes")
-    public ShiroCache(String name, RedisTemplate client) {
-        this.cacheKey = REDIS_SHIRO_CACHE + name + ":";
+    public RedisShiroCache(String name, RedisTemplate client, RedisConfiguration redisConfiguration) {
+        this.redisConfiguration = redisConfiguration;
+        this.cacheKey = this.redisConfiguration.getCachePrefix() + name;
         this.redisTemplate = client;
     }
 
     @Override
     public V get(K key) throws CacheException {
-        redisTemplate.boundValueOps(getCacheKey(key)).expire(globExpire, TimeUnit.MINUTES);
+        redisTemplate.boundValueOps(getCacheKey(key)).expire(redisConfiguration.getCacheTime(), TimeUnit.MINUTES);
         return redisTemplate.boundValueOps(getCacheKey(key)).get();
     }
 

@@ -9,9 +9,10 @@ import com.geekcattle.model.BaseEntity;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.validator.constraints.NotEmpty;
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.List;
 
-public class Admin extends BaseEntity {
+public class Admin extends BaseEntity implements Serializable {
 
     @Id
     @Column(name = "uid")

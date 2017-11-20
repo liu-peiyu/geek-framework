@@ -2,8 +2,10 @@
  * Copyright (c) 2017 <l_iupeiyu@qq.com> All rights reserved.
  */
 
-package com.geekcattle.conf;
+package com.geekcattle.core;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.context.embedded.ConfigurableEmbeddedServletContainer;
 import org.springframework.boot.context.embedded.EmbeddedServletContainerCustomizer;
 import org.springframework.boot.web.servlet.ErrorPage;
@@ -14,6 +16,8 @@ import org.springframework.http.HttpStatus;
 
 @Configuration
 public class ErrorPageConfig {
+
+    private Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Bean
     public EmbeddedServletContainerCustomizer embeddedServletContainerCustomizer(){

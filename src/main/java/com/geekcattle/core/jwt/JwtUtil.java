@@ -1,10 +1,12 @@
-package com.geekcattle.conf.jwt;
+package com.geekcattle.core.jwt;
 
 import com.geekcattle.model.member.Member;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtBuilder;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -16,6 +18,7 @@ import java.util.Date;
 
 @Component
 public class JwtUtil {
+    private Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
     private JwtConfig jwtConfig;

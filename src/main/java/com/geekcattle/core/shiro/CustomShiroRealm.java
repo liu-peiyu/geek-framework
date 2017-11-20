@@ -2,42 +2,31 @@
  * Copyright (c) 2017 <l_iupeiyu@qq.com> All rights reserved.
  */
 
-package com.geekcattle.conf.shiro;
+package com.geekcattle.core.shiro;
 
-import com.geekcattle.model.console.Admin;
-import com.geekcattle.model.console.Menu;
-import com.geekcattle.model.console.Role;
-import com.geekcattle.service.console.AdminService;
-import com.geekcattle.service.console.MenuService;
-import com.geekcattle.service.console.RoleService;
-import org.apache.shiro.SecurityUtils;
+import com.geekcattle.model.member.Member;
+import com.geekcattle.service.member.MemberService;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.util.ByteSource;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
 /**
- * 后台身份校验核心类
+ * 前台身份校验核心类
  * author geekcattle
- * date 2017/3/13 0013 下午 15:38
+ * date 2016/11/22 0022 下午 15:27
  */
-public class AdminShiroRealm extends AuthorizingRealm {
+public class CustomShiroRealm extends AuthorizingRealm {
+
+    private Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
-    private AdminService adminService;
-
-    @Autowired
-    private RoleService roleService;
-
-    @Autowired
-    private MenuService menuService;
+    private MemberService memberService;
 
 
     /**
@@ -50,13 +39,13 @@ public class AdminShiroRealm extends AuthorizingRealm {
      */
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
-        System.out.println("后台登录：AdminShiroRealm.doGetAuthenticationInfo()");
+        logger.info("前台登录认证：CustomShiroRealm.doGetAuthenticationInfo()");
         //获取用户的输入的账号.
         String username = (String)token.getPrincipal();
 
         //通过username从数据库中查找 User对象，如果找到，没找到.
         //实际项目中，这里可以根据实际情况做缓存，如果不做，Shiro自己也是有时间间隔机制，2分钟内不会重复执行该方法
-        Admin userInfo = adminService.findByUsername(username);
+        Member userInfo = memberService.findByUsername(username);
         if(userInfo == null){
             throw new UnknownAccountException();
         }
@@ -78,14 +67,12 @@ public class AdminShiroRealm extends AuthorizingRealm {
         SimpleAuthenticationInfo authenticationInfo = new SimpleAuthenticationInfo(
                 userInfo, //用户名
                 userInfo.getPassword(), //密码
-                ByteSource.Util.bytes(userInfo.getCredentialsSalt()),//salt=username+salt
-                userInfo.getUsername()  //realm name
+                ByteSource.Util.bytes(userInfo.getSalt()),//salt=username+salt
+                userInfo.getAccount()  //realm name
         );
 
         return authenticationInfo;
     }
-
-
 
     /**
      * 此方法调用  hasRole,hasPermission的时候才会进行回调.
@@ -102,48 +89,19 @@ public class AdminShiroRealm extends AuthorizingRealm {
      * @return
      */
     @Override
-    protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) throws AuthenticationException{
+    protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
        /*
         * 当没有使用缓存的时候，不断刷新页面的话，这个代码会不断执行，
         * 当其实没有必要每次都重新设置权限信息，所以我们需要放到缓存中进行管理；
         * 当放到缓存中时，这样的话，doGetAuthorizationInfo就只会执行一次了，
         * 缓存过期之后会再次执行。
         */
-        System.out.println("后台权限校验-->AdminShiroRealm.doGetAuthorizationInfo()");
+        System.out.println("前台权限校验-->CustomShiroRealm.doGetAuthorizationInfo()");
 
         SimpleAuthorizationInfo authorizationInfo = new SimpleAuthorizationInfo();
-        Admin userInfo  = (Admin)principals.getPrimaryPrincipal();
-        Set<String> menus = null;
-        if(userInfo.getIsSystem() == 1) {
-            menus = menuService.getAllMenuCode();
-        }else{
-            menus = menuService.findMenuCodeByUserId(userInfo.getUid());
-        }
-        authorizationInfo.addStringPermissions(menus);
+
         return authorizationInfo;
     }
 
-    /**
-     * 清除缓存
-     */
-    public void clearCached() {
-        PrincipalCollection principals = SecurityUtils.getSubject().getPrincipals();
-        super.clearCache(principals);
-    }
 
-
-    /**
-     * 将权限对象中的权限code取出.
-     * @param code 权限对象
-     * @return
-     */
-    public Set<String> getStringCode(Set<Menu> code){
-        Set<String> stringPermissions = new HashSet<String>();
-        if(code != null){
-            for(Menu m : code) {
-                stringPermissions.add(m.getMenuCode());
-            }
-        }
-        return stringPermissions;
-    }
 }

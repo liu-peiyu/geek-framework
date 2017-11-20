@@ -2,14 +2,15 @@
  * Copyright (c) 2017 <l_iupeiyu@qq.com> All rights reserved.
  */
 
-package com.geekcattle.conf.shiro;
+package com.geekcattle.core.shiro;
 
 import com.geekcattle.model.console.Admin;
 import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.UnavailableSecurityManagerException;
 import org.apache.shiro.session.InvalidSessionException;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.Subject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * shiro工具类
@@ -17,6 +18,9 @@ import org.apache.shiro.subject.Subject;
  * date 2016/12/6 0006 上午 10:45
  */
 public class AdminShiroUtil {
+
+    private Logger logger = LoggerFactory.getLogger(this.getClass());
+
     /**
      * 获取授权主要对象
      */

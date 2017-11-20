@@ -2,7 +2,7 @@
  * Copyright (c) 2017 <l_iupeiyu@qq.com> All rights reserved.
  */
 
-package com.geekcattle.conf.redis;
+package com.geekcattle.core.redis;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,8 +27,8 @@ import redis.clients.jedis.JedisPoolConfig;
  */
 @Configuration
 @EnableCaching
-public class RedisCacheConfiguration  extends CachingConfigurerSupport{
-    private Logger logger = LoggerFactory.getLogger(RedisCacheConfiguration.class);
+public class RedisConfiguration extends CachingConfigurerSupport{
+    private Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Value("${spring.redis.host}")
     private String host;
@@ -47,6 +47,19 @@ public class RedisCacheConfiguration  extends CachingConfigurerSupport{
 
     @Value("${spring.redis.password}")
     private String password;
+
+    @Value("${shiro.session.session-prefix}")
+    private String sessionPrefix;
+
+    @Value("${shiro.session.session-time}")
+    private int sessionTime;
+
+    @Value("${shiro.cache.cache-prefix}")
+    private String cachePrefix;
+
+    @Value("${shiro.cache.cache-time}")
+    private int cacheTime;
+
 
     @Bean
     public JedisPool redisPoolFactory() {
@@ -76,8 +89,6 @@ public class RedisCacheConfiguration  extends CachingConfigurerSupport{
         return jedisConnectionFactory;
     }
 
-
-
     @Bean
     public CacheManager cacheManager(RedisTemplate redisTemplate) {
         logger.info("cacheManager注入成功！！");
@@ -99,4 +110,35 @@ public class RedisCacheConfiguration  extends CachingConfigurerSupport{
         return redisTemplate;
     }
 
+    public String getSessionPrefix() {
+        return sessionPrefix;
+    }
+
+    public void setSessionPrefix(String sessionPrefix) {
+        this.sessionPrefix = sessionPrefix;
+    }
+
+    public String getCachePrefix() {
+        return cachePrefix;
+    }
+
+    public void setCachePrefix(String cachePrefix) {
+        this.cachePrefix = cachePrefix;
+    }
+
+    public int getSessionTime() {
+        return sessionTime;
+    }
+
+    public void setSessionTime(int sessionTime) {
+        this.sessionTime = sessionTime;
+    }
+
+    public int getCacheTime() {
+        return cacheTime;
+    }
+
+    public void setCacheTime(int cacheTime) {
+        this.cacheTime = cacheTime;
+    }
 }

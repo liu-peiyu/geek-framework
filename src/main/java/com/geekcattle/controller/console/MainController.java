@@ -4,14 +4,15 @@
 
 package com.geekcattle.controller.console;
 
-import com.geekcattle.conf.shiro.AdminShiroUtil;
+import com.geekcattle.core.shiro.AdminShiroUtil;
 import com.geekcattle.model.console.Admin;
 import com.geekcattle.model.console.Menu;
 import com.geekcattle.model.console.Role;
 import com.geekcattle.service.console.*;
 import com.geekcattle.util.ReturnUtil;
 import com.geekcattle.util.console.MenuTreeUtil;
-import org.apache.shiro.SecurityUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -28,6 +29,8 @@ import java.util.Map;
 @Controller
 @RequestMapping(value = "/console")
 public class MainController {
+
+    private Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
     private MenuService menuService;
