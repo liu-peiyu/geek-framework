@@ -1,5 +1,6 @@
 package com.geekcattle.core.redis;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -11,6 +12,8 @@ import org.apache.shiro.cache.CacheException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
+import org.springframework.data.redis.serializer.StringRedisSerializer;
 
 @SuppressWarnings("unchecked")
 public class RedisShiroCache<K, V> implements Cache<K, V> {
@@ -20,6 +23,7 @@ public class RedisShiroCache<K, V> implements Cache<K, V> {
     private RedisConfiguration redisConfiguration;
 
     private String cacheKey;
+
     private RedisTemplate<K, V> redisTemplate;
 
     @SuppressWarnings("rawtypes")
@@ -31,27 +35,53 @@ public class RedisShiroCache<K, V> implements Cache<K, V> {
 
     @Override
     public V get(K key) throws CacheException {
-        redisTemplate.boundValueOps(getCacheKey(key)).expire(redisConfiguration.getCacheTime(), TimeUnit.MINUTES);
-        return redisTemplate.boundValueOps(getCacheKey(key)).get();
+        logger.info("根据key从Redis中获取对象 key [" + key + "]");
+        try {
+            if(key == null){
+                return null;
+            }else {
+                redisTemplate.boundValueOps(getCacheKey(key)).expire(redisConfiguration.getCacheTime(), TimeUnit.MINUTES);
+                V v = redisTemplate.boundValueOps(getCacheKey(key)).get();
+                return v;
+            }
+        }catch (Throwable t){
+            throw new CacheException(t);
+        }
     }
 
     @Override
     public V put(K key, V value) throws CacheException {
-        V old = get(key);
-        redisTemplate.boundValueOps(getCacheKey(key)).set(value);
-        return old;
+        logger.info("根据key从存储 key [" + key + "]");
+        try {
+            V v = get(key);
+            redisTemplate.boundValueOps(getCacheKey(key)).set(value);
+            System.out.println(redisTemplate.boundValueOps(getCacheKey(key)).get().toString());
+            return v;
+        }catch (Throwable t){
+            throw  new CacheException(t);
+        }
     }
 
     @Override
     public V remove(K key) throws CacheException {
-        V old = get(key);
-        redisTemplate.delete(getCacheKey(key));
-        return old;
+        logger.info("从redis中删除 key [" + key + "]");
+        try {
+            V v = get(key);
+            redisTemplate.delete(getCacheKey(key));
+            return v;
+        }catch (Throwable t){
+            throw new CacheException(t);
+        }
+
     }
 
     @Override
     public void clear() throws CacheException {
-        redisTemplate.delete(keys());
+        try {
+            redisTemplate.delete(keys());
+        }catch (Throwable t){
+            throw new CacheException(t);
+        }
     }
 
     @Override

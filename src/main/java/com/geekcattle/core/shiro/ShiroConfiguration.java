@@ -52,6 +52,7 @@ public class ShiroConfiguration {
     public CustomShiroRealm customShiroRealm(){
         logger.debug("ShiroConfiguration.customShiroRealm()");
         CustomShiroRealm customShiroRealm = new CustomShiroRealm();
+        customShiroRealm.setCacheManager(redisCacheManager());//redis权限缓存 默认缓存可注释此行
         customShiroRealm.setCredentialsMatcher(customHashedCredentialsMatcher());
         return customShiroRealm;
     }
@@ -64,6 +65,7 @@ public class ShiroConfiguration {
     public AdminShiroRealm adminShiroRealm(){
         logger.debug("ShiroConfiguration.adminShiroRealm()");
         AdminShiroRealm adminShiroRealm = new AdminShiroRealm();
+        adminShiroRealm.setCacheManager(redisCacheManager());//redis权限缓存 默认缓存可注释此行
         adminShiroRealm.setCredentialsMatcher(adminHashedCredentialsMatcher());
         return adminShiroRealm;
     }
@@ -88,6 +90,7 @@ public class ShiroConfiguration {
         logger.debug("ShiroConfiguration.redisCacheManager()");
         return new RedisCacheManager();
     }
+
     @Bean(name = "redisSessionDAO")
     public RedisSessionDAO redisSessionDAO(){
         logger.debug("ShiroConfiguration.redisSessionDAO()");
@@ -99,7 +102,6 @@ public class ShiroConfiguration {
         logger.debug("ShiroConfiguration.customSessionListener()");
         return new CustomSessionListener();
     }
-
 
     /**
      * @see DefaultWebSessionManager
@@ -155,7 +157,7 @@ public class ShiroConfiguration {
         customModularRealmAuthorizer.setRealms(shiroAuthorizerRealms);
         securityManager.setAuthorizer(customModularRealmAuthorizer);
         //注入缓存管理器;
-        //securityManager.setCacheManager(redisCacheManager());
+        securityManager.setCacheManager(redisCacheManager());
         securityManager.setSessionManager(defaultWebSessionManager());
         return securityManager;
     }

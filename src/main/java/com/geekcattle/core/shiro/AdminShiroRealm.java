@@ -13,8 +13,10 @@ import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
+import org.apache.shiro.cache.Cache;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
+import org.apache.shiro.subject.SimplePrincipalCollection;
 import org.apache.shiro.util.ByteSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,9 +38,6 @@ public class AdminShiroRealm extends AuthorizingRealm {
     private AdminService adminService;
 
     @Autowired
-    private RoleService roleService;
-
-    @Autowired
     private MenuService menuService;
 
 
@@ -52,7 +51,7 @@ public class AdminShiroRealm extends AuthorizingRealm {
      */
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
-        System.out.println("后台登录：AdminShiroRealm.doGetAuthenticationInfo()");
+        logger.info("后台登录：AdminShiroRealm.doGetAuthenticationInfo()");
         //获取用户的输入的账号.
         String username = (String)token.getPrincipal();
 
@@ -111,7 +110,7 @@ public class AdminShiroRealm extends AuthorizingRealm {
         * 当放到缓存中时，这样的话，doGetAuthorizationInfo就只会执行一次了，
         * 缓存过期之后会再次执行。
         */
-        System.out.println("后台权限校验-->AdminShiroRealm.doGetAuthorizationInfo()");
+        logger.info("后台权限校验-->AdminShiroRealm.doGetAuthorizationInfo()");
 
         SimpleAuthorizationInfo authorizationInfo = new SimpleAuthorizationInfo();
         Admin userInfo  = (Admin)principals.getPrimaryPrincipal();
@@ -121,31 +120,25 @@ public class AdminShiroRealm extends AuthorizingRealm {
         }else{
             menus = menuService.findMenuCodeByUserId(userInfo.getUid());
         }
-        authorizationInfo.addStringPermissions(menus);
+        authorizationInfo.setStringPermissions(menus);
         return authorizationInfo;
     }
 
     /**
-     * 清除缓存
+     * 清空当前用户权限信息
      */
-    public void clearCached() {
-        PrincipalCollection principals = SecurityUtils.getSubject().getPrincipals();
-        super.clearCache(principals);
+    public  void clearCachedAuthorizationInfo() {
+        PrincipalCollection principalCollection = SecurityUtils.getSubject().getPrincipals();
+        SimplePrincipalCollection principals = new SimplePrincipalCollection(
+                principalCollection, getName());
+        super.clearCachedAuthorizationInfo(principals);
     }
-
-
     /**
-     * 将权限对象中的权限code取出.
-     * @param code 权限对象
-     * @return
+     * 指定principalCollection 清除
      */
-    public Set<String> getStringCode(Set<Menu> code){
-        Set<String> stringPermissions = new HashSet<String>();
-        if(code != null){
-            for(Menu m : code) {
-                stringPermissions.add(m.getMenuCode());
-            }
-        }
-        return stringPermissions;
+    public void clearCachedAuthorizationInfo(PrincipalCollection principalCollection) {
+        SimplePrincipalCollection principals = new SimplePrincipalCollection(
+                principalCollection, getName());
+        super.clearCachedAuthorizationInfo(principals);
     }
 }

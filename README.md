@@ -1,4 +1,20 @@
 ##更新记录
+更新日期
+
+更新pom.xml
+
+<dependency>
+    <groupId>org.apache.shiro</groupId>
+    <artifactId>shiro-spring</artifactId>
+    <version>1.4.0</version>
+</dependency>        
+        
+<dependency>
+    <groupId>org.apache.shiro</groupId>
+    <artifactId>shiro-ehcache</artifactId>
+    <version>1.4.0</version>
+</dependency>
+
 更新日期2017-11-07
 
 1、项目整合redis存储，shiro可使用redisSession可使用于集群访问

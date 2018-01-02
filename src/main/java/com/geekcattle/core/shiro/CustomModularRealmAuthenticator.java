@@ -71,7 +71,6 @@ public class CustomModularRealmAuthenticator extends ModularRealmAuthenticator {
         }else{
             realm = (Realm) this.definedRealms.get("adminShiroRealm");
         }
-
         return this.doSingleRealmAuthentication(realm, authenticationToken);
     }
 

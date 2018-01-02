@@ -9,7 +9,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
-import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 
 /**
@@ -31,13 +30,11 @@ public class TestApp extends TestCase {
 
     @Test
     public void testRedis(){
-        redisTemplate.opsForValue().set("geekcattle","df1111111111111");
-        Jedis jedis = jedisPool.getResource();
-        jedis.setex("geek", 1000, "cattle");
+        redisTemplate.boundValueOps("geekcattle").set("df1111111111111");
         System.out.println(redisTemplate.opsForValue().get("geekcattle"));
     }
 
-    @Test
+
     public static void main(String[] args) {
         logger.debug("debug");
         logger.info("info");
