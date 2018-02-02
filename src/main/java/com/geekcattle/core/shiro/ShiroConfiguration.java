@@ -6,6 +6,7 @@ package com.geekcattle.core.shiro;
 
 import com.geekcattle.core.redis.RedisCacheManager;
 import com.geekcattle.core.redis.RedisSessionDAO;
+import com.geekcattle.filter.CustomerLogoutFilter;
 import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
 import org.apache.shiro.authc.pam.AuthenticationStrategy;
 import org.apache.shiro.authc.pam.FirstSuccessfulStrategy;
@@ -153,9 +154,7 @@ public class ShiroConfiguration {
         customModularRealmAuthenticator.setDefinedRealms(shiroAuthenticatorRealms);
         customModularRealmAuthenticator.setAuthenticationStrategy(authenticationStrategy());
         securityManager.setAuthenticator(customModularRealmAuthenticator);
-        ModularRealmAuthorizer customModularRealmAuthorizer = new ModularRealmAuthorizer();
-        customModularRealmAuthorizer.setRealms(shiroAuthorizerRealms);
-        securityManager.setAuthorizer(customModularRealmAuthorizer);
+        securityManager.setRealms(shiroAuthorizerRealms);
         //注入缓存管理器;
         securityManager.setCacheManager(redisCacheManager());
         securityManager.setSessionManager(defaultWebSessionManager());
@@ -195,6 +194,7 @@ public class ShiroConfiguration {
         Map<String, Filter> filters = new HashMap<>();
         filters.put("admin", new AdminFormAuthenticationFilter());
         filters.put("custom", new CustomFormAuthenticationFilter());
+        filters.put("logout", new CustomerLogoutFilter());
         shiroFilterFactoryBean.setFilters(filters);
         //拦截器.
         Map<String,String> filterChainDefinitionMap = new LinkedHashMap<String,String>();

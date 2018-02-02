@@ -127,7 +127,7 @@ public class AdminShiroRealm extends AuthorizingRealm {
     /**
      * 清空当前用户权限信息
      */
-    public  void clearCachedAuthorizationInfo() {
+    public void clearCachedAuthorizationInfo() {
         PrincipalCollection principalCollection = SecurityUtils.getSubject().getPrincipals();
         SimplePrincipalCollection principals = new SimplePrincipalCollection(
                 principalCollection, getName());
