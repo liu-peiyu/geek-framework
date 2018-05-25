@@ -1,17 +1,19 @@
 package com.geekcattle.filter;
 
+import com.geekcattle.core.jwt.JwtConfig;
 import com.geekcattle.core.jwt.JwtToken;
+import com.geekcattle.core.jwt.JwtUtil;
 import com.geekcattle.model.member.Member;
 import com.geekcattle.service.member.MemberService;
 import com.geekcattle.util.JsonUtil;
 import com.geekcattle.util.ReturnUtil;
-import com.geekcattle.core.jwt.JwtConfig;
-import com.geekcattle.core.jwt.JwtUtil;
-import io.jsonwebtoken.Claims;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.subject.PrincipalCollection;
+import org.apache.shiro.subject.SimplePrincipalCollection;
+import org.apache.shiro.util.ThreadContext;
 import org.apache.shiro.web.subject.WebSubject;
-import org.apache.shiro.web.util.WebUtils;
+import org.apache.shiro.web.subject.WebSubject.Builder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,10 +27,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@Component
+/*@Component
 @ServletComponentScan
-@WebFilter(filterName = "apiFilter", urlPatterns = "/api/member/*")
-public class ApiFilter extends OncePerRequestFilter {
+@WebFilter(urlPatterns = "/api/member/**")*/
+public class JwtFilter extends OncePerRequestFilter {
 
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
@@ -52,6 +54,7 @@ public class ApiFilter extends OncePerRequestFilter {
             String headerValue = httpRequest.getHeader(headerName);
             System.out.println(headerValue);
         }*/
+
         String auth = request.getHeader(jwtConfig.getJwtHeader());
         if ((auth != null) && (auth.length() > 7) && StringUtils.isNotEmpty(auth)) {
             String headStr = auth.substring(0, 6);
@@ -70,7 +73,6 @@ public class ApiFilter extends OncePerRequestFilter {
                         JwtToken token = new JwtToken(auth);
                         // 提交给realm进行登入，如果错误他会抛出异常并被捕获
                         SecurityUtils.getSubject().login(token);
-
                         chain.doFilter(request, response);
                     }
                 }

@@ -4,6 +4,9 @@ import com.geekcattle.mapper.member.MemberMapper;
 import com.geekcattle.model.member.Member;
 import com.geekcattle.util.ReturnUtil;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.subject.PrincipalCollection;
+import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.ui.ModelMap;
@@ -26,18 +29,15 @@ public class ApiMemberController {
 
     @RequestMapping(value = "/index", method = RequestMethod.GET)
     public ModelMap index(HttpServletRequest request){
-        String userId = String.valueOf(request.getAttribute("userId"));
-        String userName = String.valueOf(request.getAttribute("userName"));
-       if(StringUtils.isNotEmpty(userId) && StringUtils.isNotEmpty(userName)){
-           Member member = memberMapper.selectByPrimaryKey(userId);
-           if(member != null){
-               return ReturnUtil.Success("登录成功", member);
-           }else{
-               return ReturnUtil.Error("用户不存在");
-           }
-       }else {
-           return ReturnUtil.Error("未登录");
-       }
+        Subject subject = SecurityUtils.getSubject();
+        if(subject.isAuthenticated()){
+            PrincipalCollection principals = subject.getPrincipals();
+            Member member = (Member) principals.getPrimaryPrincipal();
+            return ReturnUtil.Success("登录成功", member);
+        }else{
+            return ReturnUtil.Error("用户不存在");
+        }
+
     }
 
 }

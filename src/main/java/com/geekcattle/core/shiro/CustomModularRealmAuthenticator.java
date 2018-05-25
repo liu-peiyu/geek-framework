@@ -64,12 +64,17 @@ public class CustomModularRealmAuthenticator extends ModularRealmAuthenticator {
     protected AuthenticationInfo doAuthenticate(AuthenticationToken authenticationToken)throws AuthenticationException {
         this.assertRealmsConfigured();
         Realm realm = null;
-        CustomerAuthenticationToken token = (CustomerAuthenticationToken) authenticationToken;
-        //判断是否是后台用户
-        if (token.getLoginType().equals("1")) {
-            realm = (Realm) this.definedRealms.get("customShiroRealm");
+        String apiToken = authenticationToken.getPrincipal().toString();
+        if(apiToken.substring(0,6).equals("Bearer")){
+            realm = (Realm) this.definedRealms.get("jwtShiroRealm");
         }else{
-            realm = (Realm) this.definedRealms.get("adminShiroRealm");
+            CustomerAuthenticationToken token = (CustomerAuthenticationToken) authenticationToken;
+            //判断是否是后台用户
+            if (token.getLoginType().equals("1")) {
+                realm = (Realm) this.definedRealms.get("customShiroRealm");
+            }else{
+                realm = (Realm) this.definedRealms.get("adminShiroRealm");
+            }
         }
         return this.doSingleRealmAuthentication(realm, authenticationToken);
     }

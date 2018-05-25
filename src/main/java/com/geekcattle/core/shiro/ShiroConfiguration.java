@@ -26,9 +26,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.DependsOn;
+import org.springframework.web.filter.DelegatingFilterProxy;
 
 import javax.servlet.Filter;
 import java.util.*;
@@ -175,6 +177,21 @@ public class ShiroConfiguration {
         return authorizationAttributeSourceAdvisor;
     }
 
+    @Bean(name = "filterProxy")
+    public FilterRegistrationBean filterProxy(){
+        logger.debug("ShiroConfiguration.filterProxy()");
+        FilterRegistrationBean registrationBean = new FilterRegistrationBean();
+        DelegatingFilterProxy proxy = new DelegatingFilterProxy();
+        proxy.setTargetFilterLifecycle(true);
+        proxy.setTargetBeanName("shiroFilter");
+        //该值缺省为false,表示生命周期由SpringApplicationContext管理,设置为true则表示由ServletContainer管理
+        registrationBean.setFilter(proxy);
+        /*List<String> urlPatterns = new ArrayList<String>();
+        urlPatterns.add("/*");
+        registrationBean.setUrlPatterns(urlPatterns);*/
+        return registrationBean;
+    }
+
     /**
      * ShiroFilterFactoryBean 处理拦截资源文件问题。
      * 注意：单独一个ShiroFilterFactoryBean配置是或报错的，以为在
@@ -184,8 +201,8 @@ public class ShiroConfiguration {
      * 2、当设置多个过滤器时，全部验证通过，才视为通过
      * 3、部分过滤器可指定参数，如perms，roles
      */
-    @Bean(name = "shirFilter")
-    public ShiroFilterFactoryBean shirFilter(DefaultWebSecurityManager securityManager){
+    @Bean(name = "shiroFilter")
+    public ShiroFilterFactoryBean shiroFilter(DefaultWebSecurityManager securityManager){
         logger.debug("ShiroConfiguration.shirFilter()");
         ShiroFilterFactoryBean shiroFilterFactoryBean  = new ShiroFilterFactoryBean();
         // 必须设置 SecurityManager

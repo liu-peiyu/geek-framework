@@ -3,6 +3,7 @@ package com.geekcattle.core.jwt;
 public class AccessToken {
 
     private String accessToken;
+    private String refreshToken;
     private String tokenType;
     private long expiresIn;
 
@@ -12,6 +13,14 @@ public class AccessToken {
 
     public void setAccessToken(String accessToken) {
         this.accessToken = accessToken;
+    }
+
+    public String getRefreshToken() {
+        return refreshToken;
+    }
+
+    public void setRefreshToken(String refreshToken) {
+        this.refreshToken = refreshToken;
     }
 
     public String getTokenType() {

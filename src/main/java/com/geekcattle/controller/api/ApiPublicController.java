@@ -94,13 +94,17 @@ public class ApiPublicController {
             session.setAttribute("loginType", LoginEnum.CUSTOMER.toString());
             String sessionId = session.getId().toString();
             Member member = (Member) SecurityUtils.getSubject().getPrincipals().getPrimaryPrincipal();
-            String accessToken = jwtUtil.createJWT(member, sessionId, jwtConfig.getSecret());
+            String accessToken = jwtUtil.generateAccessToken(member);
+            String refreshToken = jwtUtil.generateRefreshToken(member);
 
             //返回accessToken
             AccessToken accessTokenEntity = new AccessToken();
             accessTokenEntity.setAccessToken(accessToken);
+            accessTokenEntity.setRefreshToken(refreshToken);
             accessTokenEntity.setExpiresIn(jwtConfig.getExpiration());
             accessTokenEntity.setTokenType(jwtConfig.getTokenHead());
+
+            currentUser.logout();
 
             logger.info("前台用户[" + username + "]登录认证通过");
             return ReturnUtil.Success("登录成功", accessTokenEntity);

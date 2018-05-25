@@ -10,6 +10,8 @@ public class JwtConfig {
     private String jwtHeader;
     @Value("${jwt.expiration}")
     private Long expiration;
+    @Value("${jwt.refresh_expiration}")
+    private Long refreshExpiration;
     @Value("${jwt.token.head}")
     private String tokenHead;
     @Value("${jwt.secret}")
@@ -30,6 +32,14 @@ public class JwtConfig {
 
     public void setExpiration(Long expiration) {
         this.expiration = expiration;
+    }
+
+    public Long getRefreshExpiration() {
+        return refreshExpiration;
+    }
+
+    public void setRefreshExpiration(Long refreshExpiration) {
+        this.refreshExpiration = refreshExpiration;
     }
 
     public String getTokenHead() {
