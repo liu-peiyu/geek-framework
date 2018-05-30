@@ -1,29 +1,29 @@
 ##更新记录
-更新日期
 
-更新pom.xml
+近段时间一直忙公司的项目，忽略的本项目的更新，最近有时间了，结合ISSUES修复了jwt的一些不理想之处，更新内容如下
 
-<dependency>
-    <groupId>org.apache.shiro</groupId>
-    <artifactId>shiro-spring</artifactId>
-    <version>1.4.0</version>
-</dependency>        
-        
-<dependency>
-    <groupId>org.apache.shiro</groupId>
-    <artifactId>shiro-ehcache</artifactId>
-    <version>1.4.0</version>
-</dependency>
 
-更新日期2017-11-07
+###更新日期2018-05-30
 
-1、项目整合redis存储，shiro可使用redisSession可使用于集群访问
+* 增加了JWT工具类
 
-2、项目增加jwt模式
+* 修复了jwt验证成功之后用户信息的传递，通过shiro的token登录传递，移除了以前的参数传递方法，此方法更为灵活好用
 
-3、增加默认启动模式为开发模式
+* 引入了refresh_token的概念
 
-4、优化已知BUG
+
+###更新日期2017-11-07
+
+* 项目整合redis存储，shiro可使用redisSession可使用于集群访问
+
+* 项目增加jwt模式
+
+* 增加默认启动模式为开发模式
+
+* 优化已知BUG
+
+
+***
 
 # SpringBootAdmin 微服务快速开发脚手架
 
@@ -32,7 +32,7 @@
 SpringBootAdmin是基于多个优秀的开源项目，高度整合封装而成的高效，高性能，强安全性的**开源**Java微服务快速开发框架。
 
 SpringBootAdmin是在SpringBoot基础上搭建的一个Java基础开发框架，以Spring MVC为模型视图控制器，MyBatis为数据访问层，
-Apache Shiro为权限授权层，Ehcahe对常用数据进行缓存。
+Apache Shiro为权限授权层，Ehcahe或**redis**对常用数据进行缓存。
 
 SpringBootAdmin主要定位于微应用的开发，已内置后台系统的基础功能，用户管理、角色管理、权限管理、会员管理、日志管理等；前台已经实现用户登录，注册等基础功能。
 同时前后台会员实现分表管理，可扩展多角色系统、多权限系统。
@@ -93,7 +93,7 @@ SpringBootAdmin主要定位于微应用的开发，已内置后台系统的基�
 
 ## 演示地址
 
-* <http://demo.geekcattle.cc/>  &nbsp; 用户名：admin &nbsp; 密码：admin 
+* <http://demo.geekcattle.cc/>  &nbsp; 用户名：admin  密码：admin 
 
 PS：测试数据库会不定期恢复。
 
@@ -137,3 +137,7 @@ PS：测试数据库会不定期恢复。
 ## 个人技能
 
 JAVA、PHP、HTML、CSS、JQ、BootStrap、Vue、Mysql、Redis、SVN、GIT、Apache、Nginx、Tomcat、WindowServer、Ubuntu
+
+## 捐赠支持
+
+![icon](https://github.com/liu-peiyu/SpringBootAdmin/blob/master/src/main/resources/static/assets/pay.jpg?raw=true)
