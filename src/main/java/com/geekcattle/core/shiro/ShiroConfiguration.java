@@ -4,10 +4,13 @@
 
 package com.geekcattle.core.shiro;
 
+import com.geekcattle.core.jwt.JwtShiroRealm;
 import com.geekcattle.core.redis.RedisCacheManager;
 import com.geekcattle.core.redis.RedisSessionDAO;
+import com.geekcattle.filter.ApiFilter;
 import com.geekcattle.filter.CustomerLogoutFilter;
 import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
+import org.apache.shiro.authc.pam.AtLeastOneSuccessfulStrategy;
 import org.apache.shiro.authc.pam.AuthenticationStrategy;
 import org.apache.shiro.authc.pam.FirstSuccessfulStrategy;
 import org.apache.shiro.authz.ModularRealmAuthorizer;
@@ -18,6 +21,7 @@ import org.apache.shiro.spring.LifecycleBeanPostProcessor;
 import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
+import org.apache.shiro.web.mgt.DefaultWebSubjectFactory;
 import org.apache.shiro.web.servlet.Cookie;
 import org.apache.shiro.web.servlet.ShiroHttpSession;
 import org.apache.shiro.web.servlet.SimpleCookie;
@@ -46,6 +50,18 @@ import java.util.*;
 public class ShiroConfiguration {
 
     private Logger logger = LoggerFactory.getLogger(this.getClass());
+
+    /**
+     * token身份认证realm;
+     * @return
+     */
+    @Bean(name="jwtShiroRealm")
+    public JwtShiroRealm jwtShiroRealm(){
+        logger.debug("ShiroConfiguration.jwtShiroRealm()");
+        JwtShiroRealm jwtShiroRealm = new JwtShiroRealm();
+        jwtShiroRealm.setCredentialsMatcher(customHashedCredentialsMatcher());
+        return new JwtShiroRealm();
+    }
 
     /**
      * 前台身份认证realm;
@@ -147,6 +163,7 @@ public class ShiroConfiguration {
         Map<String, Object> shiroAuthenticatorRealms = new HashMap<>();
         shiroAuthenticatorRealms.put("adminShiroRealm", adminShiroRealm());
         shiroAuthenticatorRealms.put("customShiroRealm", customShiroRealm());
+        shiroAuthenticatorRealms.put("jwtShiroRealm", jwtShiroRealm());
 
         Collection<Realm> shiroAuthorizerRealms = new ArrayList<Realm>();
         shiroAuthorizerRealms.add(adminShiroRealm());
@@ -157,6 +174,7 @@ public class ShiroConfiguration {
         customModularRealmAuthenticator.setAuthenticationStrategy(authenticationStrategy());
         securityManager.setAuthenticator(customModularRealmAuthenticator);
         securityManager.setRealms(shiroAuthorizerRealms);
+        securityManager.setSubjectFactory(new DefaultWebSubjectFactory());
         //注入缓存管理器;
         securityManager.setCacheManager(redisCacheManager());
         securityManager.setSessionManager(defaultWebSessionManager());
@@ -212,6 +230,7 @@ public class ShiroConfiguration {
         filters.put("admin", new AdminFormAuthenticationFilter());
         filters.put("custom", new CustomFormAuthenticationFilter());
         filters.put("logout", new CustomerLogoutFilter());
+        filters.put("jwt", new ApiFilter());
         shiroFilterFactoryBean.setFilters(filters);
         //拦截器.
         Map<String,String> filterChainDefinitionMap = new LinkedHashMap<String,String>();
@@ -240,6 +259,8 @@ public class ShiroConfiguration {
         //配置记住我或认证通过可以访问的地址
         filterChainDefinitionMap.put("/console/**", "admin");
         filterChainDefinitionMap.put("/member/**", "custom");
+
+        filterChainDefinitionMap.put("/api/member/**", "jwt");
         // 如果不设置默认会自动寻找Web工程根目录下的"/login.jsp"页面
         //shiroFilterFactoryBean.setLoginUrl("/member/login");
         // 登录成功后要跳转的链接
@@ -261,7 +282,7 @@ public class ShiroConfiguration {
     @Bean(name="authenticationStrategy")
     public AuthenticationStrategy authenticationStrategy() {
         logger.debug("ShiroConfiguration.authenticationStrategy()");
-        return new FirstSuccessfulStrategy();
+        return new AtLeastOneSuccessfulStrategy();
     }
 
     /**

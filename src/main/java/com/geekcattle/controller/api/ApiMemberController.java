@@ -28,12 +28,12 @@ public class ApiMemberController {
 
 
     @RequestMapping(value = "/index", method = RequestMethod.GET)
-    public ModelMap index(HttpServletRequest request){
+    public ModelMap index(){
         Subject subject = SecurityUtils.getSubject();
         if(subject.isAuthenticated()){
             PrincipalCollection principals = subject.getPrincipals();
             Member member = (Member) principals.getPrimaryPrincipal();
-            return ReturnUtil.Success("登录成功", member);
+            return ReturnUtil.Success("获取用户信息成功", member);
         }else{
             return ReturnUtil.Error("用户不存在");
         }

@@ -4,8 +4,11 @@
 
 package com.geekcattle.core.jwt;
 
+import com.geekcattle.core.LoginEnum;
+import com.geekcattle.core.shiro.CustomerAuthenticationToken;
 import com.geekcattle.model.member.Member;
 import com.geekcattle.service.member.MemberService;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
@@ -15,6 +18,8 @@ import org.apache.shiro.util.ByteSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.Optional;
 
 /**
  * 前台身份校验核心类
@@ -26,19 +31,20 @@ public class JwtShiroRealm extends AuthorizingRealm {
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
+    private MemberService memberService;
+
+    @Autowired
+    private JwtConfig jwtConfig;
+
+    @Autowired
     private JwtUtil jwtUtil;
 
 
-    @Autowired
-    private MemberService memberService;
 
-    /**
-     * 必须重写此方法，不然Shiro会报错
-     */
-    @Override
+/*    @Override
     public boolean supports(AuthenticationToken token) {
         return token instanceof JwtToken;
-    }
+    }*/
 
 
     /**
@@ -51,35 +57,40 @@ public class JwtShiroRealm extends AuthorizingRealm {
      */
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
-        logger.info("前台登录认证：CustomShiroRealm.doGetAuthenticationInfo()");
-        //获取用户的输入的账号.
-        String tmpToken = (String)token.getPrincipal();
-        String verifyToken = tmpToken.substring(7);
-        String username = jwtUtil.getUsernameFromToken(verifyToken);
-        logger.info("登录用户："+username);
-        if (username == null) {
-            throw new AuthenticationException("token invalid");
+        logger.info("前台登录认证：JwtShiroRealm.doGetAuthenticationInfo()");
+        String auth = (String) token.getCredentials();
+        if (auth == null || auth.length() < 7 || StringUtils.isEmpty(auth)) {
+            throw new AuthenticationException("token为空");
         }
+        String headStr = auth.substring(0, 6);
+        if (headStr.compareTo(jwtConfig.getTokenHead()) != 0) {
+            throw new AuthenticationException("token格式错误");
+        }
+        String tmpAuth = auth.substring(7, auth.length());
+        String userName = jwtUtil.getUsernameFromToken(tmpAuth);
 
-        //通过username从数据库中查找 User对象，如果找到，没找到.
-        //实际项目中，这里可以根据实际情况做缓存，如果不做，Shiro自己也是有时间间隔机制，2分钟内不会重复执行该方法
-        Member userInfo = memberService.findByUsername(username);
+        if (userName == null) {
+            throw new AuthenticationException("用户名错误");
+        }
+        Member userInfo = memberService.findByUsername(userName);
         if(userInfo == null){
             throw new AuthenticationException("User didn't existed!");
         }
+        if(!jwtUtil.validateToken(tmpAuth, userInfo)){
+            throw new AuthenticationException("token验证失败");
+        }
+        logger.info("登录用户："+userName);
+        //通过username从数据库中查找 User对象，如果找到，没找到.
+        //实际项目中，这里可以根据实际情况做缓存，如果不做，Shiro自己也是有时间间隔机制，2分钟内不会重复执行该方法
+
         if("0".equals(userInfo.getState().toString())) {
             throw new LockedAccountException(); //帐号锁定
         }
 
-        if(jwtUtil.validateToken(verifyToken, userInfo)){
-            throw new AuthenticationException("Token check fail");
-        }
-
         SimpleAuthenticationInfo authenticationInfo = new SimpleAuthenticationInfo(
                 userInfo, //用户名
-                token.getCredentials().toString(), //密码
-                ByteSource.Util.bytes(userInfo.getSalt()),//salt=username+salt
-                userInfo.getAccount()  //realm name
+                auth, //密码
+                userInfo.getAccount()
         );
 
         return authenticationInfo;

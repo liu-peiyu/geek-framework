@@ -10,7 +10,7 @@ package com.geekcattle.core;
  */
 public enum  LoginEnum {
 
-    CUSTOMER("1"),ADMIN("2");
+    ADMIN("1"),CUSTOMER("2"),TOKEN("3");
 
     private String type;
 

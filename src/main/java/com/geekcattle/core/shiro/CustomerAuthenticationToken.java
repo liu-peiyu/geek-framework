@@ -26,9 +26,18 @@ public class CustomerAuthenticationToken extends UsernamePasswordToken {
      */
     private String loginForm;
 
+    private String token;
+
     public CustomerAuthenticationToken(String username, String password, boolean rememberMe) {
         super(username, password, rememberMe);
     }
+
+    public CustomerAuthenticationToken(String token, String loginType){
+        this.token = token;
+        this.loginType = loginType;
+    }
+
+
 
     public String getCaptcha() {
         return captcha;
@@ -52,5 +61,32 @@ public class CustomerAuthenticationToken extends UsernamePasswordToken {
 
     public void setLoginForm(String loginForm) {
         this.loginForm = loginForm;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
+
+    @Override
+    public Object getPrincipal() {
+        if(this.token != null){
+            return this.token;
+        }else{
+            return this.getUsername();
+        }
+
+    }
+
+    @Override
+    public Object getCredentials() {
+        if(this.token != null){
+            return this.token;
+        }else{
+            return this.getPassword();
+        }
     }
 }
