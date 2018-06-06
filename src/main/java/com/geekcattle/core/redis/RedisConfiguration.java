@@ -13,7 +13,10 @@ import org.springframework.cache.annotation.CachingConfigurerSupport;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.redis.cache.RedisCacheConfiguration;
 import org.springframework.data.redis.cache.RedisCacheManager;
+import org.springframework.data.redis.cache.RedisCacheWriter;
+import org.springframework.data.redis.connection.RedisStandaloneConfiguration;
 import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
 import org.springframework.data.redis.core.*;
 import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
@@ -79,23 +82,25 @@ public class RedisConfiguration extends CachingConfigurerSupport{
 
     @Bean
     public JedisConnectionFactory jedisConnectionFactory(){
-        JedisConnectionFactory jedisConnectionFactory = new JedisConnectionFactory();
-        jedisConnectionFactory.setHostName(host);
-        jedisConnectionFactory.setPort(port);
-        jedisConnectionFactory.setPassword(password);
-        jedisConnectionFactory.setTimeout(timeout);
-        jedisConnectionFactory.setPoolConfig(getJedisPoolConfig());
-        jedisConnectionFactory.setUsePool(true);
+        RedisStandaloneConfiguration redisStandaloneConfiguration = new RedisStandaloneConfiguration();
+        redisStandaloneConfiguration.setHostName(host);
+        redisStandaloneConfiguration.setPassword(password);
+        redisStandaloneConfiguration.setPort(port);
+        JedisConnectionFactory jedisConnectionFactory = new JedisConnectionFactory(redisStandaloneConfiguration);
         logger.info("JedisConnectionFactory注入成功！！");
         return jedisConnectionFactory;
     }
 
     @Bean
-    public CacheManager cacheManager(RedisTemplate redisTemplate) {
+    public CacheManager cacheManager(JedisConnectionFactory jedisConnectionFactory) {
         logger.info("cacheManager注入成功！！");
-        RedisCacheManager redisCacheManager = new RedisCacheManager(redisTemplate);
+
+        RedisCacheConfiguration redisCacheConfiguration = RedisCacheConfiguration.defaultCacheConfig();
+
+        RedisCacheWriter redisCacheWriter = RedisCacheWriter.nonLockingRedisCacheWriter(jedisConnectionFactory);
+        RedisCacheManager redisCacheManager = new RedisCacheManager(redisCacheWriter, redisCacheConfiguration);
         //设置缓存过期时间
-        redisCacheManager.setDefaultExpiration(1800);//秒
+
         return redisCacheManager;
     }
 

@@ -4,11 +4,13 @@
 
 package com.geekcattle.core.shiro;
 
+import com.geekcattle.core.j2cache.cache.support.J2CacheCacheManger;
 import com.geekcattle.core.jwt.JwtShiroRealm;
 import com.geekcattle.core.redis.RedisCacheManager;
 import com.geekcattle.core.redis.RedisSessionDAO;
 import com.geekcattle.filter.ApiFilter;
 import com.geekcattle.filter.CustomerLogoutFilter;
+import net.oschina.j2cache.CacheChannel;
 import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
 import org.apache.shiro.authc.pam.AtLeastOneSuccessfulStrategy;
 import org.apache.shiro.authc.pam.AuthenticationStrategy;
@@ -110,6 +112,11 @@ public class ShiroConfiguration {
         return new RedisCacheManager();
     }
 
+    @Bean(name = "j2cacheCacheManager")
+    public J2CacheCacheManger j2CacheCacheManger(){
+        return new J2CacheCacheManger();
+    }
+
     @Bean(name = "redisSessionDAO")
     public RedisSessionDAO redisSessionDAO(){
         logger.debug("ShiroConfiguration.redisSessionDAO()");
@@ -176,7 +183,8 @@ public class ShiroConfiguration {
         securityManager.setRealms(shiroAuthorizerRealms);
         securityManager.setSubjectFactory(new DefaultWebSubjectFactory());
         //注入缓存管理器;
-        securityManager.setCacheManager(redisCacheManager());
+        //securityManager.setCacheManager(redisCacheManager());
+        securityManager.setCacheManager(j2CacheCacheManger());
         securityManager.setSessionManager(defaultWebSessionManager());
         return securityManager;
     }

@@ -4,8 +4,7 @@
 
 package com.geekcattle.model.valid;
 
-import org.hibernate.validator.constraints.NotEmpty;
-//更多验证规则 http://www.iteye.com/topic/1144595
+import javax.validation.constraints.NotEmpty;
 
 public class ValidAdmin {
 

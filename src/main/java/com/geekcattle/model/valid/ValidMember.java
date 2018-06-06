@@ -4,7 +4,7 @@
 
 package com.geekcattle.model.valid;
 
-import org.hibernate.validator.constraints.NotEmpty;
+import javax.validation.constraints.NotEmpty;
 
 /**
  * author geekcattle
