@@ -8,6 +8,7 @@ import org.apache.shiro.cache.Cache;
 import org.apache.shiro.cache.CacheException;
 import org.apache.shiro.util.Destroyable;
 import org.apache.shiro.util.Initializable;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * {@link Cache} implementation for J2Cache.
@@ -16,7 +17,8 @@ import org.apache.shiro.util.Initializable;
  */
 public class J2CacheCacheManger extends AbstractCacheManager implements Initializable, Destroyable {
 
-	protected CacheChannel channel;
+	@Autowired
+	private CacheChannel channel;
 
 	public void init() throws ShiroException {
 		channel = J2Cache.getChannel();

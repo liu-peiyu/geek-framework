@@ -3,7 +3,7 @@ package com.geekcattle.core.j2cache.autoconfigure;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 @ConfigurationProperties(prefix = "j2cache")
-public class J2CacheConfig {
+public class J2CacheExtendConfig {
 
     private String configLocation = "/j2cache.properties";
 

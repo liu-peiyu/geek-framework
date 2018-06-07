@@ -25,6 +25,9 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
 
+
+import java.time.Duration;
+
 /**
  * author geekcattle
  * date 2017/3/22 0022 下午 15:48
@@ -40,17 +43,18 @@ public class RedisConfiguration extends CachingConfigurerSupport{
     @Value("${spring.redis.port}")
     private int port;
 
-    @Value("${spring.redis.timeout}")
-    private int timeout;
-
-    @Value("${spring.redis.pool.max-idle}")
-    private int maxIdle;
-
-    @Value("${spring.redis.pool.max-wait}")
-    private long maxWaitMillis;
-
     @Value("${spring.redis.password}")
     private String password;
+
+    @Value("${redis.timeout}")
+    private int timeout;
+
+    @Value("${redis.pool.max-idle}")
+    private int maxIdle;
+
+    @Value("${redis.pool.max-wait}")
+    private long maxWaitMillis;
+
 
     @Value("${shiro.session.session-prefix}")
     private String sessionPrefix;
@@ -63,7 +67,6 @@ public class RedisConfiguration extends CachingConfigurerSupport{
 
     @Value("${shiro.cache.cache-time}")
     private int cacheTime;
-
 
     @Bean
     public JedisPool redisPoolFactory() {
