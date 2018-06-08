@@ -4,18 +4,15 @@
 
 package com.geekcattle.core.shiro;
 
-import com.geekcattle.core.j2cache.cache.support.J2CacheCacheManger;
+import com.geekcattle.core.j2cache.cache.support.ShiroJ2CacheCacheManager;
 import com.geekcattle.core.jwt.JwtShiroRealm;
 import com.geekcattle.core.redis.RedisCacheManager;
 import com.geekcattle.core.redis.RedisSessionDAO;
-import com.geekcattle.filter.ApiFilter;
-import com.geekcattle.filter.CustomerLogoutFilter;
-import net.oschina.j2cache.CacheChannel;
+import com.geekcattle.core.filter.JwtFilter;
+import com.geekcattle.core.filter.CustomerLogoutFilter;
 import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
 import org.apache.shiro.authc.pam.AtLeastOneSuccessfulStrategy;
 import org.apache.shiro.authc.pam.AuthenticationStrategy;
-import org.apache.shiro.authc.pam.FirstSuccessfulStrategy;
-import org.apache.shiro.authz.ModularRealmAuthorizer;
 import org.apache.shiro.cache.ehcache.EhCacheManager;
 import org.apache.shiro.realm.Realm;
 import org.apache.shiro.session.SessionListener;
@@ -112,9 +109,9 @@ public class ShiroConfiguration {
         return new RedisCacheManager();
     }
 
-    @Bean(name = "j2cacheCacheManager")
-    public J2CacheCacheManger j2CacheCacheManger(){
-        return new J2CacheCacheManger();
+    @Bean(name = "shiroJ2CacheCacheManager")
+    public ShiroJ2CacheCacheManager shiroJ2CacheCacheManager(){
+        return new ShiroJ2CacheCacheManager();
     }
 
     @Bean(name = "redisSessionDAO")
@@ -184,7 +181,7 @@ public class ShiroConfiguration {
         securityManager.setSubjectFactory(new DefaultWebSubjectFactory());
         //注入缓存管理器;
         //securityManager.setCacheManager(redisCacheManager());
-        securityManager.setCacheManager(j2CacheCacheManger());
+        securityManager.setCacheManager(shiroJ2CacheCacheManager());
         securityManager.setSessionManager(defaultWebSessionManager());
         return securityManager;
     }
@@ -238,7 +235,7 @@ public class ShiroConfiguration {
         filters.put("admin", new AdminFormAuthenticationFilter());
         filters.put("custom", new CustomFormAuthenticationFilter());
         filters.put("logout", new CustomerLogoutFilter());
-        filters.put("jwt", new ApiFilter());
+        filters.put("jwt", new JwtFilter());
         shiroFilterFactoryBean.setFilters(filters);
         //拦截器.
         Map<String,String> filterChainDefinitionMap = new LinkedHashMap<String,String>();

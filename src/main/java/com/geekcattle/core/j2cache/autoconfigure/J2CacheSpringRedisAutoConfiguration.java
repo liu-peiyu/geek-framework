@@ -1,6 +1,7 @@
 package com.geekcattle.core.j2cache.autoconfigure;
 
 import com.geekcattle.core.j2cache.cache.support.util.J2CacheSerializer;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;

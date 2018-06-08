@@ -25,7 +25,8 @@ public class J2CacheAutoConfiguration {
     @Bean
     @DependsOn("springUtil")
     public CacheChannel cacheChannel() throws IOException {
-        J2CacheConfig cacheConfig = new J2CacheConfig().initFromConfig(cacheExtendConfig.getConfigLocation());
+        J2CacheConfig cacheConfig = new J2CacheConfig();
+        cacheConfig = cacheConfig.initFromConfig(cacheExtendConfig.getConfigLocation());
         J2CacheBuilder builder = J2CacheBuilder.init(cacheConfig);
         return builder.getChannel();
     }

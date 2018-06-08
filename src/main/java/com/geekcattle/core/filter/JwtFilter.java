@@ -1,4 +1,4 @@
-package com.geekcattle.filter;
+package com.geekcattle.core.filter;
 
 import com.geekcattle.core.LoginEnum;
 import com.geekcattle.core.shiro.CustomerAuthenticationToken;
@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Objects;
 
-public class ApiFilter extends BasicHttpAuthenticationFilter {
+public class JwtFilter extends BasicHttpAuthenticationFilter {
 
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 

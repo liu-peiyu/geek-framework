@@ -1,4 +1,4 @@
-package com.geekcattle.filter;
+package com.geekcattle.core.filter;
 
 import com.geekcattle.core.redis.RedisCacheManager;
 import com.geekcattle.core.shiro.AdminShiroRealm;

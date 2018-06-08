@@ -4,7 +4,6 @@
 
 package com.geekcattle.core.redis;
 
-import com.geekcattle.util.JsonUtil;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.session.mgt.eis.AbstractSessionDAO;
 import org.slf4j.Logger;
