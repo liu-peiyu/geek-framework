@@ -58,6 +58,7 @@ public class AdminController {
 
     @RequiresPermissions("admin:edit")
     @RequestMapping(value = "/from", method = {RequestMethod.GET})
+    @Transactional
     public String from(Admin admin, Model model) {
         String checkRoleId = "";
         if (!StringUtils.isEmpty(admin.getUid())) {
