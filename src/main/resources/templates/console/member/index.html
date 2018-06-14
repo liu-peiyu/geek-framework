@@ -22,13 +22,13 @@
         $table.bootstrapTable({
             height : tableModel.getHeight(),
             idField : "uid",
-            columns : [[
+            columns : [
                 {title: "用户名", field: "account" },
                 {title: "状态", field: "state",formatter : tableModel.getState},
                 {title: "创建时间", field: "createdAt", sortable: true},
                 {title: "更新日期", field: "updatedAt", sortable: true},
                 {title: "操作", field: "operate", align: 'center', events: operateEvents, formatter: operateFormatter}
-            ]],
+            ],
             url : '/console/member/list',
             queryParams: function(params){
                 return params;

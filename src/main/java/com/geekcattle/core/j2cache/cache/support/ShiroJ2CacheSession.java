@@ -1,42 +1,33 @@
-/*
- * Copyright (c) 2017 <l_iupeiyu@qq.com> All rights reserved.
- */
+package com.geekcattle.core.j2cache.cache.support;
 
-package com.geekcattle.core.redis;
-
+import com.geekcattle.core.redis.RedisConfiguration;
+import net.oschina.j2cache.CacheChannel;
+import net.oschina.j2cache.CacheObject;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.session.mgt.eis.AbstractSessionDAO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Repository;
-
 
 import javax.annotation.Resource;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.concurrent.TimeUnit;
 
-/**
- * redis实现共享session
- * author geekcattle
- * date 2017/3/22 0022 下午 15:32
- */
-@Repository("redisSessionDAO")
-public class RedisSessionDAO extends AbstractSessionDAO {
+@Repository("shiroJ2CacheSession")
+public class ShiroJ2CacheSession extends AbstractSessionDAO {
 
     private Logger logger = LoggerFactory.getLogger(this.getClass());
+
+    @Autowired
+    private CacheChannel channel;
 
     @Resource
     private RedisConfiguration redisConfiguration;
 
-    @Autowired
-    private RedisTemplate<String, Object> redisTemplate;
-
     private String getKey(String originalKey) {
-        return redisConfiguration.getSessionPrefix() +":"+ originalKey;
+        return redisConfiguration.getSessionPrefix() + originalKey;
     }
 
     // 创建session，保存到数据库
@@ -45,7 +36,7 @@ public class RedisSessionDAO extends AbstractSessionDAO {
         Serializable sessionId = this.generateSessionId(session);
         this.assignSessionId(session, sessionId);
         logger.debug("createSession:{}", sessionId.toString());
-        redisTemplate.opsForValue().set(getKey(sessionId.toString()), session,redisConfiguration.getSessionTime(),TimeUnit.MINUTES);
+        channel.set(redisConfiguration.getSessionPrefix(), sessionId.toString(), session);
         return sessionId;
     }
 
@@ -56,7 +47,8 @@ public class RedisSessionDAO extends AbstractSessionDAO {
         // 先从缓存中获取session，如果没有再去数据库中获取
         Session session = null;
         if(session == null){
-            session = (Session) redisTemplate.opsForValue().get(getKey(sessionId.toString()));
+            Object cacheObject = (Object) channel.get(redisConfiguration.getSessionPrefix(), sessionId.toString()).getValue();
+            session = (Session) cacheObject;
         }
         return session;
     }
@@ -66,14 +58,14 @@ public class RedisSessionDAO extends AbstractSessionDAO {
     public void update(Session session) {
         logger.debug("updateSession:{}", session.getId().toString());
         String key = getKey(session.getId().toString());
-        redisTemplate.opsForValue().set(key, session,redisConfiguration.getSessionTime(), TimeUnit.MINUTES);
+        channel.set(redisConfiguration.getSessionPrefix(), session.getId().toString(), session);
     }
 
     // 删除session
     @Override
     public void delete(Session session) {
         logger.debug("delSession:{}", session.getId());
-        redisTemplate.delete(getKey(session.getId().toString()));
+        channel.evict(redisConfiguration.getSessionPrefix(), session.getId().toString());
     }
 
     @Override

@@ -5,6 +5,7 @@
 package com.geekcattle.core.shiro;
 
 import com.geekcattle.core.j2cache.cache.support.ShiroJ2CacheCacheManager;
+import com.geekcattle.core.j2cache.cache.support.ShiroJ2CacheSession;
 import com.geekcattle.core.jwt.JwtShiroRealm;
 import com.geekcattle.core.redis.RedisCacheManager;
 import com.geekcattle.core.redis.RedisSessionDAO;
@@ -70,7 +71,9 @@ public class ShiroConfiguration {
     public CustomShiroRealm customShiroRealm(){
         logger.debug("ShiroConfiguration.customShiroRealm()");
         CustomShiroRealm customShiroRealm = new CustomShiroRealm();
-        customShiroRealm.setCacheManager(redisCacheManager());//redis权限缓存 默认缓存可注释此行
+        //customShiroRealm.setCacheManager(redisCacheManager());//单redis缓存
+        customShiroRealm.setCacheManager(shiroJ2CacheCacheManager());//j2cache二级缓存
+        //redisCacheManager和shiroJ2CacheCacheManager以上两种模式可任选其一，现在默认使用J2Cache
         customShiroRealm.setCredentialsMatcher(customHashedCredentialsMatcher());
         return customShiroRealm;
     }
@@ -83,7 +86,9 @@ public class ShiroConfiguration {
     public AdminShiroRealm adminShiroRealm(){
         logger.debug("ShiroConfiguration.adminShiroRealm()");
         AdminShiroRealm adminShiroRealm = new AdminShiroRealm();
-        adminShiroRealm.setCacheManager(redisCacheManager());//redis权限缓存 默认缓存可注释此行
+        //adminShiroRealm.setCacheManager(redisCacheManager());//单redis缓存
+        adminShiroRealm.setCacheManager(shiroJ2CacheCacheManager());//j2cache二级缓存
+        //redisCacheManager和shiroJ2CacheCacheManager以上两种模式可任选其一，现在默认使用J2Cache
         adminShiroRealm.setCredentialsMatcher(adminHashedCredentialsMatcher());
         return adminShiroRealm;
     }
@@ -109,15 +114,22 @@ public class ShiroConfiguration {
         return new RedisCacheManager();
     }
 
-    @Bean(name = "shiroJ2CacheCacheManager")
-    public ShiroJ2CacheCacheManager shiroJ2CacheCacheManager(){
-        return new ShiroJ2CacheCacheManager();
-    }
-
     @Bean(name = "redisSessionDAO")
     public RedisSessionDAO redisSessionDAO(){
         logger.debug("ShiroConfiguration.redisSessionDAO()");
         return new RedisSessionDAO();
+    }
+
+    @Bean(name = "shiroJ2CacheCacheManager")
+    public ShiroJ2CacheCacheManager shiroJ2CacheCacheManager(){
+        logger.debug("ShiroConfiguration.shiroJ2CacheCacheManager()");
+        return new ShiroJ2CacheCacheManager();
+    }
+
+    @Bean(name = "shiroJ2CacheSession")
+    public ShiroJ2CacheSession shiroJ2CacheSession(){
+        logger.debug("ShiroConfiguration.shiroJ2CacheSession()");
+        return new ShiroJ2CacheSession();
     }
 
     @Bean(name = "customSessionListener")
@@ -135,7 +147,9 @@ public class ShiroConfiguration {
         logger.debug("ShiroConfiguration.defaultWebSessionManager()");
         DefaultWebSessionManager sessionManager = new DefaultWebSessionManager();
         //用户信息必须是序列化格式，要不创建用户信息创建不过去，此坑很大，
-        sessionManager.setSessionDAO(redisSessionDAO());//如不想使用REDIS可注释此行
+        //sessionManager.setSessionDAO(redisSessionDAO());//单redis的session存储
+        sessionManager.setSessionDAO(shiroJ2CacheSession());//J2Cache的session存储
+        //redisSessionDAO和shiroJ2CacheSession以上两种模式可任选其一，现在默认使用J2Cache
         Collection<SessionListener> sessionListeners = new ArrayList<>();
         sessionListeners.add(customSessionListener());
         sessionManager.setSessionListeners(sessionListeners);
@@ -182,6 +196,7 @@ public class ShiroConfiguration {
         //注入缓存管理器;
         //securityManager.setCacheManager(redisCacheManager());
         securityManager.setCacheManager(shiroJ2CacheCacheManager());
+        //redisCacheManager和shiroJ2CacheCacheManager以上两种模式可任选其一，现在默认使用J2Cache
         securityManager.setSessionManager(defaultWebSessionManager());
         return securityManager;
     }

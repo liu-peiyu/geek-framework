@@ -65,15 +65,6 @@ public class AdminShiroRealm extends AuthorizingRealm {
             throw new LockedAccountException(); //帐号锁定
         }
 
-       /*
-        * 获取权限信息:这里没有进行实现，
-        * 请自行根据UserInfo,Role,Permission进行实现；
-        * 获取之后可以在前端for循环显示所有链接;
-        */
-        //userInfo.setPermissions(userService.findPermissions(member));
-
-        //账号判断;
-
         //加密方式;
         //交给AuthenticatingRealm使用CredentialsMatcher进行密码匹配，如果觉得人家的不好可以自定义实现
         SimpleAuthenticationInfo authenticationInfo = new SimpleAuthenticationInfo(
@@ -113,12 +104,12 @@ public class AdminShiroRealm extends AuthorizingRealm {
         logger.info("后台权限校验-->AdminShiroRealm.doGetAuthorizationInfo()");
 
         SimpleAuthorizationInfo authorizationInfo = new SimpleAuthorizationInfo();
-        Admin userInfo  = (Admin)principals.getPrimaryPrincipal();
+        Admin admin  = (Admin)principals.getPrimaryPrincipal();
         Set<String> menus = null;
-        if(userInfo.getIsSystem() == 1) {
+        if(admin.getIsSystem() == 1) {
             menus = menuService.getAllMenuCode();
         }else{
-            menus = menuService.findMenuCodeByUserId(userInfo.getUid());
+            menus = menuService.findMenuCodeByUserId(admin.getUid());
         }
         authorizationInfo.setStringPermissions(menus);
         return authorizationInfo;

@@ -1,5 +1,7 @@
 import com.geekcattle.Application;
 import junit.framework.TestCase;
+import net.oschina.j2cache.CacheChannel;
+import net.oschina.j2cache.J2Cache;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
@@ -8,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.web.WebAppConfiguration;
 import redis.clients.jedis.JedisPool;
 
 /**
@@ -17,7 +18,6 @@ import redis.clients.jedis.JedisPool;
  */
 @RunWith(SpringJUnit4ClassRunner.class) // SpringJUnit支持，由此引入Spring-Test框架支持！
 @SpringBootTest(classes = Application.class)
-@WebAppConfiguration // 由于是Web项目，Junit需要模拟ServletContext，因此我们需要给我们的测试类加上@WebAppConfiguration。
 public class TestApp extends TestCase {
 
     private static Logger logger = LoggerFactory.getLogger(TestApp.class);
@@ -40,6 +40,20 @@ public class TestApp extends TestCase {
         logger.info("info");
         logger.warn("warn");
         logger.error("error");
+    }
+
+    @Test
+    public void testJ2Cache(){
+        CacheChannel cache = J2Cache.getChannel();
+
+        //缓存操作
+        System.out.println(cache.get("default", "1"));
+        cache.set("default", "1", "Hello J2Cache");
+        System.out.println(cache.get("default", "1"));
+        cache.evict("default", "1");
+
+
+        cache.close();
     }
 
 

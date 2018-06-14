@@ -24,8 +24,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         logger.info("执行InterceptorRegistry");
-        //registry.addInterceptor(resourceInterceptor);
-        registry.addInterceptor(resourceInterceptor).addPathPatterns("/**").excludePathPatterns("/static/**");
+        registry.addInterceptor(resourceInterceptor);
     }
 
 }

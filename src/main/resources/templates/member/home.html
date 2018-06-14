@@ -1,11 +1,26 @@
 <!DOCTYPE html>
 <html lang="en"
       xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8" />
-    <title>登录成功</title>
+<head th:include="member/header::head('会员中心')">
 </head>
 <body>
-<h2 th:text="${account}+'登录成功'"></h2><a href="/member/logout">退出</a>
+
+<div class="container">
+
+    <!-- Main component for a primary marketing message or call to action -->
+    <div class="jumbotron">
+        <h1 th:text="${account}+'您好'"></h1>
+        <p>你已经成功登录GF前台会员中心，可以根据您的喜好来开发后续的功能了^_^^_^^_^^_^^_^.</p>
+        <p>感谢您登录GF!</p>
+        <p>
+            <a class="btn btn-lg btn-primary" href="/member/logout" role="button">退出</a>
+        </p>
+    </div>
+
+</div> <!-- /container -->
+
+<div th:include="member/footer"></div>
+
+
 </body>
 </html>

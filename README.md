@@ -1,7 +1,12 @@
 ##更新记录
 
-近段时间一直忙公司的项目，忽略的本项目的更新，最近有时间了，结合ISSUES修复了jwt的一些不理想之处，更新内容如下
+###更新日期2018-06-14
+更新说明：SpringBootAdmin已正式更名为Geek-Framework
+* 升级springboot1.5为了2.0，2.0版本变动比较大，1.5版本不可直接更新，如有需要可以查看更新记录
+* 整合了J2Cache二级缓存功能，J2Cache具体功能详见<http://www.oschina.net/p/j2cache>
+* 原有单redis缓存功能仍可使用，具体仍用方法见代码注释
 
+PS:现有代码中有J2Cache的源代码，原因是因为发现了一个J2Cache的BUG，官方版本已经更新，但未同步至中央仓库，暂时用源码替代，待仓库更新后移除现在源代码
 
 ###更新日期2018-05-30
 
@@ -25,16 +30,16 @@
 
 ***
 
-# SpringBootAdmin 微服务快速开发脚手架
+# Geek-Framework 微服务快速开发脚手架
 
 ## 平台简介
 
-SpringBootAdmin是基于多个优秀的开源项目，高度整合封装而成的高效，高性能，强安全性的**开源**Java微服务快速开发框架。
+Geek-Framework是基于多个优秀的开源项目，高度整合封装而成的高效，高性能，强安全性的**开源**Java微服务快速开发框架。
 
-SpringBootAdmin是在SpringBoot基础上搭建的一个Java基础开发框架，以Spring MVC为模型视图控制器，MyBatis为数据访问层，
-Apache Shiro为权限授权层，Ehcahe或**redis**对常用数据进行缓存。
+Geek-Framework是在SpringBoot基础上搭建的一个Java基础开发框架，以Spring MVC为模型视图控制器，MyBatis为数据访问层，
+Apache Shiro为权限授权层，Ehcahe、redis或**j2cache**进行缓存。
 
-SpringBootAdmin主要定位于微应用的开发，已内置后台系统的基础功能，用户管理、角色管理、权限管理、会员管理、日志管理等；前台已经实现用户登录，注册等基础功能。
+Geek-Framework主要定位于微应用的开发，已内置后台系统的基础功能，用户管理、角色管理、权限管理、会员管理、日志管理等；前台已经实现用户登录，注册等基础功能。
 同时前后台会员实现分表管理，可扩展多角色系统、多权限系统。
 采用分层设计、双重验证、提交数据安全编码、密码加密、访问验证、数据权限验证。
 使用Maven做项目管理，提高项目的易开发性、扩展性。
@@ -51,19 +56,19 @@ SpringBootAdmin主要定位于微应用的开发，已内置后台系统的基�
 
 1、后端
 
-* 核心框架：SpringBoot 1.5.2.RELEASE
-* 集成运行框架：Tomcat 8.5.11
-* 安全框架：Apache Shiro 1.2
-* 视图框架：Spring MVC 4.1
-* 服务端验证：Hibernate Validator 5.3.4
-* 布局框架：Thymeleaf 1.5.2
+* 核心框架：SpringBoot 2.0.2.RELEASE
+* 集成运行框架：Tomcat 8.5.31
+* 安全框架：Apache Shiro 1.4
+* 视图框架：Spring MVC 5.0.6
+* 服务端验证：Hibernate Validator 6.0.9
+* 布局框架：Thymeleaf 3.0.9
 * 持久层框架：MyBatis 3.3.1
 * 数据处理框架：Mapper 3.3.9
 * 数据库连接池：Alibaba Druid 1.0
-* 缓存框架：Ehcache 2.6、Redis
-* 日志管理：SLF4J 1.7、Log4j
+* 缓存框架：Ehcache 3、Redis
+* 日志管理：Log4j
 * TOKEN模式： jsonwebtoken 0.6
-* 工具类：Apache Commons、Jackson 2.8.5、Junit 4.12
+* 工具类：Apache Commons、Jackson 2.9.5
 
 2、前端
 
@@ -80,7 +85,7 @@ SpringBootAdmin主要定位于微应用的开发，已内置后台系统的基�
 
 * 服务器中间件：项目默认支持Tomcat8.5版本，如果需要打包部署到已有的Tomcat需做特殊处理后续会更新。
 * 数据库支持：目前仅提供MySql数据库的支持，但不限于数据库，后续会增加其它数据库支持接口，
-* 开发环境：Java1.7以上、IDEA、Maven 3.1以上、Git
+* 开发环境：Java1.8以上、IDEA、Maven 3.1以上、Git
 
 ## 安全考虑
 
@@ -93,7 +98,7 @@ SpringBootAdmin主要定位于微应用的开发，已内置后台系统的基�
 
 ## 演示地址
 
-* <http://demo.geekcattle.cc/>  &nbsp; 用户名：admin  密码：admin 
+* <http://www.geekcattle.com/>  &nbsp; 用户名：admin  密码：admin 
 
 PS：测试数据库会不定期恢复。
 
@@ -103,9 +108,8 @@ PS：测试数据库会不定期恢复。
 2. 修改src\main\resources\application.properties、application-dev.properties、application-pro.properties文件中的数据库设置参数(application-dev.properties为开发环境的相应参数，application-pro.properties为部署环境的相应参数)。
 3. 根据修改参数创建对应MySql数据库用户和参数。
 4. 运行mvn package脚本，即可创建项目jar文件，同时也可以通过java -jar *.jar 即可本地预览
-5. 将src\main\resources\geekcattle.sql导入本地数据库即可
+5. data\geekcattle.sql导入本地数据库即可
 6. 最高管理员账号，用户名：admin 密码：admin
-7. 由于项目只是基础功能实现，可能还有一些没有优化到的时候，后续会持续优化和改进
 
 ## 如何交流、反馈、参与贡献？
 
@@ -124,19 +128,6 @@ PS：测试数据库会不定期恢复。
 5. Apache Licence也是对商业应用友好的许可。使用者也可以在需要的时候修改代码来满足需要并作为开源或商业产品发布/销售
 6. 你可以二次包装出售，**但还请保留文件中的版权和作者信息**，并在你的产品说明中注明SpringBootAdmin。
 7. 你可以以任何方式获得，你可以修改包名或类名，**但还请保留文件中的版权和作者信息**。
-
-## 项目起因
-
-本人是一个全栈开发人员，精通前后台开发，以前一直用SSH、SSM框架开发，大多数时候也都用已有项目进行二次开发或用核心功能来做业务功能开发，一直想自己做一套属于自己的东西项目，
-很多时候感觉自己有很强的强迫证，都说大多数程序员都有，不知道是不是这样的，所以经过自己开发项目经验不断积累现在已经有了能够架构基础项目，
-后来又接触到了SpringBoot，喜欢SpringBoot的原因是SpringBoot省掉了很多的XML的配置，使我们能够更多关注我们业务的开发。
-
-在和很多同事和朋友交流的时候发现大多数人都是采用别人开发好的东西，很少有人去研究底层框架的搭建，由于SSH和SSM框架已经很多，所以就萌生了开发一套属于自己的底层的基础框架，
-不涉及任何业务逻辑，大多数二次开发时候我们可以需一个干净的框架让我们来做系统的业务开发，这也正是SpingBootAdmin诞生的原因，希望这个项目能够给一些人带来一些帮助。
-
-## 个人技能
-
-JAVA、PHP、HTML、CSS、JQ、BootStrap、Vue、Mysql、Redis、SVN、GIT、Apache、Nginx、Tomcat、WindowServer、Ubuntu
 
 ## 捐赠支持
 

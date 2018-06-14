@@ -26,14 +26,14 @@
         $table.bootstrapTable({
             height : tableModel.getHeight(),
             idField : "roleId",
-            columns: [[
+            columns: [
                 {title: "角色名称", field: "roleName"},
                 {title: "角色描述", field: "roleDesc"},
                 {title: "启用状态", field: "enable", formatter : tableModel.getState},
                 {title: "创建时间", field: "createdAt", sortable: true},
                 {title: "更新日期", field: "updatedAt", sortable: true},
                 {title: "操作", field: "operate", align: 'center', events: operateEvents, formatter: operateFormatter}
-            ]],
+            ],
             url: '/console/role/list',
             queryParams: function(params){
                 return params;

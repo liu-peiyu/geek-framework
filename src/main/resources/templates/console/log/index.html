@@ -21,12 +21,12 @@
         $table.bootstrapTable({
             height : tableModel.getHeight(),
             idField : "logId",
-            columns : [[
+            columns : [
                 {title: "操作用户", field: "logUser" },
                 {title: "操作时间", field: "logTime", sortable: true},
                 {title: "操作IP", field: "logIp"},
                 {title: "操作地址", field: "logAction"}
-            ]],
+            ],
             url : '/console/log/list',
             queryParams: function(params){
                 return params;

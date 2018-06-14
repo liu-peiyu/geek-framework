@@ -1,5 +1,6 @@
 package com.geekcattle.core.j2cache.cache.support;
 
+import com.geekcattle.model.console.Admin;
 import net.oschina.j2cache.CacheChannel;
 import net.oschina.j2cache.CacheObject;
 import org.apache.shiro.cache.Cache;
@@ -20,19 +21,19 @@ public class ShiroJ2Cache<K, V> implements Cache<K, V> {
     }
 
     public V get(K key) throws CacheException {
-        CacheObject val = this.channel.get(region, (String) key);
+        CacheObject val = this.channel.get(region, key.toString());
         if (val == null)
             return null;
         return (V) val.getValue();
     }
 
     public V put(K key, V value) throws CacheException {
-        this.channel.set(region, (String)key, value);
+        this.channel.set(region, key.toString(), value);
         return null;
     }
 
     public V remove(K key) throws CacheException {
-        this.channel.evict(region, (String)key);
+        this.channel.evict(region, key.toString());
         return null;
     }
 
