@@ -115,8 +115,8 @@ PS：测试数据库会不定期恢复。
 ## 如何交流、反馈、参与贡献？
 
 * E-mail：l_iupeiyu@qq.com
-* GitHub：<https://github.com/liu-peiyu/SpringBootAdmin>
-* 开源中国：<http://git.oschina.net/liupeiyu/springbootadmin>
+* GitHub：<https://github.com/liu-peiyu/Geek-Framework>
+* 开源中国：<https://gitee.com/liupeiyu/springbootadmin>
 
 ## 版权声明
 
