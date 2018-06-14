@@ -3,6 +3,7 @@
 ###更新日期2018-06-14
 更新说明：SpringBootAdmin已正式更名为Geek-Framework
 * 升级springboot1.5为了2.0，2.0版本变动比较大，1.5版本不可直接更新，如有需要可以查看更新记录
+* 已经建立1.0版本分支，如果需1.0版本代码，可下载v1.0分支
 * 整合了J2Cache二级缓存功能，J2Cache具体功能详见<http://www.oschina.net/p/j2cache>
 * 原有单redis缓存功能仍可使用，具体仍用方法见代码注释
 
@@ -65,7 +66,7 @@ Geek-Framework主要定位于微应用的开发，已内置后台系统的基础
 * 持久层框架：MyBatis 3.3.1
 * 数据处理框架：Mapper 3.3.9
 * 数据库连接池：Alibaba Druid 1.0
-* 缓存框架：Ehcache 3、Redis
+* 缓存框架：Ehcache 3、Redis、J2Cache2.13
 * 日志管理：Log4j
 * TOKEN模式： jsonwebtoken 0.6
 * 工具类：Apache Commons、Jackson 2.9.5
