@@ -6,11 +6,8 @@ package com.geekcattle.core.shiro;
 
 import com.geekcattle.core.j2cache.cache.support.ShiroJ2CacheCacheManager;
 import com.geekcattle.core.j2cache.cache.support.ShiroJ2CacheSession;
-import com.geekcattle.core.jwt.JwtShiroRealm;
 import com.geekcattle.core.redis.RedisCacheManager;
 import com.geekcattle.core.redis.RedisSessionDAO;
-import com.geekcattle.core.filter.JwtFilter;
-import com.geekcattle.core.filter.CustomerLogoutFilter;
 import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
 import org.apache.shiro.authc.pam.AtLeastOneSuccessfulStrategy;
 import org.apache.shiro.authc.pam.AuthenticationStrategy;
@@ -50,33 +47,6 @@ import java.util.*;
 public class ShiroConfiguration {
 
     private Logger logger = LoggerFactory.getLogger(this.getClass());
-
-    /**
-     * token身份认证realm;
-     * @return
-     */
-    @Bean(name="jwtShiroRealm")
-    public JwtShiroRealm jwtShiroRealm(){
-        logger.debug("ShiroConfiguration.jwtShiroRealm()");
-        JwtShiroRealm jwtShiroRealm = new JwtShiroRealm();
-        jwtShiroRealm.setCredentialsMatcher(customHashedCredentialsMatcher());
-        return new JwtShiroRealm();
-    }
-
-    /**
-     * 前台身份认证realm;
-     * @return
-     */
-    @Bean(name="customShiroRealm")
-    public CustomShiroRealm customShiroRealm(){
-        logger.debug("ShiroConfiguration.customShiroRealm()");
-        CustomShiroRealm customShiroRealm = new CustomShiroRealm();
-        //customShiroRealm.setCacheManager(redisCacheManager());//单redis缓存
-        customShiroRealm.setCacheManager(shiroJ2CacheCacheManager());//j2cache二级缓存
-        //redisCacheManager和shiroJ2CacheCacheManager以上两种模式可任选其一，现在默认使用J2Cache
-        customShiroRealm.setCredentialsMatcher(customHashedCredentialsMatcher());
-        return customShiroRealm;
-    }
 
     /**
      * 后台身份认证realm;
@@ -180,12 +150,9 @@ public class ShiroConfiguration {
 
         Map<String, Object> shiroAuthenticatorRealms = new HashMap<>();
         shiroAuthenticatorRealms.put("adminShiroRealm", adminShiroRealm());
-        shiroAuthenticatorRealms.put("customShiroRealm", customShiroRealm());
-        shiroAuthenticatorRealms.put("jwtShiroRealm", jwtShiroRealm());
 
         Collection<Realm> shiroAuthorizerRealms = new ArrayList<Realm>();
         shiroAuthorizerRealms.add(adminShiroRealm());
-        shiroAuthorizerRealms.add(customShiroRealm());
 
         CustomModularRealmAuthenticator customModularRealmAuthenticator = new CustomModularRealmAuthenticator();
         customModularRealmAuthenticator.setDefinedRealms(shiroAuthenticatorRealms);
@@ -248,9 +215,7 @@ public class ShiroConfiguration {
         //增加自定义过滤
         Map<String, Filter> filters = new HashMap<>();
         filters.put("admin", new AdminFormAuthenticationFilter());
-        filters.put("custom", new CustomFormAuthenticationFilter());
         filters.put("logout", new CustomerLogoutFilter());
-        filters.put("jwt", new JwtFilter());
         shiroFilterFactoryBean.setFilters(filters);
         //拦截器.
         Map<String,String> filterChainDefinitionMap = new LinkedHashMap<String,String>();
@@ -273,20 +238,10 @@ public class ShiroConfiguration {
 
         //<!-- 过滤链定义，从上向下顺序执行，一般将 /**放在最为下边 -->:这是一个坑呢，一不小心代码就不好使了;
         //<!-- authc:所有url都必须认证通过才可以访问; anon:所有url都都可以匿名访问-->
-        filterChainDefinitionMap.put("/**/login", "anon");
-        filterChainDefinitionMap.put("/**/logout", "logout");
-        filterChainDefinitionMap.put("/**/reg", "anon");
+        filterChainDefinitionMap.put("/console/login", "anon");
+        filterChainDefinitionMap.put("/console/logout", "logout");
         //配置记住我或认证通过可以访问的地址
         filterChainDefinitionMap.put("/console/**", "admin");
-        filterChainDefinitionMap.put("/member/**", "custom");
-
-        filterChainDefinitionMap.put("/api/member/**", "jwt");
-        // 如果不设置默认会自动寻找Web工程根目录下的"/login.jsp"页面
-        //shiroFilterFactoryBean.setLoginUrl("/member/login");
-        // 登录成功后要跳转的链接
-        //shiroFilterFactoryBean.setSuccessUrl("/member/index");
-        //未授权界面;
-        //shiroFilterFactoryBean.setUnauthorizedUrl("/console/403");
         shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);
         return shiroFilterFactoryBean;
     }

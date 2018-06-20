@@ -6,18 +6,23 @@ package com.geekcattle.model.member;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.geekcattle.model.BaseEntity;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Transient;
-import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 /**
  * author geekcattle
  * date 2016/10/21 0021 下午 15:11
  */
-public class Member extends BaseEntity implements Serializable {
+public class Member extends BaseEntity implements UserDetails {
     @Id
     @Column(name = "uid")
     @GeneratedValue(generator = "UUID")
@@ -26,8 +31,6 @@ public class Member extends BaseEntity implements Serializable {
     private String account;
 
     private String password;
-
-    private String salt;
 
     private Integer state;
 
@@ -65,14 +68,6 @@ public class Member extends BaseEntity implements Serializable {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public String getSalt() {
-        return salt;
-    }
-
-    public void setSalt(String salt) {
-        this.salt = salt;
     }
 
     public Integer getState() {
@@ -114,4 +109,36 @@ public class Member extends BaseEntity implements Serializable {
     public void setOrder(String order) {
         this.order = order;
     }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        List<GrantedAuthority> auths = new ArrayList<>();
+        return auths;
+    }
+
+    @Override
+    public String getUsername() {
+        return this.account;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return false;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return false;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return false;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return false;
+    }
+
 }

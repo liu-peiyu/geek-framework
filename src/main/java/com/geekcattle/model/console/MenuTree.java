@@ -2,11 +2,8 @@
  * Copyright (c) 2017 <l_iupeiyu@qq.com> All rights reserved.
  */
 
-package com.geekcattle.util.console;
+package com.geekcattle.model.console;
 
-import com.geekcattle.model.console.Menu;
-import com.geekcattle.model.console.Role;
-import com.geekcattle.model.console.RoleMenu;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.*;
@@ -15,7 +12,7 @@ import java.util.*;
  * author geekcattle
  * date 2016/10/21 0021 下午 15:58
  */
-public class MenuTreeUtil {
+public class MenuTree {
 
     private List<Menu> nodes;
 
@@ -27,7 +24,7 @@ public class MenuTreeUtil {
      *
      * @param nodes   将树的所有节点都初始化进来。
      */
-    public MenuTreeUtil(List<Menu> nodes, List<RoleMenu> checknodes){
+    public MenuTree(List<Menu> nodes, List<RoleMenu> checknodes){
         this.nodes = nodes;
         this.checknodes = checknodes;
     }

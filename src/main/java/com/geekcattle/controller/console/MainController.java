@@ -4,13 +4,13 @@
 
 package com.geekcattle.controller.console;
 
-import com.geekcattle.core.shiro.AdminShiroUtil;
+import com.geekcattle.core.utils.ShiroUtil;
 import com.geekcattle.model.console.Admin;
 import com.geekcattle.model.console.Menu;
 import com.geekcattle.model.console.Role;
 import com.geekcattle.service.console.*;
 import com.geekcattle.util.ReturnUtil;
-import com.geekcattle.util.console.MenuTreeUtil;
+import com.geekcattle.model.console.MenuTree;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,7 +43,7 @@ public class MainController {
 
     @RequestMapping(value = "/index", method = {RequestMethod.GET})
     public String index(Model model) {
-        Admin admin = AdminShiroUtil.getUserInfo();
+        Admin admin = ShiroUtil.getUserInfo();
         List<Menu> treeGridList = this.getMenu(admin);
         model.addAttribute("admin", admin);
         model.addAttribute("menuLists", treeGridList);
@@ -54,7 +54,7 @@ public class MainController {
     @ResponseBody
     public ModelMap wapper() {
         try {
-            Admin admin = AdminShiroUtil.getUserInfo();
+            Admin admin = ShiroUtil.getUserInfo();
             List<Menu> treeGridList = this.getMenu(admin);
             ModelMap mp = new ModelMap();
             mp.put("admin", admin);
@@ -73,7 +73,7 @@ public class MainController {
         }else{
             menuLists = menuService.selectMenuByAdminId(admin.getUid());
         }
-        MenuTreeUtil menuTreeUtil = new MenuTreeUtil(menuLists,null);
+        MenuTree menuTreeUtil = new MenuTree(menuLists,null);
         return menuTreeUtil.buildTreeGrid();
     }
 

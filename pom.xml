@@ -2,8 +2,8 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.geekcattle</groupId>
-    <artifactId>geek-framwork</artifactId>
-    <packaging>pom</packaging>
+    <artifactId>geek-framework</artifactId>
+    <packaging>jar</packaging>
     <version>2.0-SNAPSHOT</version>
     <name>Geek-Framework</name>
     <url>http://www.geekcattle.com</url>
@@ -36,6 +36,8 @@
         <mysql.version>5.1.29</mysql.version>
         <jackson.version>2.8.5</jackson.version>
         <servlet.version>3.0.1</servlet.version>
+
+        <springfox-version>2.7.0</springfox-version>
     </properties>
 
     <dependencies>
@@ -66,8 +68,6 @@
             <artifactId>spring-boot-starter-thymeleaf</artifactId>
         </dependency>
 
-
-
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
@@ -79,8 +79,25 @@
         </dependency>
 
         <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
+        </dependency>
+
+        <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-context-support</artifactId>
+        </dependency>
+
+        <!--SpringFox dependencies -->
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger2</artifactId>
+            <version>${springfox-version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger-ui</artifactId>
+            <version>${springfox-version}</version>
         </dependency>
 
         <!-- shiro spring. -->
@@ -224,7 +241,7 @@
                     <dependency>
                         <groupId>org.springframework</groupId>
                         <artifactId>springloaded</artifactId>
-                        <version>1.2.5.RELEASE</version>
+                        <version>1.2.8.RELEASE</version>
                     </dependency>
                 </dependencies>
                 <configuration>

@@ -21,8 +21,8 @@
     
 ##3、获取token
 
-    登录地址 /api/oauth/token，此处登录验证与用户realm有关，可根据业务需要进行更改
-    登录成功之后通过jwtUtil.createJWT生成token信息（用户身份信息，过期时间等可自行增加），将token返回给客户端，客户端存储该token
+    登录地址 /member/login
+    登录成功之后在AjaxAuthSuccessHandler通过jwtUtil生成token信息（用户身份信息，过期时间等可自行增加），将token返回给客户端，客户端存储该token
     
 ##4、客户端增加token
 
@@ -30,6 +30,6 @@
     
 ##5、验证token
 
-    token验证是通过filter完成的，filter验证成功之后将解析出的用户信息通过shiro的token功能进行登录，更方便的调用用户信息
+    token验证是通过JwtAuthenticationFilter完成的，验证成功之后将解析出的用户信息提交给spring-security进行处理登录，以方便在后续的操作中使用
     
         

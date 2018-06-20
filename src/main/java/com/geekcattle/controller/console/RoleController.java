@@ -12,7 +12,7 @@ import com.geekcattle.service.console.RoleService;
 import com.geekcattle.util.DateUtil;
 import com.geekcattle.util.ReturnUtil;
 import com.geekcattle.util.UuidUtil;
-import com.geekcattle.util.console.MenuTreeUtil;
+import com.geekcattle.model.console.MenuTree;
 import com.github.pagehelper.PageInfo;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -145,7 +145,7 @@ public class RoleController {
         RoleMenu roleMenu = new RoleMenu();
         roleMenu.setRoleId(id);
         List<RoleMenu> roleMenuLists = roleMenuService.getRoleList(roleMenu);
-        MenuTreeUtil menuTreeUtil = new MenuTreeUtil(menuLists, roleMenuLists);
+        MenuTree menuTreeUtil = new MenuTree(menuLists, roleMenuLists);
         List<Map<String, Object>> mapList = menuTreeUtil.buildTree();
         return ReturnUtil.Success(null, mapList, null);
     }

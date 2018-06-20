@@ -2,7 +2,7 @@
  * Copyright (c) 2017 <l_iupeiyu@qq.com> All rights reserved.
  */
 
-package com.geekcattle.core.shiro;
+package com.geekcattle.core.utils;
 
 import com.geekcattle.model.console.Admin;
 import org.apache.shiro.SecurityUtils;
@@ -17,7 +17,7 @@ import org.slf4j.LoggerFactory;
  * author geekcattle
  * date 2016/12/6 0006 上午 10:45
  */
-public class AdminShiroUtil {
+public class ShiroUtil {
 
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
@@ -28,6 +28,14 @@ public class AdminShiroUtil {
         return SecurityUtils.getSubject();
     }
 
+    public static Boolean isLogin(){
+        return getSubject().isAuthenticated();
+    }
+
+    /**
+     * 获取session信息
+     * @return
+     */
     public static Session getSession(){
         try{
             Session session = getSubject().getSession();
@@ -43,6 +51,10 @@ public class AdminShiroUtil {
         return null;
     }
 
+    /**
+     * 获取用户信息
+     * @return
+     */
     public static Admin getUserInfo(){
         try {
             if(getSession() != null){
@@ -55,27 +67,5 @@ public class AdminShiroUtil {
 
         }
         return null;
-    }
-
-    // ============== Shiro Cache ==============
-
-    public static Object getCache(String key) {
-        return getCache(key, null);
-    }
-
-    public static Object getCache(String key, Object defaultValue) {
-//		Object obj = getCacheMap().get(key);
-        Object obj = getSession().getAttribute(key);
-        return obj==null?defaultValue:obj;
-    }
-
-    public static void putCache(String key, Object value) {
-//		getCacheMap().put(key, value);
-        getSession().setAttribute(key, value);
-    }
-
-    public static void removeCache(String key) {
-//		getCacheMap().remove(key);
-        getSession().removeAttribute(key);
     }
 }

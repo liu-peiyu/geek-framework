@@ -4,21 +4,15 @@
 
 package com.geekcattle.controller.console;
 
-import com.geekcattle.model.console.Admin;
-import com.geekcattle.model.console.AdminRole;
 import com.geekcattle.model.console.Menu;
-import com.geekcattle.model.console.Role;
 import com.geekcattle.service.console.*;
 import com.geekcattle.util.DateUtil;
-import com.geekcattle.util.PasswordUtil;
 import com.geekcattle.util.ReturnUtil;
 import com.geekcattle.util.UuidUtil;
-import com.geekcattle.util.console.MenuTreeUtil;
-import com.github.pagehelper.PageInfo;
+import com.geekcattle.model.console.MenuTree;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.authz.annotation.RequiresAuthentication;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
-import org.apache.shiro.crypto.SecureRandomNumberGenerator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -69,7 +63,7 @@ public class MenuController {
     public ModelMap list() {
         ModelMap map = new ModelMap();
         List<Menu> List = menuService.getMenuAll();
-        MenuTreeUtil menuTreeUtil = new MenuTreeUtil(List, null);
+        MenuTree menuTreeUtil = new MenuTree(List, null);
         List<Menu> treeGridList = menuTreeUtil.buildTreeGrid();
         map.put("treeList", treeGridList);
         map.put("total", List.size());

@@ -6,6 +6,7 @@ package com.geekcattle.controller.console;
 
 import com.geekcattle.core.LoginEnum;
 import com.geekcattle.core.shiro.CustomerAuthenticationToken;
+import com.geekcattle.core.utils.ShiroUtil;
 import com.geekcattle.model.valid.ValidAdmin;
 import com.geekcattle.service.console.LogService;
 import com.geekcattle.util.IpUtil;
@@ -36,13 +37,8 @@ public class PublicController {
 
     @RequestMapping(value="/login", method=RequestMethod.GET)
     public String loginForm(){
-        try {
-            Boolean isAuth = SecurityUtils.getSubject().isAuthenticated();
-            if(isAuth){
-                return "redirect:/console/index";
-            }
-        }catch (Exception e){
-            e.printStackTrace();
+        if(ShiroUtil.isLogin()){
+            return "redirect:/console/index";
         }
         return "console/login";
     }
@@ -103,12 +99,6 @@ public class PublicController {
         SecurityUtils.getSubject().logout();
         redirectAttributes.addFlashAttribute("message", "您已安全退出");
         return "redirect:/console/login";
-    }
-
-    @RequestMapping("/403")
-    public String unauthorizedRole(){
-        logger.info("------没有权限-------");
-        return "403";
     }
 
 }

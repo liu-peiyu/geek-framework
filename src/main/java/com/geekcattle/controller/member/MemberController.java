@@ -22,6 +22,7 @@ import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -44,57 +45,6 @@ public class MemberController {
 
     @Autowired
     private MemberService memberService;
-
-    /**
-     * 处理注册操作
-     *
-     * @param validMember
-     * @param bindingResult
-     * @param redirectAttributes
-     * @return string
-     */
-    @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public ModelMap doLogin(@Valid ValidMember validMember, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
-        if (bindingResult.hasErrors()) {
-            return ReturnUtil.Error("用户名或密码为空", null, null);
-        }
-        String username = validMember.getAccount();
-        CustomerAuthenticationToken token = new CustomerAuthenticationToken(validMember.getAccount(), validMember.getPassword(), false);
-        token.setLoginType(LoginEnum.CUSTOMER.toString());
-        //获取当前的Subject
-        Subject currentUser = SecurityUtils.getSubject();
-        try {
-            logger.info("对用户[" + username + "]进行登录验证..验证开始");
-            currentUser.login(token);
-            logger.info("对用户[" + username + "]进行登录验证..验证通过");
-        } catch (UnknownAccountException uae) {
-            logger.info("对用户[" + username + "]进行登录验证..验证未通过,未知账户");
-            redirectAttributes.addFlashAttribute("message", "未知账户");
-        } catch (IncorrectCredentialsException ice) {
-            logger.info("对用户[" + username + "]进行登录验证..验证未通过,错误的凭证");
-            redirectAttributes.addFlashAttribute("message", "密码不正确");
-        } catch (LockedAccountException lae) {
-            logger.info("对用户[" + username + "]进行登录验证..验证未通过,账户已锁定");
-            redirectAttributes.addFlashAttribute("message", "账户已锁定");
-        } catch (ExcessiveAttemptsException eae) {
-            logger.info("对用户[" + username + "]进行登录验证..验证未通过,错误次数过多");
-            redirectAttributes.addFlashAttribute("message", "用户名或密码错误次数过多");
-        } catch (AuthenticationException ae) {
-            logger.info("对用户[" + username + "]进行登录验证..验证未通过,堆栈轨迹如下");
-            ae.printStackTrace();
-            redirectAttributes.addFlashAttribute("message", "用户名或密码不正确");
-        }
-        //验证是否登录成功
-        if (currentUser.isAuthenticated()) {
-            Session session = currentUser.getSession();
-            session.setAttribute("loginType", LoginEnum.CUSTOMER.toString());
-            logger.info("前台用户[" + username + "]登录认证通过");
-            return ReturnUtil.Success("登录成功");
-        } else {
-            token.clear();
-            return ReturnUtil.Error("登录失败", null, null);
-        }
-    }
 
     /**
      * 处理登录操作
@@ -120,9 +70,8 @@ public class MemberController {
             }
             String Id = UuidUtil.getUUID();
             member.setUid(Id);
-            String salt = new SecureRandomNumberGenerator().nextBytes().toHex();
-            member.setSalt(salt);
-            String password = PasswordUtil.createCustomPwd(member.getPassword(), member.getSalt());
+            BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+            String password = passwordEncoder.encode(member.getPassword());
             member.setPassword(password);
             member.setState(1);
             member.setCreatedAt(DateUtil.getCurrentTime());

@@ -1,4 +1,30 @@
-##更新记录
+***
+
+# Geek-Framework 微服务快速开发脚手架
+
+### 平台简介
+
+Geek-Framework是基于多个优秀的开源项目，高度整合封装而成的高效，高性能，强安全性的**开源**Java微服务快速开发框架。
+
+Geek-Framework是在SpringBoot基础上搭建的一个Java基础开发框架，以Spring MVC为模型视图控制器，MyBatis为数据访问层，
+Apache Shiro和Spring-Security为权限授权层，Ehcahe、redis或**j2cache**进行缓存。
+
+Geek-Framework主要定位于微应用的开发，已内置后台系统的基础功能，用户管理、角色管理、权限管理、会员管理、日志管理等；前台已经实现用户登录，注册等基础功能。
+同时前后台会员实现分表管理，可扩展多角色系统、多权限系统。
+采用分层设计、双重验证、提交数据安全编码、密码加密、访问验证、数据权限验证。
+使用Maven做项目管理，提高项目的易开发性、扩展性。
+
+
+###更新日期2018-06-20
+本次更新主要解决了前后台不能在同一浏览器登录的问题
+* 本次更新引入的spring-security用于对前台会员进行登录控制，后台管理仍使用shiro框架，前后台独立登录，不会出现挤掉另一端的BUG
+* spring-security已与JWT进行了完美的整合（不得不说spring家族的框架比shiro要好处理的太多了）
+* 数据库更新，对前台会员表进行了更新，引入了spring-security最新的密码验证机制BCryptPasswordEncoder，使用随机密钥方式，移除了原有的密码盐方式
+* 文件目录结构进行了优化调整
+* 数据库备份文件至data/geekcattle.sql
+* 修复上次提交时pom文件打包的错误
+* 修复部署文件
+
 
 ###更新日期2018-06-14
 更新说明：SpringBootAdmin已正式更名为Geek-Framework
@@ -28,23 +54,6 @@ PS:现有代码中有J2Cache的源代码，原因是因为发现了一个J2Cache
 
 * 优化已知BUG
 
-
-***
-
-# Geek-Framework 微服务快速开发脚手架
-
-## 平台简介
-
-Geek-Framework是基于多个优秀的开源项目，高度整合封装而成的高效，高性能，强安全性的**开源**Java微服务快速开发框架。
-
-Geek-Framework是在SpringBoot基础上搭建的一个Java基础开发框架，以Spring MVC为模型视图控制器，MyBatis为数据访问层，
-Apache Shiro为权限授权层，Ehcahe、redis或**j2cache**进行缓存。
-
-Geek-Framework主要定位于微应用的开发，已内置后台系统的基础功能，用户管理、角色管理、权限管理、会员管理、日志管理等；前台已经实现用户登录，注册等基础功能。
-同时前后台会员实现分表管理，可扩展多角色系统、多权限系统。
-采用分层设计、双重验证、提交数据安全编码、密码加密、访问验证、数据权限验证。
-使用Maven做项目管理，提高项目的易开发性、扩展性。
-
 ## 内置功能
 
 1.	管理员管理：管理员是系统操作者，该功能主要完成系统管理员相关配置和角色授权。
@@ -59,7 +68,7 @@ Geek-Framework主要定位于微应用的开发，已内置后台系统的基础
 
 * 核心框架：SpringBoot 2.0.2.RELEASE
 * 集成运行框架：Tomcat 8.5.31
-* 安全框架：Apache Shiro 1.4
+* 安全框架：Apache Shiro 1.4 Spring-Security 5.0.5
 * 视图框架：Spring MVC 5.0.6
 * 服务端验证：Hibernate Validator 6.0.9
 * 布局框架：Thymeleaf 3.0.9
@@ -97,15 +106,16 @@ Geek-Framework主要定位于微应用的开发，已内置后台系统的基础
 5. 密码加密：登录用户密码进行SHA1散列加密，此加密方法是不可逆的。保证密文泄露后的安全问题。
 6. 强制访问：系统对所有管理端链接都进行用户身份权限验证，防止用户直接填写url进行访问。
 
-## 演示地址
+## 账号信息
 
-* <http://www.geekcattle.com/>  &nbsp; 用户名：admin  密码：admin 
+* 后台账号密码：admin ---- admin 
+* 前台账号密码：guest ---- hao123
 
 PS：测试数据库会不定期恢复。
 
 ## 快速体验
 
-1. 具备运行环境：JDK1.7+、Maven3.0+、MySql5+。
+1. 具备运行环境：JDK1.8+、Maven3.0+、MySql5+。
 2. 修改src\main\resources\application.properties、application-dev.properties、application-pro.properties文件中的数据库设置参数(application-dev.properties为开发环境的相应参数，application-pro.properties为部署环境的相应参数)。
 3. 根据修改参数创建对应MySql数据库用户和参数。
 4. 运行mvn package脚本，即可创建项目jar文件，同时也可以通过java -jar *.jar 即可本地预览

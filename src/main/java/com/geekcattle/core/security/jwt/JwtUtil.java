@@ -1,22 +1,20 @@
-package com.geekcattle.core.jwt;
+package com.geekcattle.core.security.jwt;
 
+import com.geekcattle.core.security.CustomUser;
 import com.geekcattle.model.member.Member;
 import com.geekcattle.util.JsonUtil;
 import com.geekcattle.util.UuidUtil;
 import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.JwtBuilder;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.impl.compression.CompressionCodecs;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Component;
 
 
-import javax.crypto.spec.SecretKeySpec;
-import javax.xml.bind.DatatypeConverter;
-import java.security.Key;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -37,36 +35,6 @@ public class JwtUtil {
 
     @Autowired
     private JwtConfig jwtConfig;
-
-    public Claims parseJWT(String jsonWebToken, String base64Security){
-        try{
-            Claims claims = Jwts.parser()
-                    .setSigningKey(DatatypeConverter.parseBase64Binary(base64Security))
-                    .parseClaimsJws(jsonWebToken).getBody();
-            return claims;
-        }
-        catch(Exception ex)
-        {
-            ex.printStackTrace();
-        }
-        return null;
-    }
-
-    public String createJWT(Member member, String base64Security)
-    {
-        //生成签名密钥
-        byte[] apiKeySecretBytes = DatatypeConverter.parseBase64Binary(base64Security);
-        Key signingKey = new SecretKeySpec(apiKeySecretBytes, SIGNATURE_ALGORITHM.getJcaName());
-        //添加构成JWT的参数
-        JwtBuilder builder = Jwts.builder()
-                .setId(member.getUid())
-                .setSubject(member.getAccount())
-                .signWith(SIGNATURE_ALGORITHM, signingKey)
-                .setExpiration(new Date(System.currentTimeMillis() + jwtConfig.getExpiration()))
-                .setNotBefore(new Date(System.currentTimeMillis()));
-        //生成JWT
-        return builder.compact();
-    }
 
     public String getUserIdFromToken(String token) {
         String userId;
@@ -138,15 +106,15 @@ public class JwtUtil {
         return (lastPasswordReset != null && created.before(lastPasswordReset));
     }
 
-    public String generateAccessToken(Member member) {
-        Map<String, Object> claims = generateClaims(member);
-        return generateAccessToken(member.getAccount(), claims);
+    public String generateAccessToken(CustomUser user) {
+        Map<String, Object> claims = generateClaims(user);
+        return generateAccessToken(user.getUsername(), claims);
     }
 
-    private Map<String, Object> generateClaims(Member member) {
+    private Map<String, Object> generateClaims(CustomUser user) {
         Map<String, Object> claims = new HashMap<>();
-        claims.put(CLAIM_KEY_USER_ID, member.getUid());
-        claims.put(CLAIM_KEY_ACCOUNT_ENABLED, member.getState());
+        claims.put(CLAIM_KEY_USER_ID, user.getUid());
+        claims.put(CLAIM_KEY_ACCOUNT_ENABLED, user.isEnabled());
         claims.put(CLAIM_KEY_ACCOUNT_NON_LOCKED, false);
         claims.put(CLAIM_KEY_ACCOUNT_NON_EXPIRED, false);
         return claims;
@@ -156,12 +124,12 @@ public class JwtUtil {
         return generateToken(subject, claims, jwtConfig.getExpiration());
     }
 
-    public String generateRefreshToken(Member member) {
-        Map<String, Object> claims = generateClaims(member);
+    public String generateRefreshToken(CustomUser user) {
+        Map<String, Object> claims = generateClaims(user);
         // 只授于更新 token 的权限
         String roles[] = new String[]{this.ROLE_REFRESH_TOKEN};
         claims.put(CLAIM_KEY_AUTHORITIES, JsonUtil.toJson(roles));
-        return generateRefreshToken(member.getAccount(), claims);
+        return generateRefreshToken(user.getUsername(), claims);
     }
 
     private String generateRefreshToken(String subject, Map<String, Object> claims) {
@@ -197,13 +165,11 @@ public class JwtUtil {
                 .compact();
     }
 
-    public Boolean validateToken(String token, Member member) {
+    public Boolean validateToken(String token, CustomUser user) {
         final String userId = getUserIdFromToken(token);
         final String userName = getUsernameFromToken(token);
-        // final Date created = getCreatedDateFromToken(token);
-        // final Date expiration = getExpirationDateFromToken(token);
-        return (userId.equals(member.getUid())
-                && userName.equals(member.getAccount())
+        return (userId.equals(user.getUid())
+                && userName.equals(user.getUsername())
                 && !isTokenExpired(token)
         );
     }
