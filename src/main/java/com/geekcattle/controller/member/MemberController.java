@@ -1,24 +1,28 @@
 /*
- * Copyright (c) 2017 <l_iupeiyu@qq.com> All rights reserved.
+ * Copyright (c) 2017-2018.  放牛极客<l_iupeiyu@qq.com>
+ * <p>
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ *    you may not use this file except in compliance with the License.
+ *    You may obtain a copy of the License at
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *    Unless required by applicable law or agreed to in writing, software
+ *    distributed under the License is distributed on an "AS IS" BASIS,
+ *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *    See the License for the specific language governing permissions and
+ *    limitations under the License.
+ * </p>
+ *
  */
 
 package com.geekcattle.controller.member;
 
-import com.geekcattle.core.LoginEnum;
-import com.geekcattle.core.shiro.CustomerAuthenticationToken;
 import com.geekcattle.model.member.Member;
-import com.geekcattle.model.valid.ValidMember;
 import com.geekcattle.service.member.MemberService;
 import com.geekcattle.util.DateUtil;
-import com.geekcattle.util.PasswordUtil;
 import com.geekcattle.util.ReturnUtil;
 import com.geekcattle.util.UuidUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.authc.*;
-import org.apache.shiro.crypto.SecureRandomNumberGenerator;
-import org.apache.shiro.session.Session;
-import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +32,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import tk.mybatis.mapper.entity.Example;
 
 import javax.validation.Valid;

@@ -14,23 +14,15 @@
  *
  */
 
-package com.geekcattle.util;
+package com.geekcattle.core;
 
-import org.apache.shiro.crypto.hash.SimpleHash;
-import org.apache.shiro.util.ByteSource;
+import tk.mybatis.mapper.common.Mapper;
+import tk.mybatis.mapper.common.MySqlMapper;
 
 /**
- * 密码生成工具类
- * author geekcattle
- * date 2016/11/23 0023 下午 14:53
+ * 继承自己的MyMapper
  */
-public class PasswordUtil {
-
-    public static String createAdminPwd(String password, String salt){
-        return new SimpleHash("md5",password,ByteSource.Util.bytes(salt),2).toHex();
-    }
-
-    public static String createCustomPwd(String password, String salt){
-        return new SimpleHash("md5",password,ByteSource.Util.bytes(salt),1).toHex();
-    }
+public interface CustomerMapper<T> extends Mapper<T>, MySqlMapper<T> {
+    //TODO
+    //FIXME 特别注意，该接口不能被扫描到，否则会出错
 }
