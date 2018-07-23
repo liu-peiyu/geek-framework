@@ -125,7 +125,8 @@ PS：测试数据库会不定期恢复。
 
 ## 如何交流、反馈、参与贡献？
 
-* E-mail：l_iupeiyu@qq.com
+* 为方便大家讨论交流，请加QQ群：805442966 加群回答：GeekFramework
+* 邮件反馈：l_iupeiyu@qq.com
 * GitHub：<https://github.com/liu-peiyu/Geek-Framework>
 * 开源中国：<https://gitee.com/liupeiyu/springbootadmin>
 
