@@ -164,8 +164,9 @@ public class MenuController {
                 return ReturnUtil.Error("Error", null, null);
             } else {
                 for (String id : ids) {
-                    roleMenuService.deleteMenuId(id);
-                    menuService.deleteById(id);
+                    //因演示环境需要禁止删除菜单，实际开发可移除下面代码的注释
+                    //roleMenuService.deleteMenuId(id);
+                    //menuService.deleteById(id);
                 }
                 return ReturnUtil.Success("Success", null, null);
             }
