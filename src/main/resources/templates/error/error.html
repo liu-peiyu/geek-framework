@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title th:text="${status}+'错误'"></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+    <link rel="stylesheet" href="//cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+    <!--[if lt IE 9]>
+    <script src="//cdn.bootcss.com/html5shiv/r29/html5.min.js"></script>
+    <script src="//cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+<body>
+    <div class="container">
+        <div class="col-md-6 col-md-offset-3" style="margin-top: 150px;">
+            <div class="panel panel-danger">
+                <div class="panel-heading" th:text="${status}+'错误'"></div>
+                <div class="panel-body">
+                    <div th:text="${error.url}"></div>
+                    <div th:text="${#dates.format(error.timestamp,'yyyy-MM-dd HH:mm:ss')}"></div>
+                    <div th:text="${error.message}"></div>
+                    <a href="/" class="btn-back common-button">返回首页</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
