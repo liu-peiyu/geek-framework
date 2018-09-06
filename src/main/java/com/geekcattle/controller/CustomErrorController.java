@@ -68,7 +68,6 @@ public class CustomErrorController implements ErrorController {
         Map<String, Object> map = this.errorAttributes.getErrorAttributes(webRequest,includeStackTrace);
         String URL = request.getRequestURI();
         map.put("url", URL);
-        logger.info("CustomErrorController.method [error info]: status-" + map.get("message") +"status-" + map.get("status") +", request url-" + URL);
         return map;
     }
 
