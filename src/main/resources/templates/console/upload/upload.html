@@ -1,0 +1,186 @@
+<!DOCTYPE HTML>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+<head th:include="console/header">
+</head>
+<body>
+<style>
+    .box-header .num {
+        color: #999999;
+        float: right;
+        margin-top: 5px;
+    }
+
+    .box-header .num em {
+        color: #FF5500;
+        font-style: normal;
+    }
+
+    .files-wrapper {
+        border: 1px solid #CCCCCC;
+    }
+
+    .files-wrapper ul {
+        height: 280px;
+        overflow-y: scroll;
+        padding-bottom: 10px;
+        position: relative;
+        margin: 0;
+    }
+
+    .files-wrapper li {
+        display: inline;
+        float: left;
+        height: 100px;
+        margin: 10px 0 0 10px;
+        width: 100px;
+        position: relative;
+        border:1px solid #CCCCCC;
+    }
+
+    .files-wrapper li.selected {
+        border: 1px solid #fe781e;
+    }
+    .files-wrapper li .upload-percent{
+        width: 100%;
+        height:100%;
+        line-height: 100px;
+        text-align: center;
+    }
+
+    .files-wrapper li .selected-icon-wrapper{
+        position: absolute;
+        right: 0;
+        top: 0;
+        width: 20px;
+        height: 20px;
+        font-size: 16px;
+        text-align:center;
+        line-height:20px;
+        color:#fe781e;
+        display: none;
+    }
+    .files-wrapper li.selected .selected-icon-wrapper{
+        display: block;
+    }
+    .files-wrapper li img{
+        width: 100%;
+        height: 100%;
+        vertical-align: top;
+    }
+</style>
+
+<section class="content">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="box box-primary">
+                <div class="box-header">
+                    <button type="button" class="btn btn-primary" id="select-files">添加文件</button>
+                    <div class="num">
+                        <span th:if="${upload.multi} eq 0">最多上传<em>1</em>个附件,</span>
+						单文件最大<em th:text="${upload.maxSize}+'MB'"></em>,
+						<em style="cursor: help;" th:title="'可上传格式：'+${upload.fileExt}" title="" data-toggle="tooltip">支持格式？</em>
+					</div>
+                </div>
+                <div class="box-body">
+                    <div class="files-wrapper">
+                        <ul id="files-container"></ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<div th:include="console/footer"></div>
+<script type="text/javascript" src="/assets/plupload/plupload.full.min.js"></script>
+<script type="text/javascript" th:inline="javascript">
+    var multi=[[${upload.multi}]];
+    (function () {
+        var uploader = new plupload.Uploader({
+            runtimes : 'html5,flash,silverlight,html4',
+            browse_button : 'select-files',
+            container: document.getElementById('files-container'),
+            url : "/console/upload/uploader",
+            flash_swf_url : '/js/Moxie.swf',
+            silverlight_xap_url : '/js/Moxie.xap',
+            filters : {
+                max_file_size : '[[${upload.maxSize}]]mb',
+                mime_types: [{ title : [[${upload.fileType}]], extensions : [[${upload.fileExt}]] }],
+                prevent_duplicates : true
+            },
+            multi_selection: [[${upload.multi}]],
+            init: {
+                PostInit: function() {
+                },
+
+                FilesAdded: function(up, files) {
+                    plupload.each(files, function(file) {
+                        var $newfile=$('\
+                                        <li class="selected">\
+                                            <div class="selected-icon-wrapper"><i class="fa fa-check-circle"></i></div>\
+                                            <div class="upload-percent">0%</div>\
+                                        </li>');
+                        $newfile.attr('id',file.id);
+                        $('#files-container').append($newfile);
+                        $newfile.on('click',function(){
+                            var $this=$(this);
+                            $this.toggleClass('selected');
+                        });
+                    });
+                    uploader.start();
+                },
+
+                UploadProgress: function(up, file) {
+                    $('#'+file.id).find('.upload-percent').text(file.percent+"%");
+                },
+
+                FileUploaded: function(up, file, response) {
+                    var data = JSON.parse(response.response);
+                    if(data.status==1){
+                        if(!multi) {
+                            $('#select-files').hide();
+                        }
+                        var $img=$('<img/>');
+                        $img.attr('src', data.result.priviewUrl);
+                        $('#'+file.id).addClass('uploaded')
+                            .data('id',file.id)
+                            .data('url',data.result.priviewUrl)
+                            .data('preview_url',data.result.priviewUrl)
+                            .data('filepath',data.result.filePath)
+                            .data('name',data.result.fileName)
+                            .find('.upload-percent')
+                            .html($img);
+                    }else{
+                        alert(data.message);
+                        $('#'+file.id).remove();
+                    }
+                },
+
+                Error: function(up, err) {
+                    console.log(err)
+                }
+            }
+        });
+        uploader.init();
+    })();
+    function get_selected_files(){
+        var files= [];
+        var $files=$('#files-container li.uploaded.selected');
+        if($files.length==0){
+            layer.msg('请上传文件！');
+            return false;
+        }
+        $files.each(function(){
+            var $this=$(this);
+            var url = $this.data('url');
+            var preview_url = $this.data('preview_url');
+            var filepath = $this.data('filepath');
+            var name = $this.data('name');
+            var id = $this.data('id');
+            files.push({url:url,preview_url:preview_url,filepath:filepath,name:name,id:id});
+        });
+        return files;
+    }
+</script>
+</body>
+</html>
