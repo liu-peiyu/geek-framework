@@ -127,8 +127,7 @@ public class FileService {
     }
 
     /**
-     * 写文件到当前目录的upload目录中
-     *
+     * 本地文件上传
      * @param in
      * @param dir
      * @param realName
@@ -149,7 +148,6 @@ public class FileService {
 
     /**
      * 判断数组中是否包含某个元素
-     *
      * @param array   类型的数组
      * @param element 被检查的类型
      * @return
@@ -165,20 +163,7 @@ public class FileService {
         return flag;
     }
 
-    public Map<String, String> getReturnMap(String retPath, String fileName) {
-        String cdnUrl = upConfig.getUpCdn();
-        if ("oss".equals(upConfig.getUpType())) {
-            cdnUrl = aliyunConfig.getDomain();
-        }else if("qiniu".equals(upConfig.getUpType())){
-            cdnUrl = qiniuConfig.getDomain();
-        }
-        String previewUrl = cdnUrl + "/" + retPath.replace(File.separator, "/");
-        Map<String, String> upMap = new HashMap<>();
-        upMap.put("priviewUrl", previewUrl);
-        upMap.put("filePath", retPath);
-        upMap.put("fileName", fileName);
-        return upMap;
-    }
+
 
     /**
      * 创建目录
@@ -251,42 +236,12 @@ public class FileService {
     }
 
     /**
-     * 读取到字节数组
-     *
+     * 七牛上传
+     * @param file
      * @param filePath
+     * @param fileName
      * @return
-     * @throws IOException
      */
-    public static byte[] toByteArray(String filePath) throws IOException {
-
-        File f = new File(filePath);
-        if (!f.exists()) {
-            throw new FileNotFoundException(filePath);
-        }
-        ByteArrayOutputStream bos = new ByteArrayOutputStream((int) f.length());
-        BufferedInputStream in = null;
-        try {
-            in = new BufferedInputStream(new FileInputStream(f));
-            int buf_size = 1024;
-            byte[] buffer = new byte[buf_size];
-            int len = 0;
-            while (-1 != (len = in.read(buffer, 0, buf_size))) {
-                bos.write(buffer, 0, len);
-            }
-            return bos.toByteArray();
-        } catch (IOException e) {
-            e.printStackTrace();
-            throw e;
-        } finally {
-            try {
-                in.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            bos.close();
-        }
-    }
-
     public String qiniuSave(MultipartFile file, String filePath, String fileName) {
         Configuration cfg = new Configuration(Zone.zone0());
         UploadManager uploadManager = new UploadManager(cfg);
@@ -304,32 +259,19 @@ public class FileService {
         }
     }
 
+    /**
+     * 阿里OSS上传
+     * @param file
+     * @param filePath
+     * @param fileName
+     * @return
+     */
     public String ossSave(MultipartFile file, String filePath, String fileName) {
         OSS ossClient = new OSSClientBuilder().build(aliyunConfig.getEndpoint(),aliyunConfig.getAk(), aliyunConfig.getSk());
         String key = filePath + fileName;
         try {
             PutObjectResult objectResult = ossClient.putObject(aliyunConfig.getBucket(),   key,    file.getInputStream());
             return key;
-
-            /*UploadFileRequest uploadFileRequest = new UploadFileRequest(aliyunConfig.getBucket(), key);
-            // The local file to upload---it must exist
-            copyFile(file.getInputStream(),filePath,fileName);
-            uploadFileRequest.setUploadFile(new File(key).getAbsolutePath());
-            // Sets the concurrent upload task number to 5.
-            uploadFileRequest.setTaskNum(5);
-            // Sets the part size to 1MB.
-            uploadFileRequest.setPartSize(1024 * 1024 * upConfig.getMaxFileSize());
-            // Enables the checkpoint file. By default it's off.
-            uploadFileRequest.setEnableCheckpoint(true);
-
-            UploadFileResult uploadResult = ossClient.uploadFile(uploadFileRequest);
-
-            CompleteMultipartUploadResult multipartUploadResult =
-                    uploadResult.getMultipartUploadResult();
-            System.out.println(multipartUploadResult.getETag());
-
-            return multipartUploadResult.getKey();*/
-
         } catch (OSSException oe) {
             System.out.println("Caught an OSSException, which means your request made it to OSS, "
                     + "but was rejected with an error response for some reason.");
@@ -350,25 +292,19 @@ public class FileService {
         return null;
     }
 
-    /**
-     * 从URL中读取图片,转换成流形式.
-     * @param destUrl
-     * @return
-     */
-    public InputStream saveHttpToFile(String destUrl){
-        URL url = null;
-        InputStream in = null;
-        try{
-            url = new URL(destUrl);
-            HttpURLConnection httpUrl = (HttpURLConnection) url.openConnection();
-            httpUrl.connect();
-            httpUrl.getInputStream();
-            in = httpUrl.getInputStream();
-            return in;
-        }catch (Exception e) {
-            e.printStackTrace();
+    public Map<String, String> getReturnMap(String retPath, String fileName) {
+        String cdnUrl = upConfig.getUpCdn();
+        if ("oss".equals(upConfig.getUpType())) {
+            cdnUrl = aliyunConfig.getDomain();
+        }else if("qiniu".equals(upConfig.getUpType())){
+            cdnUrl = qiniuConfig.getDomain();
         }
-        return null;
+        String previewUrl = cdnUrl + "/" + retPath.replace(File.separator, "/");
+        Map<String, String> upMap = new HashMap<>();
+        upMap.put("priviewUrl", previewUrl);
+        upMap.put("filePath", retPath);
+        upMap.put("fileName", fileName);
+        return upMap;
     }
 
 }

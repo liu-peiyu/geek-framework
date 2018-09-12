@@ -85,7 +85,7 @@ public class FileUploadController {
             }
             String fileName = UuidUtil.getUUID()+extName;
             String retPath = "";
-            if("local".equals(upConfig.getUpType()) || StringUtils.isEmpty(upConfig.getUpType())){
+            if("local".equals(upConfig.getUpType()) && StringUtils.isNotEmpty(upConfig.getUpType())){
                 retPath= fileService.fileSave(file, diskPath, uploadPath, fileName);
             }else if("oss".equals(upConfig.getUpType())){
                 retPath = fileService.ossSave(file, uploadPath, fileName);

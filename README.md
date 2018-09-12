@@ -14,6 +14,11 @@ Geek-Framework主要定位于微应用的开发，已内置后台系统的基础
 采用分层设计、双重验证、提交数据安全编码、密码加密、访问验证、数据权限验证。
 使用Maven做项目管理，提高项目的易开发性、扩展性。
 
+###更新日期2018-09-11
+本次主要更新了后台两个常用功能组件
+* 文件上传组件：上传组件支持本地上传、阿里云OSS上传、七牛上传，使用之前需先进行相关的配置
+* 编辑器组件：本组件使用百度UEditor作为编辑器插件，基础功能已经配置开发完成（编辑器初始加载、编辑器内容获取、文件上传等）
+
 
 ###更新日期2018-06-20
 本次更新主要解决了前后台不能在同一浏览器登录的问题
@@ -107,6 +112,18 @@ PS:现有代码中有J2Cache的源代码，原因是因为发现了一个J2Cache
 5. 密码加密：登录用户密码进行SHA1散列加密，此加密方法是不可逆的。保证密文泄露后的安全问题。
 6. 强制访问：系统对所有管理端链接都进行用户身份权限验证，防止用户直接填写url进行访问。
 
+## 功能预览
+![icon](https://github.com/liu-peiyu/SpringBootAdmin/blob/master/src/main/resources/static/assets/img/pic1.jpg?raw=true)
+![icon](https://github.com/liu-peiyu/SpringBootAdmin/blob/master/src/main/resources/static/assets/img/simple_upload.jpg?raw=true)
+![icon](https://github.com/liu-peiyu/SpringBootAdmin/blob/master/src/main/resources/static/assets/img/mutil_upload.jpg?raw=true)
+![icon](https://github.com/liu-peiyu/SpringBootAdmin/blob/master/src/main/resources/static/assets/img/pic2.jpg?raw=true)
+![icon](https://github.com/liu-peiyu/SpringBootAdmin/blob/master/src/main/resources/static/assets/img/pic3.jpg?raw=true)
+![icon](https://github.com/liu-peiyu/SpringBootAdmin/blob/master/src/main/resources/static/assets/img/pic4.jpg?raw=true)
+![icon](https://github.com/liu-peiyu/SpringBootAdmin/blob/master/src/main/resources/static/assets/img/pic5.jpg?raw=true)
+![icon](https://github.com/liu-peiyu/SpringBootAdmin/blob/master/src/main/resources/static/assets/img/pic6.jpg?raw=true)
+
+
+
 ## 账号信息
 
 * 后台账号密码：admin ---- admin 
@@ -126,7 +143,6 @@ PS：测试数据库会不定期恢复。
 ## 如何交流、反馈、参与贡献？
 
 * 为方便大家讨论交流，请加QQ群：805442966 加群回答：GeekFramework
-* 邮件反馈：l_iupeiyu@qq.com
 * GitHub：<https://github.com/liu-peiyu/Geek-Framework>
 * 开源中国：<https://gitee.com/liupeiyu/springbootadmin>
 
@@ -144,4 +160,4 @@ PS：测试数据库会不定期恢复。
 
 ## 捐赠支持
 
-![icon](https://github.com/liu-peiyu/SpringBootAdmin/blob/master/src/main/resources/static/assets/pay.jpg?raw=true)
+![icon](https://github.com/liu-peiyu/SpringBootAdmin/blob/master/src/main/resources/static/assets/img/pay.jpg?raw=true)

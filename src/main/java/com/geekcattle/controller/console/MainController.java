@@ -20,7 +20,9 @@ import com.geekcattle.core.utils.ShiroUtil;
 import com.geekcattle.model.console.Admin;
 import com.geekcattle.model.console.Menu;
 import com.geekcattle.model.console.Role;
+import com.geekcattle.model.member.Member;
 import com.geekcattle.service.console.*;
+import com.geekcattle.service.member.MemberService;
 import com.geekcattle.util.ReturnUtil;
 import com.geekcattle.model.console.MenuTree;
 import org.slf4j.Logger;
@@ -52,6 +54,9 @@ public class MainController {
 
     @Autowired
     private RoleService roleService;
+
+    @Autowired
+    private MemberService memberService;
 
     @RequestMapping(value = "/index", method = {RequestMethod.GET})
     public String index(Model model) {
@@ -113,7 +118,10 @@ public class MainController {
         Integer roleCount = roleService.getCount(exampleRole);
         Example exampleMenu = new Example(Menu.class);
         Integer menuCount = menuService.getCount(exampleMenu);
+        Example exampleMember = new Example(Member.class);
+        Integer userCount = memberService.getCount(exampleMember);
         Map<String, Object> mp = new HashMap<>();
+        mp.put("user", userCount);
         mp.put("admin", adminCount);
         mp.put("role", roleCount);
         mp.put("menu", menuCount);

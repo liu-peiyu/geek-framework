@@ -12,12 +12,6 @@ public class AliyunConfig {
     @Value("${aliyun.sk}")
     private String sk;
 
-    @Value("${aliyun.sms.sign-name}")
-    private String signName;
-
-    @Value("${aliyun.sms.code.template-code}")
-    private String codeTemplate;
-
     @Value("${aliyun.oss.endpoint}")
     private String endpoint;
 
@@ -42,22 +36,6 @@ public class AliyunConfig {
 
     public void setSk(String sk) {
         this.sk = sk;
-    }
-
-    public String getSignName() {
-        return signName;
-    }
-
-    public void setSignName(String signName) {
-        this.signName = signName;
-    }
-
-    public String getCodeTemplate() {
-        return codeTemplate;
-    }
-
-    public void setCodeTemplate(String codeTemplate) {
-        this.codeTemplate = codeTemplate;
     }
 
     public String getEndpoint() {

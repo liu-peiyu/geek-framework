@@ -15,9 +15,9 @@
             <div class="panel panel-danger">
                 <div class="panel-heading" th:text="${status}+'错误'"></div>
                 <div class="panel-body">
-                    <div th:text="${error.url}"></div>
-                    <div th:text="${#dates.format(error.timestamp,'yyyy-MM-dd HH:mm:ss')}"></div>
-                    <div th:text="${error.message}"></div>
+                    <div th:text="${path}"></div>
+                    <div th:text="${#dates.format(timestamp,'yyyy-MM-dd HH:mm:ss')}"></div>
+                    <div th:text="${message}"></div>
                     <a href="/" class="btn-back common-button">返回首页</a>
                 </div>
             </div>

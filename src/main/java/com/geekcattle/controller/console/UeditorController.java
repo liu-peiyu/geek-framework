@@ -3,11 +3,13 @@ package com.geekcattle.controller.console;
 import com.geekcattle.config.UpConfig;
 import com.geekcattle.service.common.FileService;
 import com.geekcattle.util.JsonUtil;
+import com.geekcattle.util.ReturnUtil;
 import com.geekcattle.util.UuidUtil;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -37,6 +39,13 @@ public class UeditorController {
 
     @Resource
     private FileService fileService;
+
+    @RequestMapping("/save")
+    @ResponseBody
+    public ModelMap save(String content){
+        return ReturnUtil.Success(content);
+    }
+
 
     @RequestMapping
     @ResponseBody
