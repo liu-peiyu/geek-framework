@@ -113,14 +113,15 @@ PS:现有代码中有J2Cache的源代码，原因是因为发现了一个J2Cache
 6. 强制访问：系统对所有管理端链接都进行用户身份权限验证，防止用户直接填写url进行访问。
 
 ## 功能预览
-![icon](https://github.com/liu-peiyu/SpringBootAdmin/blob/master/src/main/resources/static/assets/img/pic1.jpg?raw=true)
-![icon](https://github.com/liu-peiyu/SpringBootAdmin/blob/master/src/main/resources/static/assets/img/simple_upload.jpg?raw=true)
-![icon](https://github.com/liu-peiyu/SpringBootAdmin/blob/master/src/main/resources/static/assets/img/mutil_upload.jpg?raw=true)
-![icon](https://github.com/liu-peiyu/SpringBootAdmin/blob/master/src/main/resources/static/assets/img/pic2.jpg?raw=true)
-![icon](https://github.com/liu-peiyu/SpringBootAdmin/blob/master/src/main/resources/static/assets/img/pic3.jpg?raw=true)
-![icon](https://github.com/liu-peiyu/SpringBootAdmin/blob/master/src/main/resources/static/assets/img/pic4.jpg?raw=true)
-![icon](https://github.com/liu-peiyu/SpringBootAdmin/blob/master/src/main/resources/static/assets/img/pic5.jpg?raw=true)
-![icon](https://github.com/liu-peiyu/SpringBootAdmin/blob/master/src/main/resources/static/assets/img/pic6.jpg?raw=true)
+
+![icon](https://github.com/liu-peiyu/Geek-Framework/blob/master/src/main/resources/static/img/pic1.png?raw=true)
+![icon](https://github.com/liu-peiyu/Geek-Framework/blob/master/src/main/resources/static/img/upload1.gif?raw=true)
+![icon](https://github.com/liu-peiyu/Geek-Framework/blob/master/src/main/resources/static/img/upload2.gif?raw=true)
+![icon](https://github.com/liu-peiyu/Geek-Framework/blob/master/src/main/resources/static/img/pic2.png?raw=true)
+![icon](https://github.com/liu-peiyu/Geek-Framework/blob/master/src/main/resources/static/img/pic3.png?raw=true)
+![icon](https://github.com/liu-peiyu/Geek-Framework/blob/master/src/main/resources/static/img/pic4.png?raw=true)
+![icon](https://github.com/liu-peiyu/Geek-Framework/blob/master/src/main/resources/static/img/pic5.png?raw=true)
+![icon](https://github.com/liu-peiyu/Geek-Framework/blob/master/src/main/resources/static/img/pic6.png?raw=true)
 
 
 
@@ -160,4 +161,4 @@ PS：测试数据库会不定期恢复。
 
 ## 捐赠支持
 
-![icon](https://github.com/liu-peiyu/SpringBootAdmin/blob/master/src/main/resources/static/assets/img/pay.jpg?raw=true)
+![icon](https://github.com/liu-peiyu/Geek-Framework/blob/master/src/main/resources/static/img/pay.jpg?raw=true)
