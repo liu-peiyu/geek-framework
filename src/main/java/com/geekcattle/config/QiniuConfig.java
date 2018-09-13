@@ -6,16 +6,16 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class QiniuConfig {
 
-    @Value("${upload.qiniu.access-key}")
+    @Value("${qiniu.access-key}")
     private String accessKey;
 
-    @Value("${upload.qiniu.secret-key}")
+    @Value("${qiniu.secret-key}")
     private String secretKey;
 
-    @Value("${upload.qiniu.bucket}")
+    @Value("${qiniu.bucket}")
     private String bucket;
 
-    @Value("${upload.qiniu.domain}")
+    @Value("${qiniu.domain}")
     private String domain;
 
     public String getAccessKey() {

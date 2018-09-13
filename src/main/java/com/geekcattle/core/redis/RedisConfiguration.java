@@ -18,8 +18,10 @@ package com.geekcattle.core.redis;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 
+import org.springframework.boot.autoconfigure.data.redis.RedisProperties;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.CachingConfigurerSupport;
 import org.springframework.cache.annotation.EnableCaching;
@@ -30,6 +32,7 @@ import org.springframework.data.redis.cache.RedisCacheManager;
 import org.springframework.data.redis.cache.RedisCacheWriter;
 import org.springframework.data.redis.connection.RedisPassword;
 import org.springframework.data.redis.connection.RedisStandaloneConfiguration;
+import org.springframework.data.redis.connection.jedis.JedisClientConfiguration;
 import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
 import org.springframework.data.redis.core.*;
 import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
@@ -38,9 +41,6 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
 
-
-import java.time.Duration;
-
 /**
  * author geekcattle
  * date 2017/3/22 0022 下午 15:48
@@ -48,26 +48,8 @@ import java.time.Duration;
 @Configuration
 @EnableCaching
 public class RedisConfiguration extends CachingConfigurerSupport{
+
     private Logger logger = LoggerFactory.getLogger(this.getClass());
-
-    @Value("${spring.redis.host}")
-    private String host;
-
-    @Value("${spring.redis.port}")
-    private int port;
-
-    @Value("${spring.redis.password}")
-    private String password;
-
-    @Value("${redis.timeout}")
-    private int timeout;
-
-    @Value("${redis.pool.max-idle}")
-    private int maxIdle;
-
-    @Value("${redis.pool.max-wait}")
-    private long maxWaitMillis;
-
 
     @Value("${shiro.session.session-prefix}")
     private String sessionPrefix;
@@ -81,28 +63,33 @@ public class RedisConfiguration extends CachingConfigurerSupport{
     @Value("${shiro.cache.cache-time}")
     private int cacheTime;
 
+    @Autowired
+    RedisProperties redisProperties;
+
     @Bean
     public JedisPool redisPoolFactory() {
         logger.info("JedisPool注入成功！！");
-        JedisPool jedisPool = new JedisPool(getJedisPoolConfig(), host, port, timeout, password);
+        JedisPool jedisPool = new JedisPool(getJedisPoolConfig(), redisProperties.getHost(), redisProperties.getPort(), -1 , redisProperties.getPassword(), redisProperties.getDatabase());
         return jedisPool;
     }
 
     @Bean
     public JedisPoolConfig getJedisPoolConfig(){
         JedisPoolConfig jedisPoolConfig = new JedisPoolConfig();
-        jedisPoolConfig.setMaxIdle(maxIdle);
-        jedisPoolConfig.setMaxWaitMillis(maxWaitMillis);
+        jedisPoolConfig.setMaxIdle(redisProperties.getJedis().getPool().getMaxIdle());
+        jedisPoolConfig.setMinIdle(redisProperties.getJedis().getPool().getMinIdle());
         return jedisPoolConfig;
     }
 
     @Bean
     public JedisConnectionFactory jedisConnectionFactory(){
         RedisStandaloneConfiguration redisStandaloneConfiguration = new RedisStandaloneConfiguration();
-        redisStandaloneConfiguration.setHostName(host);
-        redisStandaloneConfiguration.setPassword(RedisPassword.of(password));
-        redisStandaloneConfiguration.setPort(port);
-        JedisConnectionFactory jedisConnectionFactory = new JedisConnectionFactory(redisStandaloneConfiguration);
+        redisStandaloneConfiguration.setHostName(redisProperties.getHost());
+        redisStandaloneConfiguration.setPassword(RedisPassword.of(redisProperties.getPassword()));
+        redisStandaloneConfiguration.setPort(redisProperties.getPort());
+        JedisClientConfiguration.JedisClientConfigurationBuilder jpb = JedisClientConfiguration.builder();
+        jpb.usePooling().poolConfig(getJedisPoolConfig());
+        JedisConnectionFactory jedisConnectionFactory = new JedisConnectionFactory(redisStandaloneConfiguration,jpb.build());
         logger.info("JedisConnectionFactory注入成功！！");
         return jedisConnectionFactory;
     }
@@ -110,13 +97,9 @@ public class RedisConfiguration extends CachingConfigurerSupport{
     @Bean
     public CacheManager cacheManager(JedisConnectionFactory jedisConnectionFactory) {
         logger.info("cacheManager注入成功！！");
-
         RedisCacheConfiguration redisCacheConfiguration = RedisCacheConfiguration.defaultCacheConfig();
-
         RedisCacheWriter redisCacheWriter = RedisCacheWriter.nonLockingRedisCacheWriter(jedisConnectionFactory);
         RedisCacheManager redisCacheManager = new RedisCacheManager(redisCacheWriter, redisCacheConfiguration);
-        //设置缓存过期时间
-
         return redisCacheManager;
     }
 

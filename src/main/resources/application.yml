@@ -1,0 +1,204 @@
+#全局配置
+server:
+  servlet:
+    # 项目contextPath，一般在正式发布版本中，我们不配置
+    context-path: /
+    # session最大超时时间(分钟)，默认为30
+    session:
+      timeout: 60m
+
+#日志配置
+logging:
+  level:
+    com.geekcattle.mapper : DEBUG
+  file : "logs/spring-boot-logging.log"
+
+
+spring:
+  profiles:
+    #默认启动模式
+    active: @spring.active@
+  #MVC配置
+  mvc:
+    view:
+      prefix : "classpath:/templates/"
+      suffix : ".html"
+    date-format : "yyyy-MM-dd HH:mm:ss"
+  #槿板配置
+  thymeleaf:
+    mode : "HTML5"
+    cache : false
+    encoding : "UTF-8"
+    servlet:
+      content-type: "text/html"
+
+  # 使用druid数据源
+  datasource:
+    type : com.alibaba.druid.pool.DruidDataSource
+    driver-class-name : com.mysql.jdbc.Driver
+    filters : stat
+    maxActive : 20
+    initialSize :  1
+    maxWait : 60000
+    minIdle : 1
+    timeBetweenEvictionRunsMillis : 60000
+    minEvictableIdleTimeMillis : 300000
+    validationQuery : "select 'x'"
+    testWhileIdle : true
+    testOnBorrow : false
+    testOnReturn : false
+    poolPreparedStatements : true
+    maxOpenPreparedStatements : 20
+  #mybaties配置
+  mapper:
+    plugin : tk.mybatis.mapper.generator.MapperPlugin
+    Mapper : com.geekcattle.util.CustomerMapper
+  #json配置
+  jackson:
+    time-zone : Asia/Chongqing
+    date-format : yyyy-MM-dd HH:mm:ss
+    joda-date-time-format : yyyy-MM-dd HH:mm:ss
+  # REDIS基础配置
+
+  redis:
+    jedis:
+      pool:
+          # 连接池最大连接数（使用负值表示没有限制）
+          max-active : 8
+          # 连接池最大阻塞等待时间（使用负值表示没有限制）毫秒
+          max-wait: -1ms
+          # 连接池中的最大空闲连接
+          max-idle : 8
+          # 连接池中的最小空闲连接
+          min-idle : 0
+      # 连接超时时间（毫秒）
+    timeout : 500ms
+
+shiro:
+  session:
+    #shiro session前缀
+    session-prefix : "shiro-redis-session"
+    #shiro session 在redis过期时间是(分钟)
+    session-time : 1800
+  cache:
+    #shiro缓存前缀
+    cache-prefix : "shiro-redis-cache"
+    #shiro缓存在redis过期时间是(分钟)
+    cache-time : 180
+#JWT配置
+jwt:
+  ##认证名称
+  header : "authorization"
+  ##加密向量
+  secret : "1,1,1,1,1,1,1,1,1,1,1,1,1,1,1"
+  ##token过期时间一天(秒)
+  expiration : 7200
+  ##refresh_token过期时间一天(秒)
+  refresh_expiration : 86400
+  ##Tokenu前缀
+  token.head : "Bearer"
+
+#文件上传相关栩置
+upload:
+  config:
+    ##单个文件上传限制
+    max-file-size : 5
+    ##图片类型目录
+    image-folder : "image"
+    ##文档类型目录
+    document-folder : "document"
+    ##视频类型目录
+    video-folder : "video"
+    ##音乐类型目录
+    music-folder : "music"
+    ##图片类型后缀
+    image-type : ".bmp,.jpg,.png,.gif,.jpeg"
+    ##文档类型后缀
+    document-type : ".txt,.doc,.docx,.xls,.xlsx,.rar,.zip,.rtf,.pdf,.ppt,.pptx"
+    ##视频类型后缀
+    video-type : ".mp4,.avi,.mov,.wmv,.asf,.navi,.3gp,.mkv,.f4v,.rmvb"
+    ##音乐类型后缀
+    music-type : ".mp3,.wma,.wav,.mod,.ra,.cd,.md,.asf,.aac,.vqf,.ape,.mid,.ogg,.m4a"
+    #选择上传方式配置
+    ##文件上传只能选择一种方式
+    ##文件上传方式可以参数 local    qiniu   oss 本例以七牛为例
+    up-type : "local"
+    ##文件访问地址  本地上传资源访问地址
+    up-cdn : "http://localhost"
+    ##本地上传路径
+    hard-disk : "e:/phpProjects/DemoProject/"
+
+# 阿里云OSS上传配置
+aliyun:
+  ##阿里云OSSAK
+  ak :
+  ##阿里云OSSSK
+  sk :
+  ##阿里云OSS上传地址
+  oss:
+    endpoint :
+    ##阿里云OSSbucket
+    bucket =:
+    ##阿里云OSS文件CDN
+    domain :
+
+
+#七牛上传配置
+qiniu:
+  ##七牛AK
+  access-key :
+  ##七牛SK
+  secret-key :
+  ##七牛token空间
+  bucket :
+  ##七牛访问地址CDN
+  domain :
+
+  ##ueditor文件上传配置JSON
+ueditor:
+  config:
+    json:
+      path : "static/assets/ueditor/config.json"
+
+
+---
+
+#开发环境
+spring:
+  profiles: dev
+  datasource:
+      name : geekcattle
+      username  : root
+      password  : root
+      url : jdbc:mysql://localhost:3306/geekcattle?useUnicode=true&characterEncoding=UTF-8
+  redis:
+    database : 0
+    host : 127.0.0.1
+    port : 6379
+    password : Hao123
+server:
+  port: 8000
+j2cache:
+  config-location : "/j2cache-dev.properties"
+
+---
+
+#测试环境
+spring:
+  profiles: pro
+  datasource:
+      name : geekcattle
+      username  : geekcattle
+      password  : GeekCattle
+      url : jdbc:mysql://localhost:3306/geekcattle?useUnicode=true&characterEncoding=UTF-8
+  redis:
+      database : 0
+      host : 127.0.0.1
+      port : 6379
+      password : Test123
+server:
+  port: 8001
+j2cache:
+  config-location : "/j2cache-pro.properties"
+
+---
