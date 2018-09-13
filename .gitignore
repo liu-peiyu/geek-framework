@@ -3,4 +3,5 @@ target/
 tpid
 *.iml
 logs
+config.json
 
