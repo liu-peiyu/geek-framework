@@ -138,7 +138,7 @@ aliyun:
   oss:
     endpoint :
     ##阿里云OSSbucket
-    bucket =:
+    bucket :
     ##阿里云OSS文件CDN
     domain :
 
