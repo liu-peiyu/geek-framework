@@ -1,5 +1,3 @@
-***
-
 # Geek-Framework 微服务快速开发脚手架
 
 ### 平台简介
@@ -7,12 +5,20 @@
 Geek-Framework是基于多个优秀的开源项目，高度整合封装而成的高效，高性能，强安全性的**开源**Java微服务快速开发框架。
 
 Geek-Framework是在SpringBoot基础上搭建的一个Java基础开发框架，以Spring MVC为模型视图控制器，MyBatis为数据访问层，
-Apache Shiro和Spring-Security为权限授权层，Ehcahe、redis或**j2cache**进行缓存。
+Apache Shiro和Spring-Security为权限授权层，caffeine、redis或**j2cache**进行缓存。
 
 Geek-Framework主要定位于微应用的开发，已内置后台系统的基础功能，用户管理、角色管理、权限管理、会员管理、日志管理等；前台已经实现用户登录，注册等基础功能。
 同时前后台会员实现分表管理，可扩展多角色系统、多权限系统。
 采用分层设计、双重验证、提交数据安全编码、密码加密、访问验证、数据权限验证。
 使用Maven做项目管理，提高项目的易开发性、扩展性。
+
+###更新日期2018-09-19
+* 升级J2cache为2.7.0版本，主要修复channel获取次数过多导致的错误问题，另个j2cache后期可能会移除对jedis的支持，所以还是提前升级了吧
+* 调整二级缓存redis为lettuce，lettuce为spring推荐的redis操作方式，另个j2cache也推荐使用
+* 配置文件application.yml和j2cache配置文件都增加了对lettuce的支持
+* 修改com.geekcattle.core.redis包下的RedisCacheManage为RedisShiroCacheManage,因为此文件名和spring源码中的一个文件重名，为了区分特此改名
+* 优化RedisConfiguration的JedisConnectionFactory为LettuceConnctionFoctory
+
 
 ###更新日期2018-09-11
 本次主要更新了后台两个常用功能组件
@@ -44,20 +50,15 @@ PS:现有代码中有J2Cache的源代码，原因是因为发现了一个J2Cache
 ###更新日期2018-05-30
 
 * 增加了JWT工具类
-
 * 修复了jwt验证成功之后用户信息的传递，通过shiro的token登录传递，移除了以前的参数传递方法，此方法更为灵活好用
-
 * 引入了refresh_token的概念
 
 
 ###更新日期2017-11-07
 
 * 项目整合redis存储，shiro可使用redisSession可使用于集群访问
-
 * 项目增加jwt模式
-
 * 增加默认启动模式为开发模式
-
 * 优化已知BUG
 
 ## 内置功能
