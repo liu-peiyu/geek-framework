@@ -16,10 +16,7 @@
 
 package com.geekcattle.core.shiro;
 
-import com.geekcattle.core.redis.RedisCacheManager;
-import com.geekcattle.core.shiro.AdminShiroRealm;
 import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.cache.CacheManager;
 import org.apache.shiro.mgt.RealmSecurityManager;
 import org.apache.shiro.session.SessionException;
 import org.apache.shiro.subject.PrincipalCollection;
@@ -28,7 +25,6 @@ import org.apache.shiro.web.filter.authc.LogoutFilter;
 import org.apache.shiro.web.util.WebUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
@@ -40,9 +36,6 @@ import java.util.Locale;
 public class CustomerLogoutFilter extends LogoutFilter {
 
     private Logger logger = LoggerFactory.getLogger(this.getClass());
-
-    @Autowired
-    private RedisCacheManager redisCacheManager;
 
     @Override
     protected boolean preHandle(ServletRequest request, ServletResponse response) throws Exception {

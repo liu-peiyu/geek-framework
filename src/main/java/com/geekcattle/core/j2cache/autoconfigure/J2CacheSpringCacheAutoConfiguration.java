@@ -43,8 +43,11 @@ public class J2CacheSpringCacheAutoConfiguration {
 
     private final CacheProperties cacheProperties;
 
-    J2CacheSpringCacheAutoConfiguration(CacheProperties cacheProperties) {
+    private final J2CacheExtendConfig j2CacheExtendConfig;
+
+    J2CacheSpringCacheAutoConfiguration(CacheProperties cacheProperties, J2CacheExtendConfig j2CacheExtendConfig) {
         this.cacheProperties = cacheProperties;
+        this.j2CacheExtendConfig = j2CacheExtendConfig;
     }
 
     @Bean
@@ -52,6 +55,7 @@ public class J2CacheSpringCacheAutoConfiguration {
     public J2CacheCacheManger cacheManager(CacheChannel cacheChannel) {
         List<String> cacheNames = cacheProperties.getCacheNames();
         J2CacheCacheManger cacheCacheManger = new J2CacheCacheManger(cacheChannel);
+        cacheCacheManger.setAllowNullValues(j2CacheExtendConfig.isAllowNullValues());
         cacheCacheManger.setCacheNames(cacheNames);
         return cacheCacheManger;
     }

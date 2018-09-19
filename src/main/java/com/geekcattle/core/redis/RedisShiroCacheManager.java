@@ -30,7 +30,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
 @Repository("redisCacheManager")
-public class RedisCacheManager implements CacheManager {
+public class RedisShiroCacheManager implements CacheManager {
 
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 

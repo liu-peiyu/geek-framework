@@ -18,7 +18,7 @@ package com.geekcattle.core.shiro;
 
 import com.geekcattle.core.j2cache.cache.support.ShiroJ2CacheCacheManager;
 import com.geekcattle.core.j2cache.cache.support.ShiroJ2CacheSession;
-import com.geekcattle.core.redis.RedisCacheManager;
+import com.geekcattle.core.redis.RedisShiroCacheManager;
 import com.geekcattle.core.redis.RedisSessionDAO;
 import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
 import org.apache.shiro.authc.pam.AtLeastOneSuccessfulStrategy;
@@ -75,9 +75,9 @@ public class ShiroConfiguration {
     }
 
     @Bean(name = "redisCacheManager")
-    public RedisCacheManager redisCacheManager() {
+    public RedisShiroCacheManager redisCacheManager() {
         logger.debug("ShiroConfiguration.redisCacheManager()");
-        return new RedisCacheManager();
+        return new RedisShiroCacheManager();
     }
 
     @Bean(name = "redisSessionDAO")

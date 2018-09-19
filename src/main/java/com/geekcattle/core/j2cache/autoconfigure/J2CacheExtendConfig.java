@@ -1,32 +1,44 @@
-/*
- * Copyright (c) 2017-2018.  放牛极客<l_iupeiyu@qq.com>
- * <p>
- * Licensed under the Apache License, Version 2.0 (the "License");
- *    you may not use this file except in compliance with the License.
- *    You may obtain a copy of the License at
- *      http://www.apache.org/licenses/LICENSE-2.0
- *    Unless required by applicable law or agreed to in writing, software
- *    distributed under the License is distributed on an "AS IS" BASIS,
- *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *    See the License for the specific language governing permissions and
- *    limitations under the License.
- * </p>
- *
- */
-
 package com.geekcattle.core.j2cache.autoconfigure;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
-
+/**
+ * 相关的配置信息
+ * @author 小雨哥哥
+ *
+ */
 @ConfigurationProperties(prefix = "j2cache")
 public class J2CacheExtendConfig {
-
     private String configLocation = "/j2cache.properties";
 
     /**
-     * 是否开启spring cache缓存,注意:开启后需要添加spring.cache.type=none,将缓存类型设置为none
+     * 是否开启spring cache缓存,注意:开启后需要添加spring.cache.type=GENERIC,将缓存类型设置为GENERIC
      */
     private Boolean openSpringCache = false;
+
+    /**
+     * 缓存清除模式，
+     * <ul>
+     * <li>active:主动清除，二级缓存过期主动通知各节点清除，优点在于所有节点可以同时收到缓存清除</li>
+     * <li>passive:被动清除，一级缓存过期进行通知各节点清除一二级缓存，</li>
+     * <li> blend:两种模式一起运作，对于各个节点缓存准确以及及时性要求高的可以使用，正常用前两种模式中一个就可</li>
+     * </ul>
+     */
+    private String cacheCleanMode = "passive";
+
+    /**
+     * 是否允许缓存空值,默认:true
+     */
+    private boolean allowNullValues = true;
+
+    /**
+     * 使用哪种redis客户端,默认：jedis
+     * <ul>
+     * <li><a href ='https://github.com/xetorthio/jedis'>jedis: https://github.com/xetorthio/jedis</a></li>
+     * <li><a href ='https://github.com/lettuce-io/lettuce-core'>lettuce: https://github.com/lettuce-io/lettuce-core</a></li>
+     * </ul>
+     */
+    private String redisClient = "jedis";
+
 
     public String getConfigLocation() {
         return configLocation;
@@ -42,5 +54,29 @@ public class J2CacheExtendConfig {
 
     public void setOpenSpringCache(Boolean openSpringCache) {
         this.openSpringCache = openSpringCache;
+    }
+
+    public String getCacheCleanMode() {
+        return cacheCleanMode;
+    }
+
+    public void setCacheCleanMode(String cacheCleanMode) {
+        this.cacheCleanMode = cacheCleanMode;
+    }
+
+    public boolean isAllowNullValues() {
+        return allowNullValues;
+    }
+
+    public void setAllowNullValues(boolean allowNullValues) {
+        this.allowNullValues = allowNullValues;
+    }
+
+    public String getRedisClient() {
+        return redisClient;
+    }
+
+    public void setRedisClient(String redisClient) {
+        this.redisClient = redisClient;
     }
 }

@@ -16,6 +16,7 @@
 
 package com.geekcattle.core.j2cache.autoconfigure;
 
+import com.geekcattle.core.j2cache.cache.support.util.SpringJ2CacheConfigUtil;
 import com.geekcattle.core.j2cache.cache.support.util.SpringUtil;
 import net.oschina.j2cache.CacheChannel;
 import net.oschina.j2cache.J2Cache;
@@ -27,23 +28,31 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.DependsOn;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.core.env.StandardEnvironment;
 
 import java.io.IOException;
 
 @ConditionalOnClass(J2Cache.class)
 @EnableConfigurationProperties({J2CacheExtendConfig.class})
 @Configuration
+@PropertySource(value = "${j2cache.config-location}")
 public class J2CacheAutoConfiguration {
 
     @Autowired
-    private J2CacheExtendConfig cacheExtendConfig;
+    private StandardEnvironment standardEnvironment;
 
     @Bean
-    @DependsOn("springUtil")
-    public CacheChannel cacheChannel() throws IOException {
+    public J2CacheConfig j2CacheConfig() throws IOException{
         J2CacheConfig cacheConfig = new J2CacheConfig();
-        cacheConfig = cacheConfig.initFromConfig(cacheExtendConfig.getConfigLocation());
-        J2CacheBuilder builder = J2CacheBuilder.init(cacheConfig);
+        cacheConfig = SpringJ2CacheConfigUtil.initFromConfig(standardEnvironment);
+        return cacheConfig;
+    }
+
+    @Bean
+    @DependsOn({"springUtil","j2CacheConfig"})
+    public CacheChannel cacheChannel(J2CacheConfig j2CacheConfig) throws IOException {
+        J2CacheBuilder builder = J2CacheBuilder.init(j2CacheConfig);
         return builder.getChannel();
     }
 

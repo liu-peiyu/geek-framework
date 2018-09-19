@@ -21,7 +21,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.data.redis.connection.Message;
 import org.springframework.data.redis.connection.MessageListener;
 
-import net.oschina.j2cache.ClusterPolicy;
+import net.oschina.j2cache.cluster.ClusterPolicy;
 import net.oschina.j2cache.Command;
 import net.oschina.j2cache.util.SerializationUtils;
 
