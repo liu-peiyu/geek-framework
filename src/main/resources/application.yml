@@ -161,7 +161,6 @@ ueditor:
       path : "static/assets/ueditor/config.json"
 
 j2cache:
-  #config-location : /j2cache-@spring.active@.properties
   open-spring-cache : true
   allow-null-values : true
   cache-clean-mode : passive
