@@ -161,7 +161,7 @@ ueditor:
       path : "static/assets/ueditor/config.json"
 
 j2cache:
-  config-location : /j2cache-@spring.active@.properties
+  #config-location : /j2cache-@spring.active@.properties
   open-spring-cache : true
   allow-null-values : true
   cache-clean-mode : passive
@@ -185,6 +185,8 @@ spring:
     password : Hao123
 server:
   port: 8000
+j2cache:
+    config-location: /j2cache-dev.properties
 
 ---
 
@@ -203,5 +205,7 @@ spring:
       password : Test123
 server:
   port: 8001
+j2cache:
+  config-location: /j2cache-pro.properties
 
 ---

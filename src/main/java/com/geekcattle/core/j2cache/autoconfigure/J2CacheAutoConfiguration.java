@@ -43,9 +43,8 @@ public class J2CacheAutoConfiguration {
     private StandardEnvironment standardEnvironment;
 
     @Bean
-    public J2CacheConfig j2CacheConfig() throws IOException{
-        J2CacheConfig cacheConfig = new J2CacheConfig();
-        cacheConfig = SpringJ2CacheConfigUtil.initFromConfig(standardEnvironment);
+    public J2CacheConfig j2CacheConfig(){
+        J2CacheConfig cacheConfig = SpringJ2CacheConfigUtil.initFromConfig(standardEnvironment);
         return cacheConfig;
     }
 
