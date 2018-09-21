@@ -49,17 +49,12 @@ spring:
     testOnReturn : false
     poolPreparedStatements : true
     maxOpenPreparedStatements : 20
-  #mybaties配置
-  mapper:
-    plugin : tk.mybatis.mapper.generator.MapperPlugin
-    Mapper : com.geekcattle.util.CustomerMapper
   #json配置
   jackson:
     time-zone : Asia/Chongqing
     date-format : yyyy-MM-dd HH:mm:ss
     joda-date-time-format : yyyy-MM-dd HH:mm:ss
   # REDIS基础配置
-
   redis:
     jedis:
       pool:
@@ -73,6 +68,24 @@ spring:
           min-idle : 0
       # 连接超时时间（毫秒）
     timeout : 500ms
+
+#mybaties配置
+mybatis:
+  mapper-locations: classpath:mapper/*.xml,classpath:mapper/*/*.xml
+  type-aliases-package: com.geekcattle.model
+
+#mapper配置
+mapper:
+  plugin : tk.mybatis.mapper.generator.MapperPlugin
+  not-empty: false
+  mappers : com.geekcattle.core.CustomerMapper
+
+#pagehelper
+pagehelper:
+  helperDialect: mysql
+  reasonable: true
+  supportMethodsArguments: true
+  params: count=countSql
 
 shiro:
   session:
@@ -185,7 +198,7 @@ spring:
 server:
   port: 8000
 j2cache:
-    config-location: /j2cache-dev.properties
+    config-location: classpath:j2cache-dev.properties
 
 ---
 
@@ -205,6 +218,6 @@ spring:
 server:
   port: 8001
 j2cache:
-  config-location: /j2cache-pro.properties
+  config-location: classpath:j2cache-pro.properties
 
 ---

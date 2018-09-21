@@ -32,6 +32,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -174,9 +175,11 @@ public class AdminController {
             }else{
                 adminRoleService.deleteAdminId(admin.getUid());
             }
+
             return ReturnUtil.Success("操作成功", null, "/console/admin/index");
         } catch (Exception e) {
             e.printStackTrace();
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
             return ReturnUtil.Error("操作失败", null, null);
         }
     }

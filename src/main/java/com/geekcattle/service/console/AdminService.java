@@ -26,7 +26,8 @@ public class AdminService {
     private AdminMapper adminMapper;
 
     public List<Admin> getPageList(Admin admin) {
-        PageHelper.offsetPage(admin.getOffset(), admin.getLimit(), CamelCaseUtil.toUnderlineName(admin.getSort())+" "+admin.getOrder());
+        PageHelper.offsetPage(admin.getOffset(), admin.getLimit());
+        PageHelper.orderBy(CamelCaseUtil.toUnderlineName(admin.getSort())+" "+admin.getOrder());
         return adminMapper.selectAll();
     }
 

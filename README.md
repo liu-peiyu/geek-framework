@@ -13,6 +13,15 @@ Geek-Framework主要定位于微应用的开发，已内置后台系统的基础
 使用Maven做项目管理，提高项目的易开发性、扩展性。
 
 ###更新日期2018-09-19
+* 升级mybatis包为mybatis-spring-boot-starter，移除原有mybatis包
+* 升级mapper包为mapper-spring-boot-starter
+* 升级pagehelper包为pagehelper-spring-boot-starter增加pagehelper-spring-boot-autoconfigure包
+* 更改mybatis、mapper和pagehelper为自动配置，配置方式详见application.yml
+* 移除MyBatisConfig.java和MybatisMapperScannerConfig.java文件
+* 更改升级pagehelper之后对排序方式的处理方式
+* 增加事务测试样例，详见AdminController的save方法，此坑很深，爬了一天，由于没有对spring事务的深入了解，导致事务一直不成功，原因在于spring事务只能处理没有被捕获的异常信息，如果对方法增加了事务，请尽量避免用catch来获取异常，或进在cache里面增加抛出异常功能，使事务能够访问到
+
+###更新日期2018-09-19
 * 升级J2cache为2.7.0版本，主要修复channel获取次数过多导致的错误问题，另个j2cache后期可能会移除对jedis的支持，所以还是提前升级了吧
 * 调整二级缓存redis为lettuce，lettuce为spring推荐的redis操作方式，另个j2cache也推荐使用
 * 配置文件application.yml和j2cache配置文件都增加了对lettuce的支持

@@ -26,7 +26,8 @@ public class MemberService {
     private MemberMapper memberMapper;
 
     public List<Member> getPageList(Member member) {
-        PageHelper.offsetPage(member.getOffset(), member.getLimit(), CamelCaseUtil.toUnderlineName(member.getSort())+" "+member.getOrder());
+        PageHelper.offsetPage(member.getOffset(), member.getLimit());
+        PageHelper.orderBy(CamelCaseUtil.toUnderlineName(member.getSort())+" "+member.getOrder());
         return memberMapper.selectAll();
     }
 

@@ -29,7 +29,8 @@ public class MenuService {
     private MenuMapper menuMapper;
 
     public List<Menu> getPageList(Menu menu) {
-        PageHelper.offsetPage(menu.getOffset(), menu.getLimit(), "listorder asc, created_at desc");
+        PageHelper.offsetPage(menu.getOffset(), menu.getLimit());
+        PageHelper.orderBy("listorder asc, created_at desc");
         return menuMapper.selectAll();
     }
 
