@@ -68,6 +68,9 @@ spring:
           min-idle : 0
       # 连接超时时间（毫秒）
     timeout : 500ms
+  application:
+    name: geekcattle
+
 
 #mybaties配置
 mybatis:
@@ -178,6 +181,26 @@ j2cache:
   allow-null-values : true
   cache-clean-mode : passive
   redis-client : lettuce
+
+
+
+dubbo:
+  application:
+    id: dubbo-provide-demo
+    name: dubbo-provide-demo
+    qos-enable: true
+    qos-port: 22222
+  protocol:
+    id: dubbo
+    name: dubbo
+    port: 12345
+    status: server
+  registry:
+    address: zookeeper://121.41.17.147:2181
+    id: my-registry
+  scan:
+    base-packages: com.geekcattle.dubbo.service.impl
+
 
 
 ---
