@@ -189,17 +189,17 @@ dubbo:
     id: dubbo-provide-demo
     name: dubbo-provide-demo
     qos-enable: true
-    qos-port: 22222
+    qos-port: 22220
   protocol:
     id: dubbo
     name: dubbo
     port: 12345
     status: server
   registry:
-    address: zookeeper://121.41.17.147:2181
-    id: my-registry
+    address: zookeeper://127.0.0.1:2181
+    id: registry
   scan:
-    base-packages: com.geekcattle.dubbo.service.impl
+    basePackages: com.geekcattle.dubbo.service
 
 
 

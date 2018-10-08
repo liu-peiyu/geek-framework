@@ -1,4 +1,4 @@
-package com.geekcattle.dubbo.service;
+package com.geekcattle.dubbo;
 
 public interface DemoService {
 
