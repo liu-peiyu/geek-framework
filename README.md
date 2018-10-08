@@ -13,6 +13,7 @@ Geek-Framework主要定位于微应用的开发，已内置后台系统的基础
 使用Maven做项目管理，提高项目的易开发性、扩展性。
 
 ###更新日期2018-10-08
+
 最近学习了远程过程调用协议RPC（Remote Procedure Call Protocol),将本框架与dubbo做了一个集成，详见dubbo分支，
 为了方便大学家习dubbo的运行机制，本框架将dubbo的provider和customer作了一个整合，将官方demo里的方多应用整合成了一个，即在同一应用内启动消费端和服务端
 * 注：如有实际业务需要请将服务端与消费端分离，此处整合仅供学习dubbo的运行机制和思想
