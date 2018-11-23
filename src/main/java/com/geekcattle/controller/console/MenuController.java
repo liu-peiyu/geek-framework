@@ -147,7 +147,7 @@ public class MenuController {
             menu.setListorder(listorder);
             Example example = new Example(Menu.class);
             example.createCriteria()
-                    .andCondition("id = ", id);
+                    .andCondition("menu_id = ", id);
             menuService.update(menu, example);
             return ReturnUtil.Success("Success", null, null);
         } else {
