@@ -76,10 +76,10 @@ public class MainController {
             ModelMap mp = new ModelMap();
             mp.put("admin", admin);
             mp.put("menuLists", treeGridList);
-            return ReturnUtil.Success(null, mp, null);
+            return ReturnUtil.success(null, mp, null);
         } catch (Exception e) {
             e.printStackTrace();
-            return ReturnUtil.Error(null, null, null);
+            return ReturnUtil.error(null, null, null);
         }
     }
 
@@ -104,10 +104,10 @@ public class MainController {
     @ResponseBody
     public ModelMap main() {
         try {
-            return ReturnUtil.Success(null, this.getTotal(), null);
+            return ReturnUtil.success(null, this.getTotal(), null);
         } catch (Exception e) {
             e.printStackTrace();
-            return ReturnUtil.Error(null, null, null);
+            return ReturnUtil.error(null, null, null);
         }
     }
 

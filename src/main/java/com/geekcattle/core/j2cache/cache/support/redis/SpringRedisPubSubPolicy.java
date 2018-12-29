@@ -59,9 +59,9 @@ public class SpringRedisPubSubPolicy implements ClusterPolicy {
 		if("active".equals(config.getCacheCleanMode())) {
 			isActive = true;
 		}
-		String channel_name = j2config.getL2CacheProperties().getProperty("channel");
-		if(channel_name != null && !channel_name.isEmpty()) {
-			this.channel = channel_name;
+		String channelName = j2config.getL2CacheProperties().getProperty("channel");
+		if(channelName != null && !channelName.isEmpty()) {
+			this.channel = channelName;
 		}
 		RedisMessageListenerContainer listenerContainer = SpringUtil.getBean("j2CacheRedisMessageListenerContainer", RedisMessageListenerContainer.class);
 

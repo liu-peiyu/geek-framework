@@ -26,6 +26,6 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public interface AdminMapper extends CustomerMapper<Admin> {
-    Admin selectByUsername(String username);
-    void deleteById(String Id);
+    Admin selectByUsername(String userName);
+    void deleteById(String id);
 }

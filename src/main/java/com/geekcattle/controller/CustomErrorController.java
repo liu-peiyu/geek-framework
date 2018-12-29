@@ -31,6 +31,7 @@ public class CustomErrorController extends BasicErrorController {
         return PATH;
     }
 
+    @Override
     @RequestMapping(produces = {"text/html"})
     public ModelAndView errorHtml(HttpServletRequest request, HttpServletResponse response) {
         HttpStatus status = this.getStatus(request);
@@ -39,6 +40,7 @@ public class CustomErrorController extends BasicErrorController {
         return new ModelAndView("error/error", model);
     }
 
+    @Override
     @RequestMapping
     @ResponseBody
     public ResponseEntity<Map<String, Object>> error(HttpServletRequest request) {

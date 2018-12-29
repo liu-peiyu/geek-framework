@@ -35,35 +35,43 @@ public class ShiroJ2Cache<K, V> implements Cache<K, V> {
         this.channel = channel;
     }
 
+    @Override
     public V get(K key) throws CacheException {
         CacheObject val = this.channel.get(region, key.toString());
-        if (val == null)
+        if (val == null) {
             return null;
+        }
         return (V) val.getValue();
     }
 
+    @Override
     public V put(K key, V value) throws CacheException {
         this.channel.set(region, key.toString(), value);
         return null;
     }
 
+    @Override
     public V remove(K key) throws CacheException {
         this.channel.evict(region, key.toString());
         return null;
     }
 
+    @Override
     public void clear() throws CacheException {
         this.channel.clear(region);
     }
 
+    @Override
     public int size() {
         return this.channel.keys(region).size();
     }
 
+    @Override
     public Set<K> keys() {
         return new HashSet<>((Collection)this.channel.keys(region));
     }
 
+    @Override
     public Collection<V> values() {
         List<V> list = new ArrayList<V>();
         for (K k : keys()) {

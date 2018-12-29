@@ -108,8 +108,8 @@ public class MenuService {
         Example example = new Example(Menu.class);
         example.createCriteria().andCondition("parent_id = ", parentId);
         PageHelper.orderBy("listorder asc, created_at desc");
-        List<Menu> List = menuMapper.selectByExample(example);
-        for(Menu menu : List){
+        List<Menu> list = menuMapper.selectByExample(example);
+        for(Menu menu : list){
             menuLists.add(menu);
             /*if(menu.getChildNum() > 0){
 

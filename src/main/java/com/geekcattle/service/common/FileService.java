@@ -85,7 +85,9 @@ public class FileService {
     public String getUploadPath(String extName) {
         String filePath = DateUtil.getCurrentYear() + File.separator + DateUtil.getCurrentMonth() + File.separator;
 
-        if(StringUtils.isEmpty(extName)) return filePath;
+        if(StringUtils.isEmpty(extName)) {
+            return filePath;
+        }
         /**
          * 根据文件类型选择上传目录
          */
@@ -116,7 +118,7 @@ public class FileService {
      * @param fileName //文件名
      * @return 文件名
      */
-    public static String fileSave(MultipartFile file, String diskPath, String filePath, String fileName) {
+    public String fileSave(MultipartFile file, String diskPath, String filePath, String fileName) {
         try {
             copyFile(file.getInputStream(), diskPath + filePath, fileName);
             return filePath + fileName;

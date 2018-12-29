@@ -107,14 +107,14 @@ public class AdminController {
     @ResponseBody
     public ModelMap list(Admin admin) {
         ModelMap map = new ModelMap();
-        List<Admin> Lists = adminService.getPageList(admin);
-        for (Admin list : Lists) {
+        List<Admin> lists = adminService.getPageList(admin);
+        for (Admin list : lists) {
             List<Role> rolelist = roleService.selectRoleListByAdminId(list.getUid());
             list.setRoleList(rolelist);
         }
-        map.put("pageInfo", new PageInfo<Admin>(Lists));
+        map.put("pageInfo", new PageInfo<Admin>(lists));
         map.put("queryParam", admin);
-        return ReturnUtil.Success("加载成功", map, null);
+        return ReturnUtil.success("加载成功", map, null);
     }
 
 
@@ -125,21 +125,22 @@ public class AdminController {
     public ModelMap save(@Valid Admin admin, BindingResult result) {
         try {
             if (result.hasErrors()) {
-                for (ObjectError er : result.getAllErrors())
-                    return ReturnUtil.Error(er.getDefaultMessage(), null, null);
+                for (ObjectError er : result.getAllErrors()){
+                    return ReturnUtil.error(er.getDefaultMessage(), null, null);
+                }
             }
             if (StringUtils.isEmpty(admin.getUid())) {
                 Example example = new Example(Admin.class);
                 example.createCriteria().andCondition("username = ", admin.getUsername());
                 Integer userCount = adminService.getCount(example);
                 if (userCount > 0) {
-                    return ReturnUtil.Error("用户名已存在", null, null);
+                    return ReturnUtil.error("用户名已存在", null, null);
                 }
                 if (StringUtils.isEmpty(admin.getPassword())) {
-                    return ReturnUtil.Error("密码不能为空", null, null);
+                    return ReturnUtil.error("密码不能为空", null, null);
                 }
-                String Id = UuidUtil.getUUID();
-                admin.setUid(Id);
+                String id = UuidUtil.getUUID();
+                admin.setUid(id);
                 String salt = new SecureRandomNumberGenerator().nextBytes().toHex();
                 admin.setSalt(salt);
                 String password = PasswordUtil.createAdminPwd(admin.getPassword(), admin.getCredentialsSalt());
@@ -161,7 +162,7 @@ public class AdminController {
                     admin.setUpdatedAt(DateUtil.getCurrentTime());
                     adminService.save(admin);
                 } else {
-                    return ReturnUtil.Error("操作失败", null, null);
+                    return ReturnUtil.error("操作失败", null, null);
                 }
             }
             if (admin.getRoleId() != null) {
@@ -176,11 +177,11 @@ public class AdminController {
                 adminRoleService.deleteAdminId(admin.getUid());
             }
 
-            return ReturnUtil.Success("操作成功", null, "/console/admin/index");
+            return ReturnUtil.success("操作成功", null, "/console/admin/index");
         } catch (Exception e) {
             e.printStackTrace();
             TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-            return ReturnUtil.Error("操作失败", null, null);
+            return ReturnUtil.error("操作失败", null, null);
         }
     }
 
@@ -198,16 +199,16 @@ public class AdminController {
                     Example example = new Example(Admin.class);
                     example.createCriteria().andCondition("uid", uid);
                     adminService.updateExample(pwdAdmin, example);
-                    return ReturnUtil.Success("操作成功", null, null);
+                    return ReturnUtil.success("操作成功", null, null);
                 } else {
-                    return ReturnUtil.Error("对像不存在，修改失败", null, null);
+                    return ReturnUtil.error("对像不存在，修改失败", null, null);
                 }
             } else {
-                return ReturnUtil.Error("参数错误，修改失败", null, null);
+                return ReturnUtil.error("参数错误，修改失败", null, null);
             }
         } catch (Exception e) {
             e.printStackTrace();
-            return ReturnUtil.Error("修改失败", null, null);
+            return ReturnUtil.error("修改失败", null, null);
         }
     }
 
@@ -223,13 +224,13 @@ public class AdminController {
                         adminService.deleteById(id);
                     }
                 }
-                return ReturnUtil.Success("删除成功", null, null);
+                return ReturnUtil.success("删除成功", null, null);
             } else {
-                return ReturnUtil.Error("删除失败", null, null);
+                return ReturnUtil.error("删除失败", null, null);
             }
         } catch (Exception e) {
             e.printStackTrace();
-            return ReturnUtil.Error("删除失败", null, null);
+            return ReturnUtil.error("删除失败", null, null);
         }
     }
 

@@ -11,10 +11,26 @@ server:
 logging:
   level:
     com.geekcattle.mapper : DEBUG
-  file : "logs/spring-boot-logging.log"
+  file : "${user.home}/logs/spring-boot-logging.log"
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: ["*"]
+  endpoint:
+    env:
+      enabled: true
+    health:
+      enabled: true
+      show-details: always
+    info:
+      enabled: true
 
 
 spring:
+  application:
+    name: geek-framework
   profiles:
     #默认启动模式
     active: @spring.active@
@@ -36,19 +52,6 @@ spring:
   datasource:
     type : com.alibaba.druid.pool.DruidDataSource
     driver-class-name : com.mysql.jdbc.Driver
-    filters : stat
-    maxActive : 20
-    initialSize :  1
-    maxWait : 60000
-    minIdle : 1
-    timeBetweenEvictionRunsMillis : 60000
-    minEvictableIdleTimeMillis : 300000
-    validationQuery : "select 'x'"
-    testWhileIdle : true
-    testOnBorrow : false
-    testOnReturn : false
-    poolPreparedStatements : true
-    maxOpenPreparedStatements : 20
   #json配置
   jackson:
     time-zone : Asia/Chongqing
@@ -179,7 +182,6 @@ j2cache:
   cache-clean-mode : passive
   redis-client : lettuce
 
-
 ---
 
 #开发环境
@@ -199,6 +201,7 @@ server:
   port: 8000
 j2cache:
     config-location: classpath:j2cache-dev.properties
+
 
 ---
 

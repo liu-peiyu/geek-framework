@@ -37,7 +37,7 @@ public class SecurityUtil {
      * @return
      */
     public static Boolean isLogin(){
-        return getContext().getAuthentication() != null && getContext().getAuthentication().isAuthenticated() && !getContext().getAuthentication().getName().equals("anonymousUser");
+        return getContext().getAuthentication() != null && getContext().getAuthentication().isAuthenticated() && !"anonymousUser".equals(getContext().getAuthentication().getName());
     }
 
     /**

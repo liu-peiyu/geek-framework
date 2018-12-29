@@ -67,8 +67,8 @@ public class RoleService {
         return roleMapper.findRoleByUserId(userId);
     }
 
-    public List<Role> selectRoleListByAdminId(String Id){
-        return roleMapper.selectRoleListByAdminId(Id);
+    public List<Role> selectRoleListByAdminId(String id){
+        return roleMapper.selectRoleListByAdminId(id);
     }
 
 }

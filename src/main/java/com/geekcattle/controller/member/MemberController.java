@@ -59,20 +59,20 @@ public class MemberController {
     @RequestMapping(value = "/reg", method = RequestMethod.POST)
     public ModelMap doReg(@Valid Member member, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
-            return ReturnUtil.Error("用户名或密码为空", null, null);
+            return ReturnUtil.error("用户名或密码为空", null, null);
         }
         try {
             Example example = new Example(Member.class);
             example.createCriteria().andCondition("account = ", member.getAccount());
             Integer userCount = memberService.getCount(example);
             if (userCount > 0) {
-                return ReturnUtil.Error("用户名已存在", null, null);
+                return ReturnUtil.error("用户名已存在", null, null);
             }
             if (StringUtils.isEmpty(member.getPassword())) {
-                return ReturnUtil.Error("密码不能为空", null, null);
+                return ReturnUtil.error("密码不能为空", null, null);
             }
-            String Id = UuidUtil.getUUID();
-            member.setUid(Id);
+            String id = UuidUtil.getUUID();
+            member.setUid(id);
             BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
             String password = passwordEncoder.encode(member.getPassword());
             member.setPassword(password);
@@ -80,10 +80,10 @@ public class MemberController {
             member.setCreatedAt(DateUtil.getCurrentTime());
             member.setUpdatedAt(DateUtil.getCurrentTime());
             memberService.insert(member);
-            return ReturnUtil.Success("操作成功", null, null);
+            return ReturnUtil.success("操作成功", null, null);
         } catch (Exception e) {
             e.printStackTrace();
-            return ReturnUtil.Error("操作失败", null, null);
+            return ReturnUtil.error("操作失败", null, null);
         }
     }
 

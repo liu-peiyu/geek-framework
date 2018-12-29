@@ -52,8 +52,9 @@ public class SpringRedisMessageListener implements MessageListener{
 		}
         try {
             Command cmd = Command.parse(String.valueOf(SerializationUtils.deserialize(messageBody)));
-            if (cmd == null || cmd.isLocal())
-                return;
+            if (cmd == null || cmd.isLocal()) {
+				return;
+			}
 
             switch (cmd.getOperator()) {
                 case Command.OPT_JOIN:

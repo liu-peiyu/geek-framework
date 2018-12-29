@@ -68,20 +68,20 @@ public class FileUploadController {
     public ModelMap postUploader(@RequestParam MultipartFile file, HttpServletRequest request, HttpServletResponse response){
         if (!file.isEmpty()) {
             if(StringUtils.isEmpty(upConfig.getHardDisk()) && "local".equals(upConfig.getUpType())){
-                return ReturnUtil.Error("请配置上传目录");
+                return ReturnUtil.error("请配置上传目录");
             }
             String diskPath = upConfig.getHardDisk();
             //扩展名格式
             String extName = file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf("."));
             //验证文件类型
             if(!fileService.checkExt(extName)){
-                return ReturnUtil.Error("上传文件格式不支持");
+                return ReturnUtil.error("上传文件格式不支持");
             }
             //根据文件类型获取上传目录
             String uploadPath = fileService.getUploadPath(extName);
             uploadPath = uploadPath.replace(File.separator,"/");
             if(StringUtils.isEmpty(uploadPath)){
-                return ReturnUtil.Error("上传文件路径错误");
+                return ReturnUtil.error("上传文件路径错误");
             }
             String fileName = UuidUtil.getUUID()+extName;
             String retPath = "";
@@ -93,13 +93,13 @@ public class FileUploadController {
                 retPath = fileService.qiniuSave(file,uploadPath,fileName);
             }
             if("null".equals(retPath)){
-                return ReturnUtil.Error("上传文件异常");
+                return ReturnUtil.error("上传文件异常");
             }
             Map<String, String> upMap = fileService.getReturnMap(retPath, fileName);
 
-            return ReturnUtil.Success("上传成功",upMap);
+            return ReturnUtil.success("上传成功",upMap);
         } else {
-            return ReturnUtil.Error("上传文件为空,");
+            return ReturnUtil.error("上传文件为空,");
         }
     }
 

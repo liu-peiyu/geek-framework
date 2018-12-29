@@ -26,13 +26,6 @@ public class RedisServiceImpl implements RedisService {
         return jedisPool.getResource();
     }
 
-    @SuppressWarnings("deprecation")
-    @Override
-    public void returnResource(Jedis jedis) {
-        if(jedis != null){
-            jedisPool.returnResourceObject(jedis);
-        }
-    }
 
     @Override
     public void set(String key, String value) {
@@ -44,15 +37,13 @@ public class RedisServiceImpl implements RedisService {
         } catch (Exception e) {
             e.printStackTrace();
             logger.error("Redis set error: "+ e.getMessage() +" - " + key + ", value:" + value);
-        }finally{
-            returnResource(jedis);
         }
     }
 
     @Override
     public String get(String key) {
         String result = null;
-        Jedis jedis=null;
+        Jedis jedis = null;
         try{
             jedis = getResource();
             result = jedis.get(key);
@@ -60,8 +51,6 @@ public class RedisServiceImpl implements RedisService {
         } catch (Exception e) {
             e.printStackTrace();
             logger.error("Redis set error: "+ e.getMessage() +" - " + key + ", value:" + result);
-        }finally{
-            returnResource(jedis);
         }
         return result;
     }

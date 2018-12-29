@@ -17,8 +17,9 @@
 package com.geekcattle.core;
 
 /**
- * author geekcattle
- * date 2017/3/9 0009 下午 16:02
+ *
+ * @author geekcattle
+ * @date 2017/3/9 0009 下午 16:02
  */
 public enum  LoginEnum {
 

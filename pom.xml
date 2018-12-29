@@ -54,8 +54,7 @@
         <mysql.version>5.1.29</mysql.version>
         <jackson.version>2.8.5</jackson.version>
         <servlet.version>3.0.1</servlet.version>
-
-        <springfox-version>2.7.0</springfox-version>
+        <spring.boot.admin.version>2.1.1</spring.boot.admin.version>
     </properties>
 
     <dependencies>
@@ -108,8 +107,8 @@
         </dependency>
 
         <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-context-support</artifactId>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
         </dependency>
 
         <!-- shiro spring. -->
@@ -250,6 +249,7 @@
         </dependency>
 
     </dependencies>
+
     <build>
         <finalName>geek-framework</finalName>
         <plugins>

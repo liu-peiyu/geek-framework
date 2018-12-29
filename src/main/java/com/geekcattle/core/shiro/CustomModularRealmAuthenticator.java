@@ -78,9 +78,9 @@ public class CustomModularRealmAuthenticator extends ModularRealmAuthenticator {
         Realm realm = null;
         CustomerAuthenticationToken token = (CustomerAuthenticationToken) authenticationToken;
         //判断是否是后台用户
-        if (token.getLoginType().equals("2")) {
+        if ("2".equals(token.getLoginType())) {
             realm = (Realm) this.definedRealms.get("customShiroRealm");
-        }else if(token.getLoginType().equals("3")){
+        }else if("3".equals(token.getLoginType())){
             realm = (Realm) this.definedRealms.get("jwtShiroRealm");
         }else{
             realm = (Realm) this.definedRealms.get("adminShiroRealm");

@@ -64,8 +64,8 @@ public class MenuController {
     @RequestMapping(value = "/index", method = {RequestMethod.GET})
     public String index(Model model) {
         ArrayList<Menu> menuLists = new ArrayList<>();
-        List<Menu> Lists = menuService.getChildMenuList(menuLists,"0");
-        model.addAttribute("menus", Lists);
+        List<Menu> lists = menuService.getChildMenuList(menuLists,"0");
+        model.addAttribute("menus", lists);
         return "console/menu/index";
     }
 
@@ -74,12 +74,12 @@ public class MenuController {
     @ResponseBody
     public ModelMap list() {
         ModelMap map = new ModelMap();
-        List<Menu> List = menuService.getMenuAll();
-        MenuTree menuTreeUtil = new MenuTree(List, null);
+        List<Menu> list = menuService.getMenuAll();
+        MenuTree menuTreeUtil = new MenuTree(list, null);
         List<Menu> treeGridList = menuTreeUtil.buildTreeGrid();
         map.put("treeList", treeGridList);
-        map.put("total", List.size());
-        return ReturnUtil.Success("加载成功", map, null);
+        map.put("total", list.size());
+        return ReturnUtil.success("加载成功", map, null);
     }
 
     @RequiresPermissions("admin:edit")
@@ -111,17 +111,18 @@ public class MenuController {
     public ModelMap save(@Valid Menu menu, BindingResult result) {
         try {
             if (result.hasErrors()) {
-                for (ObjectError er : result.getAllErrors())
-                    return ReturnUtil.Error(er.getDefaultMessage(), null, null);
+                for (ObjectError er : result.getAllErrors()) {
+                    return ReturnUtil.error(er.getDefaultMessage(), null, null);
+                }
             }
             if (StringUtils.isEmpty(menu.getMenuId())) {
-                String Id = UuidUtil.getUUID();
-                menu.setMenuId(Id);
+                String id = UuidUtil.getUUID();
+                menu.setMenuId(id);
                 menuService.insert(menu);
             } else {
                 menuService.save(menu);
             }
-            if(!menu.getParentId().equals("0")){
+            if(!"0".equals(menu.getParentId())){
                 //更新父类总数
                 Example example = new Example(Menu.class);
                 example.createCriteria().andCondition("parent_id = ", menu.getParentId());
@@ -131,10 +132,10 @@ public class MenuController {
                 parentMenu.setChildNum(parentCount);
                 menuService.save(parentMenu);
             }
-            return ReturnUtil.Success("操作成功", null, "/console/menu/index");
+            return ReturnUtil.success("操作成功", null, "/console/menu/index");
         } catch (Exception e) {
             e.printStackTrace();
-            return ReturnUtil.Error("操作失败", null, null);
+            return ReturnUtil.error("操作失败", null, null);
         }
     }
 
@@ -149,9 +150,9 @@ public class MenuController {
             example.createCriteria()
                     .andCondition("menu_id = ", id);
             menuService.update(menu, example);
-            return ReturnUtil.Success("Success", null, null);
+            return ReturnUtil.success("success", null, null);
         } else {
-            return ReturnUtil.Error("Error", null, null);
+            return ReturnUtil.error("error", null, null);
         }
     }
 
@@ -161,18 +162,18 @@ public class MenuController {
     public ModelMap delete(String[] ids) {
         try {
             if ("null".equals(ids) || "".equals(ids)) {
-                return ReturnUtil.Error("Error", null, null);
+                return ReturnUtil.error("error", null, null);
             } else {
                 for (String id : ids) {
                     //因演示环境需要禁止删除菜单，实际开发可移除下面代码的注释
                     //roleMenuService.deleteMenuId(id);
                     //menuService.deleteById(id);
                 }
-                return ReturnUtil.Success("Success", null, null);
+                return ReturnUtil.success("success", null, null);
             }
         } catch (Exception e) {
             e.printStackTrace();
-            return ReturnUtil.Error("Error", null, null);
+            return ReturnUtil.error("error", null, null);
         }
     }
 

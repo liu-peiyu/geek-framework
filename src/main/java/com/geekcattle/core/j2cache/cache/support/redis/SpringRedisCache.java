@@ -57,8 +57,9 @@ public class SpringRedisCache implements Level2Cache {
 	}
 
 	private String getRegionName(String region) {
-		if (namespace != null && !namespace.isEmpty())
+		if (namespace != null && !namespace.isEmpty()) {
 			region = namespace + ":" + region;
+		}
 		return region;
 	}
 
@@ -80,7 +81,7 @@ public class SpringRedisCache implements Level2Cache {
 	@Override
 	public void evict(String... keys) {
 		for (String k : keys) {
-			if (!k.equals("null")) {
+			if (!"null".equals(k)) {
 				redisTemplate.opsForHash().delete(region, k);
 			} else {
 				redisTemplate.delete(region);
@@ -101,6 +102,7 @@ public class SpringRedisCache implements Level2Cache {
 	@Override
 	public byte[] getBytes(String key) {
 		return redisTemplate.opsForHash().getOperations().execute(new RedisCallback<byte[]>() {
+			@Override
 			public byte[] doInRedis(RedisConnection redis) {
 				return redis.hGet(region.getBytes(), key.getBytes());
 			}

@@ -30,5 +30,5 @@ import java.util.Set;
 @Service
 public interface RoleMapper extends CustomerMapper<Role> {
     Set<String> findRoleByUserId(String userId);
-    List<Role> selectRoleListByAdminId(String Id);
+    List<Role> selectRoleListByAdminId(String id);
 }

@@ -58,11 +58,11 @@ public class IdUtil {
         return RandomStringUtils.randomAlphanumeric(length);
     }
 
-    private static final SimpleDateFormat timeSdf = new SimpleDateFormat("yyyyMMddHHmmssSSS");
+    private static final SimpleDateFormat TIME_SIMPLE_DATE_FORMAT = new SimpleDateFormat("yyyyMMddHHmmssSSS");
 
     synchronized public static String timeId() {
         StringBuilder sb = new StringBuilder();
-        sb.append(timeSdf.format(System.currentTimeMillis()));
+        sb.append(TIME_SIMPLE_DATE_FORMAT.format(System.currentTimeMillis()));
         sb.append(randomNumeric(5));
         return sb.toString();
     }

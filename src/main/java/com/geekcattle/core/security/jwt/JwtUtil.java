@@ -143,7 +143,7 @@ public class JwtUtil {
     public String generateRefreshToken(CustomUser user) {
         Map<String, Object> claims = generateClaims(user);
         // 只授于更新 token 的权限
-        String roles[] = new String[]{this.ROLE_REFRESH_TOKEN};
+        String[] roles = new String[]{ROLE_REFRESH_TOKEN};
         claims.put(CLAIM_KEY_AUTHORITIES, JsonUtil.toJson(roles));
         return generateRefreshToken(user.getUsername(), claims);
     }

@@ -318,17 +318,17 @@ public class DateUtil {
      * 求某一个时间向前多少秒的时间(currentTimeToBefer)---OK
      * @param givedTime        给定的时间
      * @param interval         间隔时间的毫秒数；计算方式 ：n(天)*24(小时)*60(分钟)*60(秒)(类型)
-     * @param format_Date_Sign 输出日期的格式；如yyyy-MM-dd、yyyyMMdd等；
+     * @param formatDateSign 输出日期的格式；如yyyy-MM-dd、yyyyMMdd等；
      */
-    public static String givedTimeToBefer(String givedTime, long interval, String format_Date_Sign) {
+    public static String givedTimeToBefer(String givedTime, long interval, String formatDateSign) {
         String tomorrow = null;
         try {
-            SimpleDateFormat sdf = new SimpleDateFormat(format_Date_Sign);
+            SimpleDateFormat sdf = new SimpleDateFormat(formatDateSign);
             Date gDate = sdf.parse(givedTime);
             long current = gDate.getTime(); // 将Calendar表示的时间转换成毫秒
             long beforeOrAfter = current - interval * 1000L; // 将Calendar表示的时间转换成毫秒
             Date date = new Date(beforeOrAfter); // 用timeTwo作参数构造date2
-            tomorrow = new SimpleDateFormat(format_Date_Sign).format(date);
+            tomorrow = new SimpleDateFormat(formatDateSign).format(date);
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -368,9 +368,9 @@ public class DateUtil {
     public static Map<String, String> getTwoDay(String endTime,
                                                 String beginTime, boolean isEndTime) {
         Map<String, String> result = new HashMap<String, String>();
-        if ((endTime == null || endTime.equals("") || (beginTime == null || beginTime
-                .equals(""))))
+        if ((endTime == null || "".equals(endTime) || (beginTime == null || "".equals(beginTime)))) {
             return null;
+        }
         try {
             java.util.Date date = ymdSDF.parse(endTime);
             endTime = ymdSDF.format(date);
@@ -393,10 +393,10 @@ public class DateUtil {
      */
     public static Integer getTwoDayInterval(String endTime, String beginTime,
                                             boolean isEndTime) {
-        if ((endTime == null || endTime.equals("") || (beginTime == null || beginTime
-                .equals(""))))
+        if ((endTime == null || "".equals(endTime) || (beginTime == null || "".equals(beginTime)))) {
             return 0;
-        long day = 0l;
+        }
+        long day = 0L;
         try {
             java.util.Date date = ymdSDF.parse(endTime);
             endTime = ymdSDF.format(date);
@@ -420,8 +420,9 @@ public class DateUtil {
                                               boolean isEndTime) {
         Map<String, String> result = new HashMap<String, String>();
         if (interval == 0 || isEndTime) {
-            if (isEndTime)
+            if (isEndTime) {
                 result.put(endTime, endTime);
+            }
         }
         if (interval > 0) {
             int begin = 0;

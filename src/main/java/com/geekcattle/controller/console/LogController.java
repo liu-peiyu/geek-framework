@@ -56,9 +56,9 @@ public class LogController {
     @RequestMapping(value = "/list", method = {RequestMethod.GET})
     public ModelMap list(Log log) {
         ModelMap map = new ModelMap();
-        List<Log> Lists = logService.getPageList(log);
-        map.put("pageInfo", new PageInfo<Log>(Lists));
+        List<Log> lists = logService.getPageList(log);
+        map.put("pageInfo", new PageInfo<Log>(lists));
         map.put("queryParam", log);
-        return ReturnUtil.Success("加载成功", map, null);
+        return ReturnUtil.success("加载成功", map, null);
     }
 }

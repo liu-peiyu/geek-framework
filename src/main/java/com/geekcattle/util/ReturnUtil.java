@@ -26,7 +26,7 @@ import org.springframework.ui.ModelMap;
  */
 public class ReturnUtil {
 
-    public static ModelMap Success(String msg, Object obj, String referer) {
+    public static ModelMap success(String msg, Object obj, String referer) {
         msg = StringUtils.isEmpty(msg) || StringUtils.isBlank(msg) ? "操作成功" : msg;
         ModelMap mp = new ModelMap();
         mp.put("status", 1);
@@ -37,7 +37,7 @@ public class ReturnUtil {
         return mp;
     }
 
-    public static ModelMap Success(String msg, Object obj) {
+    public static ModelMap success(String msg, Object obj) {
         msg = StringUtils.isEmpty(msg) || StringUtils.isBlank(msg) ? "操作成功" : msg;
         ModelMap mp = new ModelMap();
         mp.put("status", 1);
@@ -47,7 +47,7 @@ public class ReturnUtil {
         mp.put("result", obj);
         return mp;
     }
-    public static ModelMap Success(String msg) {
+    public static ModelMap success(String msg) {
         msg = StringUtils.isEmpty(msg) || StringUtils.isBlank(msg) ? "操作成功" : msg;
         ModelMap mp = new ModelMap();
         mp.put("status", 1);
@@ -58,7 +58,7 @@ public class ReturnUtil {
         return mp;
     }
 
-    public static ModelMap Error(String msg, Object obj, String referer) {
+    public static ModelMap error(String msg, Object obj, String referer) {
         msg = StringUtils.isEmpty(msg) || StringUtils.isBlank(msg) ? "操作失败" : msg;
         ModelMap mp = new ModelMap();
         mp.put("status", 0);
@@ -69,7 +69,7 @@ public class ReturnUtil {
         return mp;
     }
 
-    public static ModelMap Error(String msg, Object obj) {
+    public static ModelMap error(String msg, Object obj) {
         msg = StringUtils.isEmpty(msg) || StringUtils.isBlank(msg) ? "操作失败" : msg;
         ModelMap mp = new ModelMap();
         mp.put("status", 0);
@@ -80,7 +80,7 @@ public class ReturnUtil {
         return mp;
     }
 
-    public static ModelMap Error(String msg) {
+    public static ModelMap error(String msg) {
         msg = StringUtils.isEmpty(msg) || StringUtils.isBlank(msg) ? "操作失败" : msg;
         ModelMap mp = new ModelMap();
         mp.put("status", 0);

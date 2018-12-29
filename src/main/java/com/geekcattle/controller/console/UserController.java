@@ -57,10 +57,10 @@ public class UserController {
     @ResponseBody
     public ModelMap list(Member member) {
         ModelMap map = new ModelMap();
-        List<Member> Lists = memberService.getPageList(member);
-        map.put("pageInfo", new PageInfo<Member>(Lists));
+        List<Member> lists = memberService.getPageList(member);
+        map.put("pageInfo", new PageInfo<Member>(lists));
         map.put("queryParam", member);
-        return ReturnUtil.Success("加载成功", map, null);
+        return ReturnUtil.success("加载成功", map, null);
     }
 
 }

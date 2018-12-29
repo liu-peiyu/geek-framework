@@ -43,7 +43,7 @@ public class CustomerLogoutFilter extends LogoutFilter {
 
         // 验证是否POST方式
         if (isPostOnlyLogout()) {
-            if (!WebUtils.toHttp(request).getMethod().toUpperCase(Locale.ENGLISH).equals("POST")) {
+            if (!"POST".equals(WebUtils.toHttp(request).getMethod().toUpperCase(Locale.ENGLISH))) {
                 return onLogoutRequestNotAPost(request, response);
             }
         }

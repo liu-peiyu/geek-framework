@@ -139,6 +139,7 @@ public class AdminShiroRealm extends AuthorizingRealm {
     /**
      * 指定principalCollection 清除
      */
+    @Override
     public void clearCachedAuthorizationInfo(PrincipalCollection principalCollection) {
         SimplePrincipalCollection principals = new SimplePrincipalCollection(
                 principalCollection, getName());

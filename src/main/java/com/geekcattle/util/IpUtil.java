@@ -52,7 +52,7 @@ public class IpUtil {
         if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
             ip = request.getRemoteAddr();
         }
-        if (ip.equals("0:0:0:0:0:0:0:1")) {
+        if ("0:0:0:0:0:0:0:1".equals(ip)) {
             ip = "127.0.0.1";
         }
         if (ip.split(",").length > 1) {
@@ -68,7 +68,7 @@ public class IpUtil {
      * @return
      */
     public static String getIpInfo(String ip) {
-        if (ip.equals("127.0.0.1")) {
+        if ("127.0.0.1".equals(ip)) {
             ip = "127.0.0.1";
         }
         String info = "";

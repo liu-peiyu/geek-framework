@@ -38,8 +38,9 @@ public class ShiroJ2CacheCacheManager implements CacheManager {
 
     @Override
     public <K, V> Cache<K, V> getCache(String name) throws CacheException {
-        if (channel == null)
+        if (channel == null) {
             channel = J2Cache.getChannel();
+        }
         return new ShiroJ2Cache<K, V>(redisConfiguration.getCachePrefix(), channel);
     }
 }

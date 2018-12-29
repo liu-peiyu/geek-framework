@@ -74,6 +74,7 @@ public class Member extends BaseEntity implements UserDetails {
         this.account = account;
     }
 
+    @Override
     public String getPassword() {
         return password;
     }

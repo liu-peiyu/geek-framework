@@ -120,18 +120,6 @@ public class J2CacheSpringRedisAutoConfiguration {
                 cluster.setPassword(paw);
                 connectionFactory = new JedisConnectionFactory(cluster, config);
                 break;
-            case "sharded":
-                try {
-                    for (String node : hosts.split(",")) {
-                        connectionFactory = new JedisConnectionFactory(new JedisShardInfo(new URI(node)));
-                        connectionFactory.setPoolConfig(config);
-                        log.warn("Jedis mode [sharded] not recommended for use!!");
-                        break;
-                    }
-                } catch (URISyntaxException e) {
-                    throw new JedisConnectionException(e);
-                }
-                break;
             default:
                 for (RedisNode node : nodes) {
                     String host = node.getHost();
@@ -145,8 +133,9 @@ public class J2CacheSpringRedisAutoConfiguration {
                     connectionFactory = new JedisConnectionFactory(single, clientConfiguration.build());
                     break;
                 }
-                if (!"single".equalsIgnoreCase(mode))
+                if (!"single".equalsIgnoreCase(mode)) {
                     log.warn("Redis mode [" + mode + "] not defined. Using 'single'.");
+                }
                 break;
         }
         return connectionFactory;
@@ -207,8 +196,9 @@ public class J2CacheSpringRedisAutoConfiguration {
                     connectionFactory = new LettuceConnectionFactory(single, config.build());
                     break;
                 }
-                if (!"single".equalsIgnoreCase(mode))
+                if (!"single".equalsIgnoreCase(mode)) {
                     log.warn("Redis mode [" + mode + "] not defined. Using 'single'.");
+                }
                 break;
         }
         return connectionFactory;

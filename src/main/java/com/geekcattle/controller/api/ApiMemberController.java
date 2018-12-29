@@ -36,9 +36,9 @@ public class ApiMemberController {
     public ModelMap index(){
         if(SecurityUtil.isLogin()){
             User user = SecurityUtil.getFontUserInfo();
-            return ReturnUtil.Success("获取用户信息成功", user);
+            return ReturnUtil.success("获取用户信息成功", user);
         }else{
-            return ReturnUtil.Error("用户不存在");
+            return ReturnUtil.error("用户不存在");
         }
 
     }
