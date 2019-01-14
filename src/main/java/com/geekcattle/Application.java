@@ -17,6 +17,7 @@
 
 package com.geekcattle;
 
+import de.codecentric.boot.admin.server.config.EnableAdminServer;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -27,6 +28,7 @@ import tk.mybatis.spring.annotation.MapperScan;
 @EnableConfigurationProperties
 @EnableTransactionManagement
 @MapperScan("com.geekcattle.mapper")
+@EnableAdminServer
 public class Application {
     //启动文件
     public static void main(String[] args){

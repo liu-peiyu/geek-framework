@@ -36,7 +36,7 @@ public class IndexController {
 
     @RequestMapping
     public String index(Model model) {
-        return "index";
+        return "home/index";
     }
 
     @RequestMapping(value = "/test",method = {RequestMethod.GET})

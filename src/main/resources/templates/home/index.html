@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Geek-Framework引导</title>
+    <link rel="stylesheet" href="//cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+</head>
+<body>
+<nav class="navbar navbar-inverse">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">Geek-Framework</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+                <li class="active"><a href="/">首页</a></li>
+                <li><a href="/member/login">前台登录</a></li>
+                <li><a href="/member/reg">前台注册</a></li>
+                <li><a href="/console/login">后台登录</a></li>
+            </ul>
+        </div><!--/.nav-collapse -->
+    </div>
+</nav>
+<div class="container">
+    <div class="page-header">
+        <h1>Geek-Framework 微服务快速开发脚手架</h1>
+        <p class="lead">Geek-Framework是基于多个优秀的开源项目，高度整合封装而成的高效，高性能，强安全性的<strong>开源</strong>Java微服务快速开发框架。</p>
+    </div>
+
+    <h3>平台简介</h3>
+    <p>Geek-Framework是在SpringBoot基础上搭建的一个Java基础开发框架，以Spring MVC为模型视图控制器，MyBatis为数据访问层，Apache Shiro为权限授权层，Ehcahe、Redis和J2Cache对数据进行缓存。</p>
+    <p>Geek-Framework主要定位于微应用的开发，已内置后台系统的基础功能，用户管理、角色管理、权限管理、会员管理、日志管理等；前台已经实现用户登录，注册等基础功能。
+        同时前后台会员实现分表管理，可扩展多角色系统、多权限系统。
+        采用分层设计、双重验证、提交数据安全编码、密码加密、访问验证、数据权限验证。
+        使用Maven做项目管理，提高项目的易开发性、扩展性。</p>
+
+    <h3>内置功能</h3>
+    <p>
+        1.	管理员管理：管理员是系统操作者，该功能主要完成系统管理员相关配置和角色授权。<br/>
+        2.	角色管理：角色的基础功能以及角色分配权限。<br/>
+        3.	菜单管理：配置系统菜单，操作权限，按钮权限标识等。<br/>
+        4. 会员管理：对前台注册会员的基础的管理。<br/>
+        5.	操作日志：系统正常操作日志记录和查询；系统异常信息日志记录和查询。<br/>
+    </p>
+
+    <h3>技术选型</h3>
+    <p>
+        1、后端<br/><br/>
+
+        * 核心框架：SpringBoot 2.0.2.RELEASE<br/>
+        * 集成运行框架：Tomcat 8.5.11<br/>
+        * 安全框架：Apache Shiro 1.2<br/>
+        * 视图框架：Spring MVC 4.1<br/>
+        * 服务端验证：Hibernate Validator 5.3.4<br/>
+        * 布局框架：Thymeleaf 1.5.2<br/>
+        * 持久层框架：MyBatis 3.3.1<br/>
+        * 数据处理框架：Mapper 3.3.9<br/>
+        * 数据库连接池：Alibaba Druid 1.0<br/>
+        * 缓存框架：Ehcache 2.6、Redis<br/>
+        * 日志管理：SLF4J 1.7、Log4j<br/>
+        * TOKEN模式： jsonwebtoken 0.6<br/>
+        * 工具类：Apache Commons、Jackson 2.8.5<br/>
+
+        2、前端<br/><br/>
+
+        * JQ框架：jQuery 2.2.4<br/>
+        * JQ兼容插件：jQuery-Migrate 1.4.1<br/>
+        * CSS框架：Twitter Bootstrap 3.3.7+AdminLte 2.3.7<br/>
+        * 客户端验证：jQuery Validate Plugin 1.15。<br/>
+        * 数据表格：BootStrap-Table 1.11<br/>
+        * 树数据列表：jQuery-Treegrid 0.2<br/>
+        * 树结构控件：BootStrap-Treeview 1.2<br/>
+        * 工具类框架：Layer 3.0<br/>
+
+        4、平台<br/><br/>
+
+        * 服务器中间件：项目默认支持Tomcat8.5版本，如果需要打包部署到已有的Tomcat需做特殊处理后续会更新。<br/>
+        * 数据库支持：目前仅提供MySql数据库的支持，但不限于数据库，后续会增加其它数据库支持接口，<br/>
+        * 开发环境：Java1.8以上、IDEA、Maven 3.1以上、Git<br/>
+    </p>
+
+
+    <h3>安全考虑</h3>
+    <p>
+        1. 开发语言：系统采用Java 语言开发，具有卓越的通用性、高效性、平台移植性和安全性。<br/>
+        2. 分层设计：（数据库层，数据访问层，业务逻辑层，展示层）层次清楚，低耦合，各层必须通过接口才能接入并进行参数校验（如：在展示层不可直接操作数据库），保证数据操作的安全。<br/>
+        3. 双重验证：用户表单提交双验证：包括服务器端验证及客户端验证，防止用户通过浏览器恶意修改（如不可写文本域、隐藏变量篡改、上传非法文件等），跳过客户端验证操作数据库。<br/>
+        4. 安全编码：用户表单提交所有数据，在服务器端都进行安全编码，防止用户提交非法脚本及SQL注入获取敏感数据等，确保数据安全。<br/>
+        5. 密码加密：登录用户密码进行SHA1散列加密，此加密方法是不可逆的。保证密文泄露后的安全问题。<br/>
+        6. 强制访问：系统对所有管理端链接都进行用户身份权限验证，防止用户直接填写url进行访问。<br/>
+    </p>
+
+
+    <h3>演示地址</h3>
+    <p><a href="http://www.geekcattle.com/">http://www.geekcattle.com/</a>  &nbsp; 用户名：admin &nbsp; 密码：admin </p>
+    <p class="text-danger">PS:测试数据库会不定期恢复 </p>
+
+    <h3>快速体验</h3>
+    <p>
+        1. 具备运行环境：JDK1.7+、Maven3.0+、MySql5+。<br/>
+        2. 修改src\main\resources\application.properties、application-dev.properties、application-pro.properties文件中的数据库设置参数(application-dev.properties为开发环境的相应参数，application-pro.properties为部署环境的相应参数)。<br/>
+        3. 根据修改参数创建对应MySql数据库用户和参数。<br/>
+        4. 运行mvn package脚本，即可创建项目jar文件，同时也可以通过java -jar *.jar 即可本地预览<br/>
+        5. 将data\geekcattle.sql导入本地数据库即可<br/>
+        6. 最高管理员账号，用户名：admin 密码：admin<br/>
+        7. 由于项目只是基础功能实现，可能还有一些没有优化到的时候，后续会持续优化和改进<br/>
+    </p>
+
+    <h3>如何交流、反馈、参与贡献？</h3>
+    <p>
+        * E-mail：l_iupeiyu@qq.com<br/>
+        * GitHub：<a href="https://github.com/liu-peiyu/SpringBootAdmin">https://github.com/liu-peiyu/Geek-Framework</a><br/>
+        * 开源中国：<a href="http://git.oschina.net/liupeiyu/springbootadmin">http://git.oschina.net/liupeiyu/springbootadmin</a>
+    </p>
+
+    <h3>版权声明</h3>
+    <p>
+        本软件使用 [Apache License 2.0](http://www.apache.org/licenses/LICENSE-2.0) 协议，请严格遵照协议内容：<br/><br/>
+
+        1. 需要给代码的用户一份Apache Licence。<br/>
+        2. 如果你修改了代码，需要在被修改的文件中说明。<br/>
+        3. 在延伸的代码中（修改和有源代码衍生的代码中）需要带有原来代码中的协议，商标，专利声明和其他原来作者规定需要包含的说明。<br/>
+        4. 如果再发布的产品中包含一个Notice文件，则在Notice文件中需要带有Apache Licence。你可以在Notice中增加自己的许可，但不可以表现为对Apache Licence构成更改。<br/>
+        5. Apache Licence也是对商业应用友好的许可。使用者也可以在需要的时候修改代码来满足需要并作为开源或商业产品发布/销售。<br/>
+        6. 你可以二次包装出售，但还请保留文件中的版权和作者信息，并在你的产品说明中注明SpringBootAdmin。<br/>
+        7. 你可以以任何方式获得，你可以修改包名或类名，但还请保留文件中的版权和作者信息。<br/>
+    </p>
+
+    <h3>个人技能</h3>
+    <p>JAVA、PHP、HTML、CSS、JQ、BootStrap、Vue、Mysql、Oracle、Redis、SVN、GIT、Apache、Nginx、Tomcat、WindowServer、Ubuntu</p>
+</div>
+<div class="hide">
+    <script>
+        var _hmt = _hmt || [];
+        (function() {
+            var hm = document.createElement("script");
+            hm.src = "https://hm.baidu.com/hm.js?979d31372603c8a206df04b67e1039b5";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
+
+</div>
+<script type="text/javascript" src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
+<script type="text/javascript" src="//cdn.bootcss.com/jquery-migrate/1.4.1/jquery-migrate.min.js"></script>
+<script type="text/javascript" src="//cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</body>
+</html>
