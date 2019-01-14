@@ -31,6 +31,8 @@ spring:
   profiles:
     #默认启动模式
     active: @spring.active@
+  main:
+    allow-bean-definition-overriding: true
   #MVC配置
   mvc:
     view:
