@@ -2,6 +2,9 @@ package com.geekcattle.model.common;
 
 import java.io.Serializable;
 
+/**
+ * @author geekcattle
+ */
 public class Upload implements Serializable {
 
     private Integer multi;

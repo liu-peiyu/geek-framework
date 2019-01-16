@@ -1,7 +1,3 @@
-/*
- * Copyright (c) 2017 <l_iupeiyu@qq.com> All rights reserved.
- */
-
 package com.geekcattle.service.console;
 
 import com.geekcattle.mapper.console.AdminRoleMapper;
@@ -14,8 +10,7 @@ import tk.mybatis.mapper.entity.Example;
 import java.util.List;
 
 /**
- * author geekcattle
- * date 2016/12/6 0006 上午 10:45
+ * @author geekcattle
  */
 @Service
 public class AdminRoleService {

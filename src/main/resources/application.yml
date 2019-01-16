@@ -7,13 +7,11 @@ server:
     session:
       timeout: 60m
 
-#日志配置
+#日志配置 等级由低到高：debug<info<warn<Error<Fatal
 logging:
   level:
     com.springframework.boot.web: warn
     com.geekcattle : debug
-    de.codecentric.boot.admin: warn
-    org.apache.shiro.util: trace
   file : "${user.home}/logs/spring-boot-logging.log"
 
 management:
@@ -52,14 +50,6 @@ spring:
   datasource:
     type : com.alibaba.druid.pool.DruidDataSource
     driver-class-name : com.mysql.jdbc.Driver
-  boot:
-    admin:
-      client:
-        url: http://localhost:${server.port}/monitor
-        instance:
-          service-base-url: http://localhost:${server.port}
-        enabled: true
-      context-path: monitor
   #json配置
   jackson:
     time-zone : Asia/Chongqing
@@ -184,12 +174,6 @@ ueditor:
     json:
       path : "static/assets/ueditor/config.json"
 
-j2cache:
-  open-spring-cache : true
-  allow-null-values : true
-  cache-clean-mode : passive
-  redis-client : lettuce
-
 ---
 
 #开发环境
@@ -208,8 +192,6 @@ spring:
 
 server:
   port: 8000
-j2cache:
-    config-location: classpath:j2cache-dev.properties
 
 
 ---
@@ -229,7 +211,5 @@ spring:
       password : Test123
 server:
   port: 8001
-j2cache:
-  config-location: classpath:j2cache-pro.properties
 
 ---

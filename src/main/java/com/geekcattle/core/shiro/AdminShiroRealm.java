@@ -1,31 +1,13 @@
-/*
- * Copyright (c) 2017-2018.  放牛极客<l_iupeiyu@qq.com>
- * <p>
- * Licensed under the Apache License, Version 2.0 (the "License");
- *    you may not use this file except in compliance with the License.
- *    You may obtain a copy of the License at
- *      http://www.apache.org/licenses/LICENSE-2.0
- *    Unless required by applicable law or agreed to in writing, software
- *    distributed under the License is distributed on an "AS IS" BASIS,
- *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *    See the License for the specific language governing permissions and
- *    limitations under the License.
- * </p>
- *
- */
-
 package com.geekcattle.core.shiro;
 
 import com.geekcattle.model.console.Admin;
-import com.geekcattle.model.console.Menu;
+
 import com.geekcattle.service.console.AdminService;
 import com.geekcattle.service.console.MenuService;
-import com.geekcattle.service.console.RoleService;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
-import org.apache.shiro.cache.Cache;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.subject.SimplePrincipalCollection;
@@ -34,13 +16,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.HashSet;
 import java.util.Set;
 
 /**
  * 后台身份校验核心类
- * author geekcattle
- * date 2017/3/13 0013 下午 15:38
+ * @author geekcattle
  */
 public class AdminShiroRealm extends AuthorizingRealm {
 
@@ -63,7 +43,9 @@ public class AdminShiroRealm extends AuthorizingRealm {
      */
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
-        logger.info("后台登录：AdminShiroRealm.doGetAuthenticationInfo()");
+        if(logger.isDebugEnabled()){
+            logger.info("后台登录：AdminShiroRealm.doGetAuthenticationInfo()");
+        }
         //获取用户的输入的账号.
         String username = (String)token.getPrincipal();
 
@@ -73,17 +55,23 @@ public class AdminShiroRealm extends AuthorizingRealm {
         if(userInfo == null){
             throw new UnknownAccountException();
         }
-        if("0".equals(userInfo.getState().toString())) {
-            throw new LockedAccountException(); //帐号锁定
+        String lock = "0";
+        if(lock.equals(userInfo.getState().toString())) {
+            //帐号锁定
+            throw new LockedAccountException();
         }
 
         //加密方式;
         //交给AuthenticatingRealm使用CredentialsMatcher进行密码匹配，如果觉得人家的不好可以自定义实现
         SimpleAuthenticationInfo authenticationInfo = new SimpleAuthenticationInfo(
-                userInfo, //用户名
-                userInfo.getPassword(), //密码
-                ByteSource.Util.bytes(userInfo.getCredentialsSalt()),//salt=username+salt
-                userInfo.getUsername()  //realm name
+                //用户名
+                userInfo,
+                //密码
+                userInfo.getPassword(),
+                //salt=username+salt
+                ByteSource.Util.bytes(userInfo.getCredentialsSalt()),
+                //realm name
+                userInfo.getUsername()
         );
 
         return authenticationInfo;

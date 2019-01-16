@@ -30,6 +30,9 @@ import java.util.Base64;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * @author geekcattle
+ */
 @Service
 public class FileService {
 
@@ -302,7 +305,7 @@ public class FileService {
             cdnUrl = qiniuConfig.getDomain();
         }
         String previewUrl = cdnUrl + "/" + retPath.replace(File.separator, "/");
-        Map<String, String> upMap = new HashMap<>();
+        Map<String, String> upMap = new HashMap<>(3);
         upMap.put("priviewUrl", previewUrl);
         upMap.put("filePath", retPath);
         upMap.put("fileName", fileName);

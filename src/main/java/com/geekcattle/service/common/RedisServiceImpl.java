@@ -1,7 +1,3 @@
-/*
- * Copyright (c) 2017 <l_iupeiyu@qq.com> All rights reserved.
- */
-
 package com.geekcattle.service.common;
 
 import org.slf4j.Logger;
@@ -11,8 +7,7 @@ import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 
 /**
- * author geekcattle
- * date 2017/3/22 0022 下午 16:16
+ * @author geekcattle
  */
 public class RedisServiceImpl implements RedisService {
 

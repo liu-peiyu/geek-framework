@@ -1,7 +1,3 @@
-/*
- * Copyright (c) 2017 <l_iupeiyu@qq.com> All rights reserved.
- */
-
 package com.geekcattle.service.console;
 
 import com.geekcattle.mapper.console.AdminMapper;
@@ -16,8 +12,7 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * author geekcattle
- * date 2016/10/21 0021 下午 15:43
+ * @author geekcattle
  */
 @Service
 public class AdminService {

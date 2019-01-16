@@ -5,12 +5,24 @@
 Geek-Framework是基于多个优秀的开源项目，高度整合封装而成的高效，高性能，强安全性的**开源**Java微服务快速开发框架。
 
 Geek-Framework是在SpringBoot基础上搭建的一个Java基础开发框架，以Spring MVC为模型视图控制器，MyBatis为数据访问层，
-Apache Shiro和Spring-Security为权限授权层，caffeine、redis或**j2cache**进行缓存。
+Apache Shiro和Spring-Security为权限授权层，redis进行缓存。
 
 Geek-Framework主要定位于微应用的开发，已内置后台系统的基础功能，用户管理、角色管理、权限管理、会员管理、日志管理等；前台已经实现用户登录，注册等基础功能。
 同时前后台会员实现分表管理，可扩展多角色系统、多权限系统。
 采用分层设计、双重验证、提交数据安全编码、密码加密、访问验证、数据权限验证。
 使用Maven做项目管理，提高项目的易开发性、扩展性。
+
+---
+
+###更新日期2019-01-16
+
+* 升级springboot版本为2.1.2.RELEASE application.yml增加以下配置，兼容最新的springboot版本
+  > spring:main:allow-bean-definition-overriding: true
+* 移除j2cache支持，移除原因为简化新手用户部署系统配置
+* 更改后台登录为单realm，不再支持多realm
+* 优化日期时间工具类，使用Instant、LocalDateTime、LocalDate实现线性安全
+* 修复Java开发规约中级警告及部分低级警告
+* 增加debug日志输出开关
 
 ###更新日期2018-12-28
 
@@ -21,8 +33,8 @@ Geek-Framework主要定位于微应用的开发，已内置后台系统的基础
 
 ###更新日期2018-10-08
 
-最近学习了远程过程调用协议RPC（Remote Procedure Call Protocol),将本框架与dubbo做了一个集成，详见dubbo分支，
-为了方便大学家习dubbo的运行机制，本框架将dubbo的provider和customer作了一个整合，将官方demo里的方多应用整合成了一个，即在同一应用内启动消费端和服务端
+* 最近学习了远程过程调用协议RPC（Remote Procedure Call Protocol),将本框架与dubbo做了一个集成，详见dubbo分支，
+* 为了方便大学家习dubbo的运行机制，本框架将dubbo的provider和customer作了一个整合，将官方demo里的方多应用整合成了一个，即在同一应用内启动消费端和服务端
 * 注：如有实际业务需要请将服务端与消费端分离，此处整合仅供学习dubbo的运行机制和思想
 
 ###更新日期2018-09-19

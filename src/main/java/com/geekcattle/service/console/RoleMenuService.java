@@ -1,11 +1,6 @@
-/*
- * Copyright (c) 2017 <l_iupeiyu@qq.com> All rights reserved.
- */
-
 package com.geekcattle.service.console;
 
 import com.geekcattle.mapper.console.RoleMenuMapper;
-import com.geekcattle.model.console.AdminRole;
 import com.geekcattle.model.console.RoleMenu;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,8 +9,7 @@ import tk.mybatis.mapper.entity.Example;
 import java.util.List;
 
 /**
- * author geekcattle
- * date 2016/12/6 0006 上午 10:45
+ * @author geekcattle
  */
 @Service
 public class RoleMenuService {

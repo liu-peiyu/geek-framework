@@ -1,22 +1,5 @@
-/*
- * Copyright (c) 2017-2018.  放牛极客<l_iupeiyu@qq.com>
- * <p>
- * Licensed under the Apache License, Version 2.0 (the "License");
- *    you may not use this file except in compliance with the License.
- *    You may obtain a copy of the License at
- *      http://www.apache.org/licenses/LICENSE-2.0
- *    Unless required by applicable law or agreed to in writing, software
- *    distributed under the License is distributed on an "AS IS" BASIS,
- *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *    See the License for the specific language governing permissions and
- *    limitations under the License.
- * </p>
- *
- */
-
 package com.geekcattle.controller.console;
 
-import com.geekcattle.core.LoginEnum;
 import com.geekcattle.core.shiro.CustomerAuthenticationToken;
 import com.geekcattle.core.utils.ShiroUtil;
 import com.geekcattle.model.valid.ValidAdmin;
@@ -38,6 +21,9 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
+/**
+ * @author geekcattle
+ */
 @Controller
 @RequestMapping(value = "/console")
 public class PublicController {
@@ -62,7 +48,6 @@ public class PublicController {
         }
         String username = validAdmin.getUsername();
         CustomerAuthenticationToken token = new CustomerAuthenticationToken(validAdmin.getUsername(), validAdmin.getPassword(), false);
-        token.setLoginType(LoginEnum.ADMIN.toString());
         //获取当前的Subject
         Subject currentUser = SecurityUtils.getSubject();
         try {
@@ -93,7 +78,6 @@ public class PublicController {
         //验证是否登录成功
         if(currentUser.isAuthenticated()){
             Session session = SecurityUtils.getSubject().getSession();
-            session.setAttribute("loginType",LoginEnum.ADMIN.toString());
             logger.info("用户[" + username + "]登录认证通过(这里可以进行一些认证通过后的一些系统参数初始化操作)");
             String ip = IpUtil.getIpAddr(request);
             logService.insertLoginLog(username, ip, request.getContextPath());

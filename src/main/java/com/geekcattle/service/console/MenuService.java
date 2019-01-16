@@ -1,26 +1,18 @@
-/*
- * Copyright (c) 2017 <l_iupeiyu@qq.com> All rights reserved.
- */
-
 package com.geekcattle.service.console;
 
-import com.geekcattle.mapper.console.AdminMapper;
 import com.geekcattle.mapper.console.MenuMapper;
-import com.geekcattle.model.console.Admin;
 import com.geekcattle.model.console.Menu;
 import com.github.pagehelper.PageHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.entity.Example;
 
-import javax.swing.tree.TreeNode;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
 /**
- * author geekcattle
- * date 2016/10/21 0021 下午 15:43
+ * @author geekcattle
  */
 @Service
 public class MenuService {

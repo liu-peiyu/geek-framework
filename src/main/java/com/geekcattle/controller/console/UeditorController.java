@@ -27,6 +27,9 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
+/**
+ * @author geekcattle
+ */
 @Controller
 @RequestMapping("/console/ueditor")
 public class UeditorController {
@@ -52,13 +55,15 @@ public class UeditorController {
     public void  index(@RequestParam("action") String action, HttpServletRequest request, HttpServletResponse response){
         try {
             PrintWriter writer = response.getWriter();
-            if("config".equals(action)){//返回配置文件
+            if("config".equals(action)){
+                //返回配置文件
                 InputStream stream = getClass().getClassLoader().getResourceAsStream(configJSONPath);
                 File targetFile = new File("config.json");
                 FileUtils.copyInputStreamToFile(stream, targetFile);
                 writer.write(FileUtils.readFileToString(targetFile,"utf-8"));
-            }else if("uploadimage".equals(action) || "uploadscrawl".equals(action) || "uploadvideo".equals(action) || "uploadfile".equals(action)){//上传文件
-                Map<String,Object> mp = new HashMap<String, Object>();
+            }else if("uploadimage".equals(action) || "uploadscrawl".equals(action) || "uploadvideo".equals(action) || "uploadfile".equals(action)){
+                //上传文件
+                Map<String,Object> mp = new HashMap<String, Object>(5);
                 CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver(request.getSession().getServletContext());
                 //判断 request 是否有文件上传,即多部分请求
                 if(multipartResolver.isMultipart(request)){

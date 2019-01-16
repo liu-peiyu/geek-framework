@@ -17,6 +17,9 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.Collections;
 import java.util.Map;
 
+/**
+ * @author geekcattle
+ */
 @Controller
 public class CustomErrorController extends BasicErrorController {
 
