@@ -9,6 +9,9 @@ import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+/**
+ * @author geekcattle
+ */
 @Component
 public class ResourceInterceptor extends HandlerInterceptorAdapter {
 
