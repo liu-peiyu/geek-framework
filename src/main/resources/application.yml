@@ -11,15 +11,16 @@ server:
 logging:
   level:
     com.springframework.boot.web: warn
-    com.geekcattl : debug
+    com.geekcattle : debug
     de.codecentric.boot.admin: warn
+    org.apache.shiro.util: trace
   file : "${user.home}/logs/spring-boot-logging.log"
 
 management:
   endpoints:
     web:
       exposure:
-        include: ["*"]
+        include: "*"
       base-path: /monitor/actuator
   endpoint:
     health:
@@ -54,9 +55,10 @@ spring:
   boot:
     admin:
       client:
-        url: http://localhost:${server.port}/admin
+        url: http://localhost:${server.port}/monitor
         instance:
           service-base-url: http://localhost:${server.port}
+        enabled: true
       context-path: monitor
   #json配置
   jackson:

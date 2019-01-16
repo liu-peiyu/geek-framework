@@ -68,8 +68,8 @@ public class ShiroConfiguration {
     public AdminShiroRealm adminShiroRealm(){
         logger.debug("ShiroConfiguration.adminShiroRealm()");
         AdminShiroRealm adminShiroRealm = new AdminShiroRealm();
-        //adminShiroRealm.setCacheManager(redisCacheManager());//单redis缓存
-        adminShiroRealm.setCacheManager(shiroJ2CacheCacheManager());//j2cache二级缓存
+        adminShiroRealm.setCacheManager(redisCacheManager());//单redis缓存
+        //adminShiroRealm.setCacheManager(shiroJ2CacheCacheManager());//j2cache二级缓存
         //redisCacheManager和shiroJ2CacheCacheManager以上两种模式可任选其一，现在默认使用J2Cache
         adminShiroRealm.setCredentialsMatcher(adminHashedCredentialsMatcher());
         return adminShiroRealm;
@@ -113,26 +113,26 @@ public class ShiroConfiguration {
     public DefaultWebSessionManager defaultWebSessionManager() {
         logger.debug("ShiroConfiguration.defaultWebSessionManager()");
         DefaultWebSessionManager sessionManager = new DefaultWebSessionManager();
-        //用户信息必须是序列化格式，要不创建用户信息创建不过去，此坑很大，
-        //sessionManager.setSessionDAO(redisSessionDAO());//单redis的session存储
-        sessionManager.setSessionDAO(shiroJ2CacheSession());//J2Cache的session存储
-        //redisSessionDAO和shiroJ2CacheSession以上两种模式可任选其一，现在默认使用J2Cache
-        Collection<SessionListener> sessionListeners = new ArrayList<>();
-        sessionListeners.add(customSessionListener());
-        sessionManager.setSessionListeners(sessionListeners);
-        //单位为毫秒（1秒=1000毫秒） 3600000毫秒为1个小时
-        sessionManager.setSessionValidationInterval(3600000*12);
-        //3600000 milliseconds = 1 hour
-        sessionManager.setGlobalSessionTimeout(3600000*12);
-        //是否删除无效的，默认也是开启
-        sessionManager.setDeleteInvalidSessions(true);
-        //是否开启 检测，默认开启
-        sessionManager.setSessionValidationSchedulerEnabled(true);
-        //创建会话Cookie
-        Cookie cookie = new SimpleCookie(ShiroHttpSession.DEFAULT_SESSION_ID_NAME);
-        cookie.setName("WEBID");
-        cookie.setHttpOnly(true);
-        sessionManager.setSessionIdCookie(cookie);
+//        //用户信息必须是序列化格式，要不创建用户信息创建不过去，此坑很大，
+//        sessionManager.setSessionDAO(redisSessionDAO());//单redis的session存储
+//        //sessionManager.setSessionDAO(shiroJ2CacheSession());//J2Cache的session存储
+//        //redisSessionDAO和shiroJ2CacheSession以上两种模式可任选其一，现在默认使用J2Cache
+//        Collection<SessionListener> sessionListeners = new ArrayList<>();
+//        sessionListeners.add(customSessionListener());
+//        sessionManager.setSessionListeners(sessionListeners);
+//        //单位为毫秒（1秒=1000毫秒） 3600000毫秒为1个小时
+//        sessionManager.setSessionValidationInterval(3600000*12);
+//        //3600000 milliseconds = 1 hour
+//        sessionManager.setGlobalSessionTimeout(3600000*12);
+//        //是否删除无效的，默认也是开启
+//        sessionManager.setDeleteInvalidSessions(true);
+//        //是否开启 检测，默认开启
+//        sessionManager.setSessionValidationSchedulerEnabled(true);
+//        //创建会话Cookie
+//        Cookie cookie = new SimpleCookie(ShiroHttpSession.DEFAULT_SESSION_ID_NAME);
+//        cookie.setName("WEBID");
+//        cookie.setHttpOnly(true);
+//        sessionManager.setSessionIdCookie(cookie);
         return sessionManager;
     }
 
@@ -186,11 +186,7 @@ public class ShiroConfiguration {
         DelegatingFilterProxy proxy = new DelegatingFilterProxy();
         proxy.setTargetFilterLifecycle(true);
         proxy.setTargetBeanName("shiroFilter");
-        //该值缺省为false,表示生命周期由SpringApplicationContext管理,设置为true则表示由ServletContainer管理
         registrationBean.setFilter(proxy);
-        /*List<String> urlPatterns = new ArrayList<String>();
-        urlPatterns.add("/*");
-        registrationBean.setUrlPatterns(urlPatterns);*/
         return registrationBean;
     }
 
@@ -235,8 +231,6 @@ public class ShiroConfiguration {
 
         //<!-- 过滤链定义，从上向下顺序执行，一般将 /**放在最为下边 -->:这是一个坑呢，一不小心代码就不好使了;
         //<!-- authc:所有url都必须认证通过才可以访问; anon:所有url都都可以匿名访问-->
-        filterChainDefinitionMap.put("/monitor/**", "anon");
-        filterChainDefinitionMap.put("/error", "anon");
         filterChainDefinitionMap.put("/console/login", "anon");
         filterChainDefinitionMap.put("/console/logout", "logout");
         //配置记住我或认证通过可以访问的地址
