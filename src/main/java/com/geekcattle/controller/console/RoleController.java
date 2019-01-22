@@ -1,5 +1,6 @@
 package com.geekcattle.controller.console;
 
+import com.geekcattle.core.shiro.AdminShiroRealm;
 import com.geekcattle.model.console.*;
 import com.geekcattle.service.console.AdminRoleService;
 import com.geekcattle.service.console.MenuService;
@@ -47,6 +48,9 @@ public class RoleController {
 
     @Autowired
     private RoleMenuService roleMenuService;
+
+    @Autowired
+    private AdminShiroRealm adminShiroRealm;
 
     @RequiresPermissions("role:index")
     @RequestMapping(value = "/index", method = {RequestMethod.GET})
@@ -99,6 +103,8 @@ public class RoleController {
                 role.setUpdatedAt(DateUtil.getCurrentTime());
                 roleService.save(role);
             }
+            // 更新所有用户权限，更严谨的做法是更新与当前角色有关的用户权限
+            adminShiroRealm.kickOutAllUser(false);
             return ReturnUtil.success("操作成功", null, "/console/role/index");
         } catch (Exception e) {
             e.printStackTrace();
@@ -118,6 +124,9 @@ public class RoleController {
                     adminRoleService.deleteRoleId(id);
                     roleService.deleteById(id);
                 }
+                // 更新所有用户权限，更严谨的做法是更新与当前角色有关的用户权限
+                adminShiroRealm.kickOutAllUser(false);
+
                 return ReturnUtil.success("操作成功", null, null);
             }
         } catch (Exception e) {
@@ -165,6 +174,10 @@ public class RoleController {
             } else if (menuIds == null && StringUtils.isNotEmpty(roleId)) {
                 roleMenuService.deleteRoleId(roleId);
             }
+
+            // 更新所有用户权限，更严谨的做法是更新与当前角色有关的用户权限
+            adminShiroRealm.kickOutAllUser(false);
+
             return ReturnUtil.success("操作成功", null, null);
         } catch (Exception e) {
             e.printStackTrace();
