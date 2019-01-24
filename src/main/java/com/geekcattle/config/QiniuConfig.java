@@ -3,6 +3,9 @@ package com.geekcattle.config;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 
+/**
+ * @author geekcattle
+ */
 @Configuration
 public class QiniuConfig {
 

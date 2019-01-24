@@ -30,6 +30,9 @@ import java.util.Base64;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * @author geekcattle
+ */
 @Service
 public class FileService {
 
@@ -85,7 +88,9 @@ public class FileService {
     public String getUploadPath(String extName) {
         String filePath = DateUtil.getCurrentYear() + File.separator + DateUtil.getCurrentMonth() + File.separator;
 
-        if(StringUtils.isEmpty(extName)) return filePath;
+        if(StringUtils.isEmpty(extName)) {
+            return filePath;
+        }
         /**
          * 根据文件类型选择上传目录
          */
@@ -116,7 +121,7 @@ public class FileService {
      * @param fileName //文件名
      * @return 文件名
      */
-    public static String fileSave(MultipartFile file, String diskPath, String filePath, String fileName) {
+    public String fileSave(MultipartFile file, String diskPath, String filePath, String fileName) {
         try {
             copyFile(file.getInputStream(), diskPath + filePath, fileName);
             return filePath + fileName;
@@ -300,7 +305,7 @@ public class FileService {
             cdnUrl = qiniuConfig.getDomain();
         }
         String previewUrl = cdnUrl + "/" + retPath.replace(File.separator, "/");
-        Map<String, String> upMap = new HashMap<>();
+        Map<String, String> upMap = new HashMap<>(3);
         upMap.put("priviewUrl", previewUrl);
         upMap.put("filePath", retPath);
         upMap.put("fileName", fileName);

@@ -1,19 +1,3 @@
-/*
- * Copyright (c) 2017-2018.  放牛极客<l_iupeiyu@qq.com>
- * <p>
- * Licensed under the Apache License, Version 2.0 (the "License");
- *    you may not use this file except in compliance with the License.
- *    You may obtain a copy of the License at
- *      http://www.apache.org/licenses/LICENSE-2.0
- *    Unless required by applicable law or agreed to in writing, software
- *    distributed under the License is distributed on an "AS IS" BASIS,
- *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *    See the License for the specific language governing permissions and
- *    limitations under the License.
- * </p>
- *
- */
-
 package com.geekcattle.controller.console;
 
 import com.geekcattle.model.console.*;
@@ -44,8 +28,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * author geekcattle
- * date 2016/10/21 0021 下午 15:58
+ * @author geekcattle
  */
 @Controller
 @RequestMapping("/console/role")
@@ -76,14 +59,14 @@ public class RoleController {
     @ResponseBody
     public ModelMap list(Role role) {
         ModelMap map = new ModelMap();
-        List<Role> Lists = roleService.getPageList(role);
-        for (Role list : Lists) {
+        List<Role> lists = roleService.getPageList(role);
+        for (Role list : lists) {
             List<Menu> menuList = menuService.selectMenuByRoleId(list.getRoleId());
             list.setMenuList(menuList);
         }
-        map.put("pageInfo", new PageInfo<Role>(Lists));
+        map.put("pageInfo", new PageInfo<Role>(lists));
         map.put("queryParam", role);
-        return ReturnUtil.Success("加载成功", map, null);
+        return ReturnUtil.success("加载成功", map, null);
     }
 
 
@@ -102,7 +85,9 @@ public class RoleController {
     @ResponseBody
     public ModelMap save(@Valid Role role, BindingResult result) {
         if (result.hasErrors()) {
-            for (ObjectError er : result.getAllErrors()) return ReturnUtil.Error(er.getDefaultMessage(), null, null);
+            for (ObjectError er : result.getAllErrors()) {
+                return ReturnUtil.error(er.getDefaultMessage(), null, null);
+            }
         }
         try {
             if (StringUtils.isEmpty(role.getRoleId())) {
@@ -114,10 +99,10 @@ public class RoleController {
                 role.setUpdatedAt(DateUtil.getCurrentTime());
                 roleService.save(role);
             }
-            return ReturnUtil.Success("操作成功", null, "/console/role/index");
+            return ReturnUtil.success("操作成功", null, "/console/role/index");
         } catch (Exception e) {
             e.printStackTrace();
-            return ReturnUtil.Error("操作失败", null, null);
+            return ReturnUtil.error("操作失败", null, null);
         }
     }
 
@@ -127,17 +112,17 @@ public class RoleController {
     public ModelMap delete(String[] ids) {
         try {
             if ("null".equals(ids) || "".equals(ids)) {
-                return ReturnUtil.Error("Error", null, null);
+                return ReturnUtil.error("Error", null, null);
             } else {
                 for (String id : ids) {
                     adminRoleService.deleteRoleId(id);
                     roleService.deleteById(id);
                 }
-                return ReturnUtil.Success("操作成功", null, null);
+                return ReturnUtil.success("操作成功", null, null);
             }
         } catch (Exception e) {
             e.printStackTrace();
-            return ReturnUtil.Error("操作失败", null, null);
+            return ReturnUtil.error("操作失败", null, null);
         }
     }
 
@@ -147,7 +132,7 @@ public class RoleController {
         ModelMap map = new ModelMap();
         List<Role> roleList = roleService.getFromAll();
         map.put("roleList", roleList);
-        return ReturnUtil.Success(null, map, null);
+        return ReturnUtil.success(null, map, null);
     }
 
     @RequestMapping(value = "/menutree", method = {RequestMethod.POST, RequestMethod.GET})
@@ -159,7 +144,7 @@ public class RoleController {
         List<RoleMenu> roleMenuLists = roleMenuService.getRoleList(roleMenu);
         MenuTree menuTreeUtil = new MenuTree(menuLists, roleMenuLists);
         List<Map<String, Object>> mapList = menuTreeUtil.buildTree();
-        return ReturnUtil.Success(null, mapList, null);
+        return ReturnUtil.success(null, mapList, null);
     }
 
     @RequiresPermissions("role:grant")
@@ -180,10 +165,10 @@ public class RoleController {
             } else if (menuIds == null && StringUtils.isNotEmpty(roleId)) {
                 roleMenuService.deleteRoleId(roleId);
             }
-            return ReturnUtil.Success("操作成功", null, null);
+            return ReturnUtil.success("操作成功", null, null);
         } catch (Exception e) {
             e.printStackTrace();
-            return ReturnUtil.Error("操作失败", null, null);
+            return ReturnUtil.error("操作失败", null, null);
         }
     }
 
@@ -207,6 +192,6 @@ public class RoleController {
         }
         map.put("id", id);
         map.put("roleList", roleList);
-        return ReturnUtil.Success("操作成功", map, null);
+        return ReturnUtil.success("操作成功", map, null);
     }
 }

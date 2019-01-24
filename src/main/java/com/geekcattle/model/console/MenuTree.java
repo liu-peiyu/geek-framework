@@ -1,19 +1,3 @@
-/*
- * Copyright (c) 2017-2018.  放牛极客<l_iupeiyu@qq.com>
- * <p>
- * Licensed under the Apache License, Version 2.0 (the "License");
- *    you may not use this file except in compliance with the License.
- *    You may obtain a copy of the License at
- *      http://www.apache.org/licenses/LICENSE-2.0
- *    Unless required by applicable law or agreed to in writing, software
- *    distributed under the License is distributed on an "AS IS" BASIS,
- *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *    See the License for the specific language governing permissions and
- *    limitations under the License.
- * </p>
- *
- */
-
 package com.geekcattle.model.console;
 
 import org.apache.commons.lang3.StringUtils;
@@ -21,8 +5,7 @@ import org.apache.commons.lang3.StringUtils;
 import java.util.*;
 
 /**
- * author geekcattle
- * date 2016/10/21 0021 下午 15:58
+ * @author geekcattle
  */
 public class MenuTree {
 
@@ -54,7 +37,6 @@ public class MenuTree {
         for(Menu node : nodes) {
             //这里判断父节点，需要自己更改判断
             if (StringUtils.equals(node.getParentId(), "0")) {
-                //System.out.println("node"+node.getMenuName());
                 Map<String, Object> map = buildTreeChildsMap(node);
                 list.add(map);
             }
@@ -75,7 +57,6 @@ public class MenuTree {
         List<Map<String, Object>> list = new ArrayList<Map<String,Object>>();
         List<Menu> childNodes = getChilds(node);
         for(Menu childNode : childNodes){
-            //System.out.println("childNode"+childNode.getMenuName());
             Map<String, Object> map = buildTreeChildsMap(childNode);
             list.add(map);
         }
@@ -89,8 +70,8 @@ public class MenuTree {
      * @return Map<String, Object>
      */
     private Map<String, Object> buildTreeChildsMap(Menu childNode){
-        Map<String, Object> map = new HashMap<String, Object>();
-        Map<String, Object> stateMap = new HashMap<>();
+        Map<String, Object> map = new HashMap<String, Object>(5);
+        Map<String, Object> stateMap = new HashMap<>(4);
         stateMap.put("checked", false);
         for(RoleMenu checknode : checknodes){
             if(checknode.getMenuId().equals(childNode.getMenuId())){
@@ -105,9 +86,7 @@ public class MenuTree {
         map.put("url", childNode.getMenuUrl());
         map.put("state", stateMap);
         List<Map<String, Object>> childs = buildTreeChilds(childNode);
-        if(childs.isEmpty() || childs.size() == 0){
-            //map.put("state","open");
-        }else{
+        if(!childs.isEmpty() && childs.size() > 0){
             map.put("nodes", childs);
         }
         return map;
@@ -125,7 +104,6 @@ public class MenuTree {
     public List<Menu> getChilds(Menu parentNode) {
         List<Menu> childNodes = new ArrayList<Menu>();
         for(Menu node : nodes){
-            //System.out.println(node.getParentId()+"-------"+parentNode.getId());
             if (StringUtils.equals(node.getParentId(), parentNode.getMenuId())) {
                 childNodes.add(node);
             }
@@ -165,7 +143,6 @@ public class MenuTree {
         List<Menu> list = new ArrayList<Menu>();
         List<Menu> childNodes = getChilds(node);
         for(Menu childNode : childNodes){
-            //System.out.println("childNode"+childNode.getMenuName());
             List<Menu> childs = buildTreeGridChilds(childNode);
             childNode.setChildren(childs);
             list.add(childNode);

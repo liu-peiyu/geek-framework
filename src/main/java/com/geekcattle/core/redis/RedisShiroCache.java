@@ -1,19 +1,3 @@
-/*
- * Copyright (c) 2017-2018.  放牛极客<l_iupeiyu@qq.com>
- * <p>
- * Licensed under the Apache License, Version 2.0 (the "License");
- *    you may not use this file except in compliance with the License.
- *    You may obtain a copy of the License at
- *      http://www.apache.org/licenses/LICENSE-2.0
- *    Unless required by applicable law or agreed to in writing, software
- *    distributed under the License is distributed on an "AS IS" BASIS,
- *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *    See the License for the specific language governing permissions and
- *    limitations under the License.
- * </p>
- *
- */
-
 package com.geekcattle.core.redis;
 
 import java.util.ArrayList;
@@ -28,6 +12,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 
+/**
+ * @author geekcattle
+ */
 @SuppressWarnings("unchecked")
 public class RedisShiroCache<K, V> implements Cache<K, V> {
 
@@ -48,7 +35,9 @@ public class RedisShiroCache<K, V> implements Cache<K, V> {
 
     @Override
     public V get(K key) throws CacheException {
-        logger.info("根据key从Redis中获取对象 key [" + key + "]");
+        if(logger.isDebugEnabled()){
+            logger.debug("根据key从Redis中获取对象 key [" + key + "]");
+        }
         try {
             if(key == null){
                 return null;
@@ -64,7 +53,9 @@ public class RedisShiroCache<K, V> implements Cache<K, V> {
 
     @Override
     public V put(K key, V value) throws CacheException {
-        logger.info("根据key从存储 key [" + key + "]");
+        if(logger.isDebugEnabled()){
+            logger.info("根据key从存储 key [" + key + "]");
+        }
         try {
             V v = get(key);
             redisTemplate.boundValueOps(getCacheKey(key)).set(value);
@@ -77,7 +68,9 @@ public class RedisShiroCache<K, V> implements Cache<K, V> {
 
     @Override
     public V remove(K key) throws CacheException {
-        logger.info("从redis中删除 key [" + key + "]");
+        if(logger.isDebugEnabled()){
+            logger.info("从redis中删除 key [" + key + "]");
+        }
         try {
             V v = get(key);
             redisTemplate.delete(getCacheKey(key));

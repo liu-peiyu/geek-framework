@@ -1,19 +1,3 @@
-/*
- * Copyright (c) 2017-2018.  放牛极客<l_iupeiyu@qq.com>
- * <p>
- * Licensed under the Apache License, Version 2.0 (the "License");
- *    you may not use this file except in compliance with the License.
- *    You may obtain a copy of the License at
- *      http://www.apache.org/licenses/LICENSE-2.0
- *    Unless required by applicable law or agreed to in writing, software
- *    distributed under the License is distributed on an "AS IS" BASIS,
- *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *    See the License for the specific language governing permissions and
- *    limitations under the License.
- * </p>
- *
- */
-
 package com.geekcattle.core.redis;
 
 import org.apache.shiro.cache.Cache;
@@ -29,6 +13,9 @@ import javax.annotation.Resource;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
+/**
+ * @author geekcattle
+ */
 @Repository("redisCacheManager")
 public class RedisShiroCacheManager implements CacheManager {
 
@@ -44,7 +31,9 @@ public class RedisShiroCacheManager implements CacheManager {
 
     @Override
     public <K, V> Cache<K, V> getCache(String name) throws CacheException {
-        logger.debug("获取名称为: " + name + " 的RedisCache实例");
+        if(logger.isDebugEnabled()){
+            logger.debug("获取名称为: " + name + " 的RedisCache实例");
+        }
         Cache c = caches.get(name);
 
         if(c == null){

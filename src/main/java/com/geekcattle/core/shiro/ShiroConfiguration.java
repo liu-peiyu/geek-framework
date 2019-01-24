@@ -1,23 +1,5 @@
-/*
- * Copyright (c) 2017-2018.  放牛极客<l_iupeiyu@qq.com>
- * <p>
- * Licensed under the Apache License, Version 2.0 (the "License");
- *    you may not use this file except in compliance with the License.
- *    You may obtain a copy of the License at
- *      http://www.apache.org/licenses/LICENSE-2.0
- *    Unless required by applicable law or agreed to in writing, software
- *    distributed under the License is distributed on an "AS IS" BASIS,
- *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *    See the License for the specific language governing permissions and
- *    limitations under the License.
- * </p>
- *
- */
-
 package com.geekcattle.core.shiro;
 
-import com.geekcattle.core.j2cache.cache.support.ShiroJ2CacheCacheManager;
-import com.geekcattle.core.j2cache.cache.support.ShiroJ2CacheSession;
 import com.geekcattle.core.redis.RedisShiroCacheManager;
 import com.geekcattle.core.redis.RedisSessionDAO;
 import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
@@ -53,7 +35,9 @@ import java.util.*;
  Apache Shiro 核心通过 Filter 来实现，就好像SpringMvc 通过DispachServlet 来主控制一样。
  既然是使用 Filter 一般也就能猜到，是通过URL规则来进行过滤和权限校验，所以我们需要定义一系列关于URL的规则和访问权限。
  *
+ * @author geekcattle
  */
+
 @Configuration
 public class ShiroConfiguration {
 
@@ -65,42 +49,36 @@ public class ShiroConfiguration {
      */
     @Bean(name="adminShiroRealm")
     public AdminShiroRealm adminShiroRealm(){
-        logger.debug("ShiroConfiguration.adminShiroRealm()");
+        if(logger.isDebugEnabled()){
+            logger.debug("ShiroConfiguration.adminShiroRealm()");
+        }
         AdminShiroRealm adminShiroRealm = new AdminShiroRealm();
-        //adminShiroRealm.setCacheManager(redisCacheManager());//单redis缓存
-        adminShiroRealm.setCacheManager(shiroJ2CacheCacheManager());//j2cache二级缓存
-        //redisCacheManager和shiroJ2CacheCacheManager以上两种模式可任选其一，现在默认使用J2Cache
+        adminShiroRealm.setCacheManager(redisCacheManager());
         adminShiroRealm.setCredentialsMatcher(adminHashedCredentialsMatcher());
         return adminShiroRealm;
     }
 
     @Bean(name = "redisCacheManager")
     public RedisShiroCacheManager redisCacheManager() {
-        logger.debug("ShiroConfiguration.redisCacheManager()");
+        if(logger.isDebugEnabled()){
+            logger.debug("ShiroConfiguration.redisCacheManager()");
+        }
         return new RedisShiroCacheManager();
     }
 
     @Bean(name = "redisSessionDAO")
     public RedisSessionDAO redisSessionDAO(){
-        logger.debug("ShiroConfiguration.redisSessionDAO()");
+        if(logger.isDebugEnabled()){
+            logger.debug("ShiroConfiguration.redisSessionDAO()");
+        }
         return new RedisSessionDAO();
-    }
-
-    @Bean(name = "shiroJ2CacheCacheManager")
-    public ShiroJ2CacheCacheManager shiroJ2CacheCacheManager(){
-        logger.debug("ShiroConfiguration.shiroJ2CacheCacheManager()");
-        return new ShiroJ2CacheCacheManager();
-    }
-
-    @Bean(name = "shiroJ2CacheSession")
-    public ShiroJ2CacheSession shiroJ2CacheSession(){
-        logger.debug("ShiroConfiguration.shiroJ2CacheSession()");
-        return new ShiroJ2CacheSession();
     }
 
     @Bean(name = "customSessionListener")
     public CustomSessionListener customSessionListener(){
-        logger.debug("ShiroConfiguration.customSessionListener()");
+        if(logger.isDebugEnabled()){
+            logger.debug("ShiroConfiguration.customSessionListener()");
+        }
         return new CustomSessionListener();
     }
 
@@ -110,12 +88,12 @@ public class ShiroConfiguration {
      */
     @Bean(name="sessionManager")
     public DefaultWebSessionManager defaultWebSessionManager() {
-        logger.debug("ShiroConfiguration.defaultWebSessionManager()");
+        if(logger.isDebugEnabled()){
+            logger.debug("ShiroConfiguration.defaultWebSessionManager()");
+        }
         DefaultWebSessionManager sessionManager = new DefaultWebSessionManager();
         //用户信息必须是序列化格式，要不创建用户信息创建不过去，此坑很大，
-        //sessionManager.setSessionDAO(redisSessionDAO());//单redis的session存储
-        sessionManager.setSessionDAO(shiroJ2CacheSession());//J2Cache的session存储
-        //redisSessionDAO和shiroJ2CacheSession以上两种模式可任选其一，现在默认使用J2Cache
+        sessionManager.setSessionDAO(redisSessionDAO());
         Collection<SessionListener> sessionListeners = new ArrayList<>();
         sessionListeners.add(customSessionListener());
         sessionManager.setSessionListeners(sessionListeners);
@@ -141,10 +119,12 @@ public class ShiroConfiguration {
      */
     @Bean(name="securityManager")
     public DefaultWebSecurityManager getDefaultWebSecurityManage(){
-        logger.debug("ShiroConfiguration.getDefaultWebSecurityManage()");
+        if(logger.isDebugEnabled()){
+            logger.debug("ShiroConfiguration.getDefaultWebSecurityManage()");
+        }
         DefaultWebSecurityManager securityManager =  new DefaultWebSecurityManager();
 
-        Map<String, Object> shiroAuthenticatorRealms = new HashMap<>();
+        Map<String, Object> shiroAuthenticatorRealms = new HashMap<>(5);
         shiroAuthenticatorRealms.put("adminShiroRealm", adminShiroRealm());
 
         Collection<Realm> shiroAuthorizerRealms = new ArrayList<Realm>();
@@ -156,10 +136,7 @@ public class ShiroConfiguration {
         securityManager.setAuthenticator(customModularRealmAuthenticator);
         securityManager.setRealms(shiroAuthorizerRealms);
         securityManager.setSubjectFactory(new DefaultWebSubjectFactory());
-        //注入缓存管理器;
-        //securityManager.setCacheManager(redisCacheManager());
-        securityManager.setCacheManager(shiroJ2CacheCacheManager());
-        //redisCacheManager和shiroJ2CacheCacheManager以上两种模式可任选其一，现在默认使用J2Cache
+        securityManager.setCacheManager(redisCacheManager());
         securityManager.setSessionManager(defaultWebSessionManager());
         return securityManager;
     }
@@ -172,7 +149,9 @@ public class ShiroConfiguration {
      */
     @Bean(name="authorizationAttributeSourceAdvisor")
     public AuthorizationAttributeSourceAdvisor authorizationAttributeSourceAdvisor(DefaultWebSecurityManager securityManager){
-        logger.debug("ShiroConfiguration.authorizationAttributeSourceAdvisor()");
+        if(logger.isDebugEnabled()){
+            logger.debug("ShiroConfiguration.authorizationAttributeSourceAdvisor()");
+        }
         AuthorizationAttributeSourceAdvisor authorizationAttributeSourceAdvisor = new AuthorizationAttributeSourceAdvisor();
         authorizationAttributeSourceAdvisor.setSecurityManager(securityManager);
         return authorizationAttributeSourceAdvisor;
@@ -180,16 +159,14 @@ public class ShiroConfiguration {
 
     @Bean(name = "filterProxy")
     public FilterRegistrationBean filterProxy(){
-        logger.debug("ShiroConfiguration.filterProxy()");
+        if(logger.isDebugEnabled()){
+            logger.debug("ShiroConfiguration.filterProxy()");
+        }
         FilterRegistrationBean registrationBean = new FilterRegistrationBean();
         DelegatingFilterProxy proxy = new DelegatingFilterProxy();
         proxy.setTargetFilterLifecycle(true);
         proxy.setTargetBeanName("shiroFilter");
-        //该值缺省为false,表示生命周期由SpringApplicationContext管理,设置为true则表示由ServletContainer管理
         registrationBean.setFilter(proxy);
-        /*List<String> urlPatterns = new ArrayList<String>();
-        urlPatterns.add("/*");
-        registrationBean.setUrlPatterns(urlPatterns);*/
         return registrationBean;
     }
 
@@ -204,12 +181,14 @@ public class ShiroConfiguration {
      */
     @Bean(name = "shiroFilter")
     public ShiroFilterFactoryBean shiroFilter(DefaultWebSecurityManager securityManager){
-        logger.debug("ShiroConfiguration.shirFilter()");
+        if(logger.isDebugEnabled()){
+            logger.debug("ShiroConfiguration.shirFilter()");
+        }
         ShiroFilterFactoryBean shiroFilterFactoryBean  = new ShiroFilterFactoryBean();
         // 必须设置 SecurityManager
         shiroFilterFactoryBean.setSecurityManager(securityManager);
         //增加自定义过滤
-        Map<String, Filter> filters = new HashMap<>();
+        Map<String, Filter> filters = new HashMap<>(5);
         filters.put("admin", new AdminFormAuthenticationFilter());
         filters.put("logout", new CustomerLogoutFilter());
         shiroFilterFactoryBean.setFilters(filters);
@@ -252,7 +231,9 @@ public class ShiroConfiguration {
      */
     @Bean(name="authenticationStrategy")
     public AuthenticationStrategy authenticationStrategy() {
-        logger.debug("ShiroConfiguration.authenticationStrategy()");
+        if(logger.isDebugEnabled()){
+            logger.debug("ShiroConfiguration.authenticationStrategy()");
+        }
         return new AtLeastOneSuccessfulStrategy();
     }
 
@@ -265,19 +246,27 @@ public class ShiroConfiguration {
      */
     @Bean(name = "adminHashedCredentialsMatcher")
     public HashedCredentialsMatcher adminHashedCredentialsMatcher(){
-        logger.debug("ShiroConfiguration.adminHashedCredentialsMatcher()");
+        if(logger.isDebugEnabled()){
+            logger.debug("ShiroConfiguration.adminHashedCredentialsMatcher()");
+        }
         HashedCredentialsMatcher hashedCredentialsMatcher = new HashedCredentialsMatcher();
-        hashedCredentialsMatcher.setHashAlgorithmName("md5");//散列算法:这里使用MD5算法;
-        hashedCredentialsMatcher.setHashIterations(2);//散列的次数，当于 m比如散列两次，相d5(md5(""));
+        //散列算法:这里使用MD5算法;
+        hashedCredentialsMatcher.setHashAlgorithmName("md5");
+        //散列的次数，当于 m比如散列两次，相d5(md5(""));
+        hashedCredentialsMatcher.setHashIterations(2);
         return hashedCredentialsMatcher;
     }
 
     @Bean(name = "customHashedCredentialsMatcher")
     public HashedCredentialsMatcher customHashedCredentialsMatcher(){
-        logger.debug("ShiroConfiguration.adminHashedCredentialsMatcher()");
+        if(logger.isDebugEnabled()){
+            logger.debug("ShiroConfiguration.adminHashedCredentialsMatcher()");
+        }
         HashedCredentialsMatcher hashedCredentialsMatcher = new HashedCredentialsMatcher();
-        hashedCredentialsMatcher.setHashAlgorithmName("md5");//散列算法:这里使用MD5算法;
-        hashedCredentialsMatcher.setHashIterations(1);//散列的次数，当于 m比如散列两次，相d5("");
+        //散列算法:这里使用MD5算法;
+        hashedCredentialsMatcher.setHashAlgorithmName("md5");
+        //散列的次数，当于 m比如散列两次，相d5("");
+        hashedCredentialsMatcher.setHashIterations(1);
         return hashedCredentialsMatcher;
     }
 
@@ -287,7 +276,9 @@ public class ShiroConfiguration {
      */
     @Bean(name = "lifecycleBeanPostProcessor")
     public LifecycleBeanPostProcessor lifecycleBeanPostProcessor() {
-        logger.debug("ShiroConfiguration.lifecycleBeanPostProcessor()");
+        if(logger.isDebugEnabled()){
+            logger.debug("ShiroConfiguration.lifecycleBeanPostProcessor()");
+        }
         return new LifecycleBeanPostProcessor();
     }
 
@@ -295,7 +286,9 @@ public class ShiroConfiguration {
     @Bean(name = "defaultAdvisorAutoProxyCreator")
     @DependsOn("lifecycleBeanPostProcessor")
     public DefaultAdvisorAutoProxyCreator getDefaultAdvisorAutoProxyCreator() {
-        logger.debug("ShiroConfiguration.getDefaultAdvisorAutoProxyCreator()");
+        if(logger.isDebugEnabled()){
+            logger.debug("ShiroConfiguration.getDefaultAdvisorAutoProxyCreator()");
+        }
         DefaultAdvisorAutoProxyCreator daap = new DefaultAdvisorAutoProxyCreator();
         daap.setProxyTargetClass(true);
         return daap;

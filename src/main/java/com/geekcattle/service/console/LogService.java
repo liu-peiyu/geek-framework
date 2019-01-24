@@ -1,11 +1,6 @@
-/*
- * Copyright (c) 2017 <l_iupeiyu@qq.com> All rights reserved.
- */
-
 package com.geekcattle.service.console;
 
 import com.geekcattle.mapper.console.LogMapper;
-import com.geekcattle.model.console.AdminRole;
 import com.geekcattle.model.console.Log;
 import com.geekcattle.util.CamelCaseUtil;
 import com.geekcattle.util.DateUtil;
@@ -17,8 +12,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 /**
- * author geekcattle
- * date 2017/1/6 0006 上午 11:26
+ * @author geekcattle
  */
 @Service
 public class LogService {

@@ -1,19 +1,3 @@
-/*
- * Copyright (c) 2017-2018.  放牛极客<l_iupeiyu@qq.com>
- * <p>
- * Licensed under the Apache License, Version 2.0 (the "License");
- *    you may not use this file except in compliance with the License.
- *    You may obtain a copy of the License at
- *      http://www.apache.org/licenses/LICENSE-2.0
- *    Unless required by applicable law or agreed to in writing, software
- *    distributed under the License is distributed on an "AS IS" BASIS,
- *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *    See the License for the specific language governing permissions and
- *    limitations under the License.
- * </p>
- *
- */
-
 package com.geekcattle.core.shiro;
 
 import org.apache.shiro.SecurityUtils;
@@ -31,7 +15,8 @@ import javax.servlet.ServletResponse;
 import java.util.Locale;
 
 /**
- * 自定义退出
+ *  自定义退出
+ * @author geekcattle
  */
 public class CustomerLogoutFilter extends LogoutFilter {
 
@@ -43,7 +28,7 @@ public class CustomerLogoutFilter extends LogoutFilter {
 
         // 验证是否POST方式
         if (isPostOnlyLogout()) {
-            if (!WebUtils.toHttp(request).getMethod().toUpperCase(Locale.ENGLISH).equals("POST")) {
+            if (!"POST".equals(WebUtils.toHttp(request).getMethod().toUpperCase(Locale.ENGLISH))) {
                 return onLogoutRequestNotAPost(request, response);
             }
         }
@@ -55,9 +40,10 @@ public class CustomerLogoutFilter extends LogoutFilter {
             AdminShiroRealm adminRealm = (AdminShiroRealm) securityManager.getRealms().iterator().next();
             adminRealm.clearCachedAuthorizationInfo(principals);
             subject.logout();
-            subject.logout();
         } catch (SessionException ise) {
-            logger.debug("Encountered session exception during logout.  This can generally safely be ignored.", ise);
+            if(logger.isDebugEnabled()){
+                logger.debug("Encountered session exception during logout.  This can generally safely be ignored.", ise);
+            }
         }
         issueRedirect(request, response, redirectUrl);
         return false;

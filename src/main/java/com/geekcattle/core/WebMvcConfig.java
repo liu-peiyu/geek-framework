@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017-2018.  放牛极客<l_iupeiyu@qq.com>
+ * Copyright (c) 2017-2018.  放牛极客<@qq.com>
  * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -16,7 +16,7 @@
 
 package com.geekcattle.core;
 
-import com.geekcattle.core.Interceptor.ResourceInterceptor;
+import com.geekcattle.core.interceptor.ResourceInterceptor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +24,9 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-
+/**
+ * @author geekcattle
+ */
 @Component
 public class WebMvcConfig implements WebMvcConfigurer {
 

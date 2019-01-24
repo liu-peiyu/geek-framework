@@ -1,38 +1,13 @@
-/*
- * Copyright (c) 2017-2018.  放牛极客<l_iupeiyu@qq.com>
- * <p>
- * Licensed under the Apache License, Version 2.0 (the "License");
- *    you may not use this file except in compliance with the License.
- *    You may obtain a copy of the License at
- *      http://www.apache.org/licenses/LICENSE-2.0
- *    Unless required by applicable law or agreed to in writing, software
- *    distributed under the License is distributed on an "AS IS" BASIS,
- *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *    See the License for the specific language governing permissions and
- *    limitations under the License.
- * </p>
- *
- */
-
 package com.geekcattle.core.shiro;
 
 import org.apache.shiro.authc.UsernamePasswordToken;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
- * author geekcattle
- * date 2017/3/9 0009 下午 16:05
+ * @author geekcattle
  */
 public class CustomerAuthenticationToken extends UsernamePasswordToken {
 
-    private Logger logger = LoggerFactory.getLogger(this.getClass());
-
     private String captcha;
-    /**
-     * 用来区分前后台登录的标记
-     */
-    private String loginType;
     /**
      * 用来区分登录用户的渠道
      */
@@ -44,12 +19,9 @@ public class CustomerAuthenticationToken extends UsernamePasswordToken {
         super(username, password, rememberMe);
     }
 
-    public CustomerAuthenticationToken(String token, String loginType){
+    public CustomerAuthenticationToken(String token){
         this.token = token;
-        this.loginType = loginType;
     }
-
-
 
     public String getCaptcha() {
         return captcha;
@@ -57,14 +29,6 @@ public class CustomerAuthenticationToken extends UsernamePasswordToken {
 
     public void setCaptcha(String captcha) {
         this.captcha = captcha;
-    }
-
-    public String getLoginType() {
-        return loginType;
-    }
-
-    public void setLoginType(String loginType) {
-        this.loginType = loginType;
     }
 
     public String getLoginForm() {

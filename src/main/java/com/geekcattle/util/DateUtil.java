@@ -1,48 +1,39 @@
-/*
- * Copyright (c) 2017-2018.  放牛极客<l_iupeiyu@qq.com>
- * <p>
- * Licensed under the Apache License, Version 2.0 (the "License");
- *    you may not use this file except in compliance with the License.
- *    You may obtain a copy of the License at
- *      http://www.apache.org/licenses/LICENSE-2.0
- *    Unless required by applicable law or agreed to in writing, software
- *    distributed under the License is distributed on an "AS IS" BASIS,
- *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *    See the License for the specific language governing permissions and
- *    limitations under the License.
- * </p>
- *
- */
-
 package com.geekcattle.util;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.time.*;
+import java.time.format.DateTimeFormatter;
+import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 /**
  * 日期时间工具类
- * author geekcattle
- * date 2016/11/23 0023 下午 14:53
+ * @author geekcattle
  */
 public class DateUtil {
-    private static String ymdhms = "yyyy-MM-dd HH:mm:ss";
-    private static String ymd = "yyyy-MM-dd";
-    public static SimpleDateFormat ymdSDF = new SimpleDateFormat(ymd);
-    private static String year = "yyyy";
-    private static String month = "MM";
-    private static String day = "dd";
-    public static SimpleDateFormat yyyyMMddHHmmss = new SimpleDateFormat(ymdhms);
-    public static SimpleDateFormat yearSDF = new SimpleDateFormat(year);
-    public static SimpleDateFormat monthSDF = new SimpleDateFormat(month);
-    public static SimpleDateFormat daySDF = new SimpleDateFormat(day);
-    public static SimpleDateFormat yyyyMMddHHmm = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-    public static SimpleDateFormat yyyyMMdd = new SimpleDateFormat("yyyy-MM-dd");
-    public static SimpleDateFormat yyyyMMddHH_NOT_ = new SimpleDateFormat("yyyyMMdd");
-    public static long DATEMM = 86400L;
+
+    private static Logger logger = LoggerFactory.getLogger(DateUtil.class);
+
+
+    private final static String YMDHMS = "yyyy-MM-dd HH:mm:ss";
+    private final static String Y_M_D_H_M = "yyyy-MM-dd HH:mm";
+    private final static String Y_M_D = "yyyy-MM-dd";
+    private final static String YMD = "yyyyMMdd";
+    private final static String YEAR = "yyyy";
+    private final static String MONTH = "MM";
+    private final static String DAY = "dd";
+    private final static DateTimeFormatter YYYYMMDDHHMMSS = DateTimeFormatter.ofPattern(YMDHMS);
+    private final static DateTimeFormatter YEARSDF = DateTimeFormatter.ofPattern(YEAR);
+    private final static DateTimeFormatter MONTHSDF = DateTimeFormatter.ofPattern(MONTH);
+    private final static DateTimeFormatter DAYSDF = DateTimeFormatter.ofPattern(DAY);
+    private final static DateTimeFormatter YYYYMMDDHHMM = DateTimeFormatter.ofPattern(Y_M_D_H_M);
+    private final static DateTimeFormatter YYYY_MM_DD = DateTimeFormatter.ofPattern(Y_M_D);
+    private final static DateTimeFormatter YYYYMMDD = DateTimeFormatter.ofPattern(YMD);
+    private final static long ONE_DAY = 86400L;
+
+    private final static LocalDateTime LOCAL_CURRENT_DATE_TIME = LocalDateTime.ofInstant(Instant.now(), ZoneId.systemDefault());
 
     /**
      * 获得当前时间(字符串类型)
@@ -50,24 +41,7 @@ public class DateUtil {
      * @return String
      */
     public static String getCurrentTime() {
-        return yyyyMMddHHmmss.format(new Date());
-    }
-    /**
-     * 获得当前时间(日期类型)
-     * 格式：2014-12-02 10:38:53
-     * @return String
-     */
-    public static Date getSysTime() {
-        return DateUtil.stringToDate(getCurrentTime(), ymdhms);
-    }
-
-    /**
-     * 获取年月日(日期类型)
-     * 格式：2014-12-02
-     * @return String
-     */
-    public static Date getSysDate() {
-        return DateUtil.stringToDate(getCurrentTime(), ymd);
+        return LOCAL_CURRENT_DATE_TIME.format(YYYYMMDDHHMMSS);
     }
 
     /**
@@ -76,71 +50,7 @@ public class DateUtil {
      * @return String
      */
     public static String getCurrentDate() {
-        return ymdSDF.format(new Date());
-    }
-
-    /**
-     * 可以获取昨天的日期
-     * 格式：2014-12-01
-     *
-     * @return String
-     */
-    public static String getYesterdayYYYYMMDD() {
-        Date date = new Date(System.currentTimeMillis() - DATEMM * 1000L);
-        String str = yyyyMMdd.format(date);
-        try {
-            date = yyyyMMddHHmmss.parse(str + " 00:00:00");
-            return yyyyMMdd.format(date);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        return "";
-    }
-
-    /**
-     * 可以获取后退N天的日期
-     * 格式：传入2 得到2014-11-30
-     * @param backDay
-     * @return String
-     */
-    public String getStrDate(String backDay) {
-        Calendar calendar = Calendar.getInstance();
-        calendar.add(Calendar.DATE, Integer.parseInt("-" + backDay));
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        String back = sdf.format(calendar.getTime());
-        return back;
-    }
-
-    /**
-     * 获取当前的年、月、日
-     * @return String
-     */
-    public static String getCurrentYear() {
-        return yearSDF.format(new Date());
-    }
-
-    public static String getCurrentMonth() {
-        return monthSDF.format(new Date());
-    }
-
-    public static String getCurrentDay() {
-        return daySDF.format(new Date());
-    }
-
-    /**
-     * 获取今天0点开始的秒数
-     * @return long
-     */
-    public static long getTimeNumberToday() {
-        Date date = new Date();
-        String str = yyyyMMdd.format(date);
-        try {
-            date = yyyyMMdd.parse(str);
-            return date.getTime() / 1000L;
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        return 0L;
+        return LOCAL_CURRENT_DATE_TIME.format(YYYY_MM_DD);
     }
 
     /**
@@ -149,87 +59,119 @@ public class DateUtil {
      * @return String
      */
     public static String getTodateString() {
-        String str = yyyyMMddHH_NOT_.format(new Date());
-        return str;
+        return LOCAL_CURRENT_DATE_TIME.format(YYYYMMDD);
     }
+
+    /**
+     * 获得当前时间(日期类型)
+     * 格式：2014-12-02 10:38:53
+     * @return String
+     */
+    public static Date getSysTime() {        ;
+        return Date.from(LOCAL_CURRENT_DATE_TIME.atZone(ZoneId.systemDefault()).toInstant());
+    }
+
+    /**
+     * 获取年月日(日期类型)
+     * 格式：2014-12-02
+     * @return String
+     */
+    public static Date getSysDate() {
+        LocalDate localDate = LocalDate.now();
+        Instant instant = localDate.atStartOfDay(ZoneId.systemDefault()).toInstant();
+        return Date.from(instant);
+    }
+
+    /**
+     * 获取当前日期
+     * @return
+     */
+    public static Instant getInstantNow(){
+        return Instant.now().plusMillis(TimeUnit.HOURS.toMillis(8));
+    }
+
+    /**
+     * 获取当前秒数 10位
+     * @return
+     */
+    public static Long getInstantNowSecond(){
+        return getInstantNow().getEpochSecond();
+    }
+
+    /**
+     * 获取当前毫秒数 13位
+     * @return
+     */
+    public static Long getInstantNowMillis(){
+        return getInstantNow().toEpochMilli();
+    }
+
+    /**
+     * 获取前某几天的日期
+     * @param day
+     * @return
+     */
+    public static LocalDateTime getYesterDay(int day){
+        Long timestamp = getInstantNow().getEpochSecond() - ONE_DAY * day;
+        LocalDateTime localDateTime = LocalDateTime.ofInstant(Instant.ofEpochSecond(timestamp),ZoneId.systemDefault());
+        return localDateTime;
+    }
+
+    /**
+     * 可以获取昨天的日期
+     * 格式：2014-12-01
+     * @return String
+     */
+    public static Date getYesterDayDate(int day) {
+        return Date.from(getYesterDay(day).atZone(ZoneId.systemDefault()).toInstant());
+    }
+
 
     /**
      * 获取昨天的日期
      * 格式：20141201
      * @return String
      */
-    public static String getYesterdayString() {
-        Date date = new Date(System.currentTimeMillis() - DATEMM * 1000L);
-        String str = yyyyMMddHH_NOT_.format(date);
-        return str;
+    public static String getYesterDayString(int day) {
+        return getYesterDay(day).format(YYYYMMDD);
     }
 
     /**
-     * 获得昨天零点
-     * @return Date
+     * 获取当前的年
+     * @return String
      */
-    public static Date getYesterDayZeroHour() {
-        Calendar cal = Calendar.getInstance();
-        cal.add(Calendar.DATE, -1);
-        cal.set(Calendar.SECOND, 0);
-        cal.set(Calendar.MINUTE, 0);
-        cal.set(Calendar.HOUR, 0);
-        return cal.getTime();
+    public static String getCurrentYear() {
+        return LOCAL_CURRENT_DATE_TIME.format(YEARSDF);
     }
 
     /**
-     * 把long型日期转String ；---OK
-     * @param date   long型日期；
-     * @param format 日期格式；
-     * @return
+     * 获取当前的月
+     * @return String
      */
-    public static String longToString(long date, String format) {
-        SimpleDateFormat sdf = new SimpleDateFormat(format);
-        // 前面的lSysTime是秒数，先乘1000得到毫秒数，再转为java.util.Date类型
-        java.util.Date dt2 = new Date(date * 1000L);
-        String sDateTime = sdf.format(dt2); // 得到精确到秒的表示：08/31/2006 21:08:00
-        return sDateTime;
+    public static String getCurrentMonth() {
+        return LOCAL_CURRENT_DATE_TIME.format(MONTHSDF);
     }
 
     /**
-     * 获得今天零点
-     * @return Date
+     * 获取当前的日
+     * @return String
      */
-    public static Date getTodayZeroHour() {
-        Calendar cal = Calendar.getInstance();
-        cal.set(Calendar.SECOND, 0);
-        cal.set(Calendar.MINUTE, 0);
-        cal.set(Calendar.HOUR, 0);
-        return cal.getTime();
+    public static String getCurrentDay() {
+        return LOCAL_CURRENT_DATE_TIME.format(DAYSDF);
     }
 
     /**
-     * 获得昨天23时59分59秒
-     * @return
+     * 获取今天0点开始的秒数
+     * @return long
      */
-    public static Date getYesterDay24Hour() {
-        Calendar cal = Calendar.getInstance();
-        cal.add(Calendar.DATE, -1);
-        cal.set(Calendar.SECOND, 59);
-        cal.set(Calendar.MINUTE, 59);
-        cal.set(Calendar.HOUR, 23);
-        return cal.getTime();
+    public static long getTimeNumberToday() {
+        //获取当前时间戳
+        Long nowTimestamp = getInstantNow().getEpochSecond();
+        Long startTimestamp = LocalDate.now().toEpochDay();
+        return nowTimestamp-startTimestamp;
     }
 
-    /**
-     * String To Date ---OK
-     * @param date   待转换的字符串型日期；
-     * @param format 转化的日期格式
-     * @return 返回该字符串的日期型数据；
-     */
-    public static Date stringToDate(String date, String format) {
-        SimpleDateFormat sdf = new SimpleDateFormat(format);
-        try {
-            return sdf.parse(date);
-        } catch (ParseException e) {
-            return null;
-        }
-    }
+
 
     /**
      * 获得指定日期所在的自然周的第一天，即周日
@@ -314,122 +256,16 @@ public class DateUtil {
         return date;
     }
 
-    /**
-     * 求某一个时间向前多少秒的时间(currentTimeToBefer)---OK
-     * @param givedTime        给定的时间
-     * @param interval         间隔时间的毫秒数；计算方式 ：n(天)*24(小时)*60(分钟)*60(秒)(类型)
-     * @param format_Date_Sign 输出日期的格式；如yyyy-MM-dd、yyyyMMdd等；
-     */
-    public static String givedTimeToBefer(String givedTime, long interval, String format_Date_Sign) {
-        String tomorrow = null;
-        try {
-            SimpleDateFormat sdf = new SimpleDateFormat(format_Date_Sign);
-            Date gDate = sdf.parse(givedTime);
-            long current = gDate.getTime(); // 将Calendar表示的时间转换成毫秒
-            long beforeOrAfter = current - interval * 1000L; // 将Calendar表示的时间转换成毫秒
-            Date date = new Date(beforeOrAfter); // 用timeTwo作参数构造date2
-            tomorrow = new SimpleDateFormat(format_Date_Sign).format(date);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        return tomorrow;
+    public static void main(String[] args) {
+        logger.info("获取当前日期时间：{}", DateUtil.getCurrentTime());
+        logger.info("获取当前日期：{}" , DateUtil.getCurrentDate());
+        logger.info("获取当前日期时间：{}", DateUtil.getSysTime());
+        logger.info("获取当前日期：{}", DateUtil.getSysDate());
+        logger.info("获取昨天日期：{}",  DateUtil.getYesterDayDate(1));
+        logger.info("获取前两天日期：{}", DateUtil.getYesterDayString(2));
+        logger.info("获取当前年：{}", DateUtil.getCurrentYear());
+        logger.info("获取当前月：{}", DateUtil.getCurrentMonth());
+        logger.info("获取当前日：{}", DateUtil.getCurrentDay());
     }
 
-    /**
-     * 把String 日期转换成long型日期；---OK
-     *
-     * @param date   String 型日期；
-     * @param format 日期格式；
-     * @return
-     */
-    public static long stringToLong(String date, String format) {
-        SimpleDateFormat sdf = new SimpleDateFormat(format);
-        Date dt2 = null;
-        long lTime = 0;
-        try {
-            dt2 = sdf.parse(date);
-            // 继续转换得到秒数的long型
-            lTime = dt2.getTime() / 1000;
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-
-        return lTime;
-    }
-
-    /**
-     * 得到二个日期间的间隔日期；
-     *
-     * @param endTime   结束时间
-     * @param beginTime 开始时间
-     * @param isEndTime 是否包含结束日期；
-     * @return
-     */
-    public static Map<String, String> getTwoDay(String endTime,
-                                                String beginTime, boolean isEndTime) {
-        Map<String, String> result = new HashMap<String, String>();
-        if ((endTime == null || endTime.equals("") || (beginTime == null || beginTime
-                .equals(""))))
-            return null;
-        try {
-            java.util.Date date = ymdSDF.parse(endTime);
-            endTime = ymdSDF.format(date);
-            java.util.Date mydate = ymdSDF.parse(beginTime);
-            long day = (date.getTime() - mydate.getTime())
-                    / (24 * 60 * 60 * 1000);
-            result = getDate(endTime, Integer.parseInt(day + ""), isEndTime);
-        } catch (Exception e) {
-        }
-        return result;
-    }
-
-    /**
-     * 得到二个日期间的间隔日期；
-     *
-     * @param endTime   结束时间
-     * @param beginTime 开始时间
-     * @param isEndTime 是否包含结束日期；
-     * @return
-     */
-    public static Integer getTwoDayInterval(String endTime, String beginTime,
-                                            boolean isEndTime) {
-        if ((endTime == null || endTime.equals("") || (beginTime == null || beginTime
-                .equals(""))))
-            return 0;
-        long day = 0l;
-        try {
-            java.util.Date date = ymdSDF.parse(endTime);
-            endTime = ymdSDF.format(date);
-            java.util.Date mydate = ymdSDF.parse(beginTime);
-            day = (date.getTime() - mydate.getTime()) / (24 * 60 * 60 * 1000);
-        } catch (Exception e) {
-            return 0;
-        }
-        return Integer.parseInt(day + "");
-    }
-
-    /**
-     * 根据结束时间以及间隔差值，求符合要求的日期集合；
-     *
-     * @param endTime
-     * @param interval
-     * @param isEndTime
-     * @return
-     */
-    public static Map<String, String> getDate(String endTime, Integer interval,
-                                              boolean isEndTime) {
-        Map<String, String> result = new HashMap<String, String>();
-        if (interval == 0 || isEndTime) {
-            if (isEndTime)
-                result.put(endTime, endTime);
-        }
-        if (interval > 0) {
-            int begin = 0;
-            for (int i = begin; i < interval; i++) {
-                endTime = givedTimeToBefer(endTime, DATEMM, ymd);
-                result.put(endTime, endTime);
-            }
-        }
-        return result;
-    }
 }

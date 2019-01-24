@@ -1,7 +1,3 @@
-/*
- * Copyright (c) 2017 <l_iupeiyu@qq.com> All rights reserved.
- */
-
 package com.geekcattle.service.member;
 
 import com.geekcattle.mapper.member.MemberMapper;
@@ -16,8 +12,7 @@ import tk.mybatis.mapper.entity.Example;
 import java.util.List;
 
 /**
- * author geekcattle
- * date 2017/3/23 0023 上午 11:25
+ * @author geekcattle
  */
 @Service
 public class MemberService {

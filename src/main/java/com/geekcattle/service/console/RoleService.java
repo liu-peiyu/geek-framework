@@ -1,11 +1,6 @@
-/*
- * Copyright (c) 2017 <l_iupeiyu@qq.com> All rights reserved.
- */
-
 package com.geekcattle.service.console;
 
 import com.geekcattle.mapper.console.RoleMapper;
-import com.geekcattle.model.console.Admin;
 import com.geekcattle.model.console.Role;
 import com.geekcattle.util.CamelCaseUtil;
 import com.github.pagehelper.PageHelper;
@@ -17,8 +12,7 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * author geekcattle
- * date 2016/10/21 0021 下午 15:47
+ * @author geekcattle
  */
 @Service
 public class RoleService {
@@ -67,8 +61,8 @@ public class RoleService {
         return roleMapper.findRoleByUserId(userId);
     }
 
-    public List<Role> selectRoleListByAdminId(String Id){
-        return roleMapper.selectRoleListByAdminId(Id);
+    public List<Role> selectRoleListByAdminId(String id){
+        return roleMapper.selectRoleListByAdminId(id);
     }
 
 }

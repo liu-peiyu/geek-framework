@@ -1,7 +1,3 @@
-/*
- * Copyright (c) 2017 <l_iupeiyu@qq.com> All rights reserved.
- */
-
 package com.geekcattle.service.common;
 
 import org.slf4j.Logger;
@@ -11,8 +7,7 @@ import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 
 /**
- * author geekcattle
- * date 2017/3/22 0022 下午 16:16
+ * @author geekcattle
  */
 public class RedisServiceImpl implements RedisService {
 
@@ -26,13 +21,6 @@ public class RedisServiceImpl implements RedisService {
         return jedisPool.getResource();
     }
 
-    @SuppressWarnings("deprecation")
-    @Override
-    public void returnResource(Jedis jedis) {
-        if(jedis != null){
-            jedisPool.returnResourceObject(jedis);
-        }
-    }
 
     @Override
     public void set(String key, String value) {
@@ -44,15 +32,13 @@ public class RedisServiceImpl implements RedisService {
         } catch (Exception e) {
             e.printStackTrace();
             logger.error("Redis set error: "+ e.getMessage() +" - " + key + ", value:" + value);
-        }finally{
-            returnResource(jedis);
         }
     }
 
     @Override
     public String get(String key) {
         String result = null;
-        Jedis jedis=null;
+        Jedis jedis = null;
         try{
             jedis = getResource();
             result = jedis.get(key);
@@ -60,8 +46,6 @@ public class RedisServiceImpl implements RedisService {
         } catch (Exception e) {
             e.printStackTrace();
             logger.error("Redis set error: "+ e.getMessage() +" - " + key + ", value:" + result);
-        }finally{
-            returnResource(jedis);
         }
         return result;
     }

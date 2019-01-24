@@ -1,28 +1,15 @@
-/*
- * Copyright (c) 2017-2018.  放牛极客<l_iupeiyu@qq.com>
- * <p>
- * Licensed under the Apache License, Version 2.0 (the "License");
- *    you may not use this file except in compliance with the License.
- *    You may obtain a copy of the License at
- *      http://www.apache.org/licenses/LICENSE-2.0
- *    Unless required by applicable law or agreed to in writing, software
- *    distributed under the License is distributed on an "AS IS" BASIS,
- *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *    See the License for the specific language governing permissions and
- *    limitations under the License.
- * </p>
- *
- */
-
 package com.geekcattle.core.utils;
 
-import com.geekcattle.model.member.Member;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 
+/**
+ * security工具类
+ * @author geekcattle
+ */
 public class SecurityUtil {
 
     private Logger logger = LoggerFactory.getLogger(this.getClass());
@@ -37,7 +24,7 @@ public class SecurityUtil {
      * @return
      */
     public static Boolean isLogin(){
-        return getContext().getAuthentication() != null && getContext().getAuthentication().isAuthenticated() && !getContext().getAuthentication().getName().equals("anonymousUser");
+        return getContext().getAuthentication() != null && getContext().getAuthentication().isAuthenticated() && !"anonymousUser".equals(getContext().getAuthentication().getName());
     }
 
     /**

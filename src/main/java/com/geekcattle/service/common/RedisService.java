@@ -1,25 +1,32 @@
-/*
- * Copyright (c) 2017 <l_iupeiyu@qq.com> All rights reserved.
- */
-
 package com.geekcattle.service.common;
 
 import org.springframework.stereotype.Service;
 import redis.clients.jedis.Jedis;
 
 /**
- * author geekcattle
- * date 2017/3/22 0022 下午 15:38
+ * @author geekcattle
  */
 @Service
 public interface  RedisService {
 
-    public Jedis getResource();
+    /**
+     * 获取jedis实例
+     * @return
+     */
+    Jedis getResource();
 
-    public void returnResource(Jedis jedis);
+    /**
+     * jedis写操作
+     * @param key
+     * @param value
+     */
+    void set(String key, String value);
 
-    public void set(String key, String value);
-
-    public String get(String key);
+    /**
+     * jedis读操作
+     * @param key
+     * @return
+     */
+    String get(String key);
 
 }

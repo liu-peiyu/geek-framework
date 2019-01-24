@@ -1,19 +1,3 @@
-/*
- * Copyright (c) 2017-2018.  放牛极客<l_iupeiyu@qq.com>
- * <p>
- * Licensed under the Apache License, Version 2.0 (the "License");
- *    you may not use this file except in compliance with the License.
- *    You may obtain a copy of the License at
- *      http://www.apache.org/licenses/LICENSE-2.0
- *    Unless required by applicable law or agreed to in writing, software
- *    distributed under the License is distributed on an "AS IS" BASIS,
- *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *    See the License for the specific language governing permissions and
- *    limitations under the License.
- * </p>
- *
- */
-
 package com.geekcattle.controller.console;
 
 import com.geekcattle.config.UpConfig;
@@ -40,8 +24,7 @@ import java.io.File;
 import java.util.Map;
 
 /**
- * author geekcattle
- * date  2017/5/24 0024 下午 3:40.
+ * @author geekcattle
  */
 @Controller
 @RequestMapping("/console/upload")
@@ -68,20 +51,20 @@ public class FileUploadController {
     public ModelMap postUploader(@RequestParam MultipartFile file, HttpServletRequest request, HttpServletResponse response){
         if (!file.isEmpty()) {
             if(StringUtils.isEmpty(upConfig.getHardDisk()) && "local".equals(upConfig.getUpType())){
-                return ReturnUtil.Error("请配置上传目录");
+                return ReturnUtil.error("请配置上传目录");
             }
             String diskPath = upConfig.getHardDisk();
             //扩展名格式
             String extName = file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf("."));
             //验证文件类型
             if(!fileService.checkExt(extName)){
-                return ReturnUtil.Error("上传文件格式不支持");
+                return ReturnUtil.error("上传文件格式不支持");
             }
             //根据文件类型获取上传目录
             String uploadPath = fileService.getUploadPath(extName);
             uploadPath = uploadPath.replace(File.separator,"/");
             if(StringUtils.isEmpty(uploadPath)){
-                return ReturnUtil.Error("上传文件路径错误");
+                return ReturnUtil.error("上传文件路径错误");
             }
             String fileName = UuidUtil.getUUID()+extName;
             String retPath = "";
@@ -93,13 +76,13 @@ public class FileUploadController {
                 retPath = fileService.qiniuSave(file,uploadPath,fileName);
             }
             if("null".equals(retPath)){
-                return ReturnUtil.Error("上传文件异常");
+                return ReturnUtil.error("上传文件异常");
             }
             Map<String, String> upMap = fileService.getReturnMap(retPath, fileName);
 
-            return ReturnUtil.Success("上传成功",upMap);
+            return ReturnUtil.success("上传成功",upMap);
         } else {
-            return ReturnUtil.Error("上传文件为空,");
+            return ReturnUtil.error("上传文件为空,");
         }
     }
 

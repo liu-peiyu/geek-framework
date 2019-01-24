@@ -1,19 +1,3 @@
-/*
- * Copyright (c) 2017-2018.  放牛极客<l_iupeiyu@qq.com>
- * <p>
- * Licensed under the Apache License, Version 2.0 (the "License");
- *    you may not use this file except in compliance with the License.
- *    You may obtain a copy of the License at
- *      http://www.apache.org/licenses/LICENSE-2.0
- *    Unless required by applicable law or agreed to in writing, software
- *    distributed under the License is distributed on an "AS IS" BASIS,
- *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *    See the License for the specific language governing permissions and
- *    limitations under the License.
- * </p>
- *
- */
-
 package com.geekcattle.util;
 
 import com.alibaba.fastjson.JSON;
@@ -31,8 +15,7 @@ import java.net.URL;
 
 /**
  * IP工具类
- * author geekcattle
- * date 2017/1/6 0006 下午 13:49
+ * @author geekcattle
  */
 public class IpUtil {
     /**
@@ -52,7 +35,7 @@ public class IpUtil {
         if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
             ip = request.getRemoteAddr();
         }
-        if (ip.equals("0:0:0:0:0:0:0:1")) {
+        if ("0:0:0:0:0:0:0:1".equals(ip)) {
             ip = "127.0.0.1";
         }
         if (ip.split(",").length > 1) {
@@ -68,7 +51,7 @@ public class IpUtil {
      * @return
      */
     public static String getIpInfo(String ip) {
-        if (ip.equals("127.0.0.1")) {
+        if ("127.0.0.1".equals(ip)) {
             ip = "127.0.0.1";
         }
         String info = "";

@@ -1,23 +1,6 @@
-/*
- * Copyright (c) 2017-2018.  放牛极客<l_iupeiyu@qq.com>
- * <p>
- * Licensed under the Apache License, Version 2.0 (the "License");
- *    you may not use this file except in compliance with the License.
- *    You may obtain a copy of the License at
- *      http://www.apache.org/licenses/LICENSE-2.0
- *    Unless required by applicable law or agreed to in writing, software
- *    distributed under the License is distributed on an "AS IS" BASIS,
- *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *    See the License for the specific language governing permissions and
- *    limitations under the License.
- * </p>
- *
- */
-
 package com.geekcattle.core.security.jwt;
 
 import com.geekcattle.core.security.CustomUser;
-import com.geekcattle.model.member.Member;
 import com.geekcattle.util.JsonUtil;
 import com.geekcattle.util.UuidUtil;
 import io.jsonwebtoken.Claims;
@@ -27,7 +10,6 @@ import io.jsonwebtoken.impl.compression.CompressionCodecs;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Component;
 
 
@@ -35,6 +17,9 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * @author geekcattle
+ */
 @Component
 public class JwtUtil {
     private Logger logger = LoggerFactory.getLogger(this.getClass());
@@ -128,7 +113,7 @@ public class JwtUtil {
     }
 
     private Map<String, Object> generateClaims(CustomUser user) {
-        Map<String, Object> claims = new HashMap<>();
+        Map<String, Object> claims = new HashMap<>(4);
         claims.put(CLAIM_KEY_USER_ID, user.getUid());
         claims.put(CLAIM_KEY_ACCOUNT_ENABLED, user.isEnabled());
         claims.put(CLAIM_KEY_ACCOUNT_NON_LOCKED, false);
@@ -143,7 +128,7 @@ public class JwtUtil {
     public String generateRefreshToken(CustomUser user) {
         Map<String, Object> claims = generateClaims(user);
         // 只授于更新 token 的权限
-        String roles[] = new String[]{this.ROLE_REFRESH_TOKEN};
+        String[] roles = new String[]{ROLE_REFRESH_TOKEN};
         claims.put(CLAIM_KEY_AUTHORITIES, JsonUtil.toJson(roles));
         return generateRefreshToken(user.getUsername(), claims);
     }
