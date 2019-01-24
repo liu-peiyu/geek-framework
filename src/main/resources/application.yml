@@ -49,7 +49,10 @@ spring:
   # 使用druid数据源
   datasource:
     type : com.alibaba.druid.pool.DruidDataSource
-    driver-class-name : com.mysql.jdbc.Driver
+    driver-class-name : com.mysql.cj.jdbc.Driver
+    dbcp2:
+      test-while-idle: false
+      validation-query: SELECT 'x'
   #json配置
   jackson:
     time-zone : Asia/Chongqing
@@ -183,7 +186,7 @@ spring:
       name : geekcattle
       username  : root
       password  : root
-      url : jdbc:mysql://localhost:3306/geekcattle?useUnicode=true&characterEncoding=UTF-8
+      url : jdbc:mysql://localhost:3306/geekcattle?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
   redis:
     database : 0
     host : 127.0.0.1
@@ -203,7 +206,7 @@ spring:
       name : geekcattle
       username  : geekcattle
       password  : GeekCattle
-      url : jdbc:mysql://localhost:3306/geekcattle?useUnicode=true&characterEncoding=UTF-8
+      url : jdbc:mysql://localhost:3306/geekcattle?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
   redis:
       database : 0
       host : 127.0.0.1
