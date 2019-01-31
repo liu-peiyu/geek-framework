@@ -1,5 +1,6 @@
 package com.geekcattle.controller.console;
 
+import com.geekcattle.core.shiro.AdminShiroRealm;
 import com.geekcattle.model.console.Admin;
 import com.geekcattle.model.console.AdminRole;
 import com.geekcattle.model.console.Role;
@@ -46,6 +47,9 @@ public class AdminController {
     @Autowired
     private RoleService roleService;
 
+    @Autowired
+    private AdminShiroRealm adminShiroRealm;
+
     @RequiresPermissions("admin:index")
     @RequestMapping(value = "/index", method = {RequestMethod.GET})
     public String index(Model model) {
@@ -69,7 +73,7 @@ public class AdminController {
                 }
                 checkRoleId = String.join(",", checkRoleIds);
             }
-        }else {
+        } else {
             admin.setIsSystem(0);
         }
         model.addAttribute("checkRoleId", checkRoleId);
@@ -107,7 +111,7 @@ public class AdminController {
     public ModelMap save(@Valid Admin admin, BindingResult result) {
         try {
             if (result.hasErrors()) {
-                for (ObjectError er : result.getAllErrors()){
+                for (ObjectError er : result.getAllErrors()) {
                     return ReturnUtil.error(er.getDefaultMessage(), null, null);
                 }
             }
@@ -155,9 +159,12 @@ public class AdminController {
                     adminRole.setRoleId(roleid);
                     adminRoleService.insert(adminRole);
                 }
-            }else{
+            } else {
                 adminRoleService.deleteAdminId(admin.getUid());
             }
+
+            // 更新用户权限
+            adminShiroRealm.kickOutUser(admin.getUid(), false);
 
             return ReturnUtil.success("操作成功", null, "/console/admin/index");
         } catch (Exception e) {
@@ -204,6 +211,7 @@ public class AdminController {
                     for (String id : ids) {
                         adminRoleService.deleteAdminId(id);
                         adminService.deleteById(id);
+                        adminShiroRealm.kickOutUser(id, true);
                     }
                 }
                 return ReturnUtil.success("删除成功", null, null);
