@@ -10,7 +10,6 @@ server:
 #日志配置 等级由低到高：debug<info<warn<Error<Fatal
 logging:
   level:
-    com.springframework.boot.web: warn
     com.geekcattle : debug
   file : "${user.home}/logs/spring-boot-logging.log"
 
@@ -40,7 +39,7 @@ spring:
     date-format : "yyyy-MM-dd HH:mm:ss"
   #槿板配置
   thymeleaf:
-    mode : "HTML5"
+    mode : "HTML"
     cache : false
     encoding : "UTF-8"
     servlet:
